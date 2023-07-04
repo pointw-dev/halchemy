@@ -1,0 +1,9 @@
+MANIFEST.in
+README.md
+setup.py
+HALchemy.egg-info/PKG-INFO
+HALchemy.egg-info/SOURCES.txt
+HALchemy.egg-info/dependency_links.txt
+HALchemy.egg-info/not-zip-safe
+HALchemy.egg-info/top_level.txt
+halchemy/placeholder.py
