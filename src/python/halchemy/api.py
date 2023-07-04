@@ -10,7 +10,7 @@ Examples:
     people = api.get('/people')  # responds with collection whose members are in _items
     for person in people['_items']:
         print(f"{person['firstName']} {person['lastName']}")
-        cars = api.get_rel(person, 'cars')
+        cars = api.get_from_rel(person, 'cars')
         print(f" - has {len(cars['_items'])} cars")
 
 License:
@@ -81,14 +81,14 @@ class Api:
                 if 'is not unique' in issue:
                     new_data = json.loads(data)
                     new_data['name'] += ' ~'
-                    return self.post(url, new_data)
+                    return self._api.post(url, data=new_data)
             message = f'{response.status_code} {response.reason}'
             details = response.text
             raise RuntimeError(f'POST {url} - {message}\n{details}\n\n{data}')
 
     def post_to_rel(self, resource, rel, data, parameters={}, template={}):
         url = self.url_from_rel(resource, rel, parameters, template)
-        return self.post(url, data)
+        return self.post_to_url(url, data)
 
     def patch_resource(self, resource, data):
         if type(data) is not str:

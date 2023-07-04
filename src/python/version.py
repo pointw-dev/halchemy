@@ -7,7 +7,7 @@ from datetime import date
 
 
 # do not change version manually here, use this script which keeps halchemy in sync
-VERSION = '0.1.3'
+VERSION = '0.1.4'
 
 
 def main():
