@@ -46,3 +46,5 @@ except:
 * chainable requests
 * HAL Forms
 * as many languages as we can get to
+* root cache/refresh
+* optimistic concurrency

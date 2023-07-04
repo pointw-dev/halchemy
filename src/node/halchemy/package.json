@@ -1,0 +1,19 @@
+{
+  "name": "halchemy",
+  "version": "0.1.6",
+  "description": "HAL-based Hypermedia API clients for humans",
+  "main": "dist/api.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "tsc --build ./tsconfig.build.json && npm pack --pack-destination ./dist"
+  },
+  "keywords": [],
+  "author": "Michael Ottoson",
+  "license": "MIT",
+  "dependencies": {
+    "axios": "^1.4.0"
+  },
+  "devDependencies": {
+    "typescript": "^5.1.6"
+  }
+}

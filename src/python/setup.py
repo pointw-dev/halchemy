@@ -24,6 +24,7 @@ setup(
     packages=['halchemy'],
     include_package_data=True,
     install_requires=[
+        'requests'
     ],
     zip_safe=False
 )
