@@ -10,6 +10,7 @@ def silent_rmdir(path):
 
 
 def main():
+    silent_rmdir('./__pycache__')
     silent_rmdir('./dist')
     silent_rmdir('./build')
     silent_rmdir('./HALchemy.egg-info')

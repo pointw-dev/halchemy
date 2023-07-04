@@ -38,7 +38,7 @@ License:
 """
 
 import json
-from requests_helper import requests, RequestsWithDefaults
+from .requests_helper import requests, RequestsWithDefaults
 import socket
 import re
 import sys

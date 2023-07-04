@@ -1,0 +1,9 @@
+csharp  [ ] nuget
+go      [ ] gocenter.io / pkg.go.dev / Athens
+java    [ ] maven
+node    [X] npm
+php     [ ] Packagist
+python  [X] PyPi
+r       [ ] CRAN
+ruby    [ ] RubyGems
+
