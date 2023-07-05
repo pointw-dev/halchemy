@@ -3,9 +3,10 @@
   "version": "0.1.6",
   "description": "HAL-based Hypermedia API clients for humans",
   "main": "dist/api.js",
+  "types": "dist/types/api.d.ts",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "tsc --build ./tsconfig.build.json && npm pack --pack-destination ./dist"
+    "build": "tsc && npm pack"
   },
   "keywords": [],
   "author": "Michael Ottoson",
@@ -14,6 +15,7 @@
     "axios": "^1.4.0"
   },
   "devDependencies": {
+    "ts-node": "^10.9.1",
     "typescript": "^5.1.6"
   }
 }
