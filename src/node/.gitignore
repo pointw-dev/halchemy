@@ -5,3 +5,4 @@ dist/
 venv/
 node_modules/
 *.tgz
+coverage/
