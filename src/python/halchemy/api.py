@@ -68,23 +68,38 @@ class Api:
             
         return f"{url}{'?' if parameters else ''}{query_string}"
 
-    def post_to_url(self, url, data):
-        if type(data) is not str:
-            data = json.dumps(data)
-        response = self._api.post(url, data=data)
+    def get(self, url='/'):
+        response = self._api.get(url)
+        if response.status_code == 404:
+            return None
         try:
             response.raise_for_status()
             return response.json()
         except:
-            if response.status_code == 422:
-                issue = response.json().get('_issues', {}).get('name', '')
-                if 'is not unique' in issue:
-                    new_data = json.loads(data)
-                    new_data['name'] += ' ~'
-                    return self._api.post(url, data=new_data)
-            message = f'{response.status_code} {response.reason}'
+            message = f'GET {url} - {response.status_code} {response.reason}'
             details = response.text
-            raise RuntimeError(f'POST {url} - {message}\n{details}\n\n{data}')
+            raise RuntimeError(f'{message}\n{details}')
+
+    def get_from_rel(self, resource, rel='self', parameters={}, template={}):        
+        url = self.url_from_rel(resource, rel, parameters, template)
+        return self.get(url)
+
+    def get_from_rel_with_lookup(self, resource, rel, lookup, parameters={}):        
+        url = resource['_links'][rel]['href']
+        if url[-1] != '/':
+            url = url + '/'
+        url += lookup
+        
+        query_string = urlencode(parameters)
+            
+        return self.get(f"{url}{'?' if parameters else ''}{query_string}")        
+
+    def post_to_url(self, url, data):
+        if type(data) is not str:
+            data = json.dumps(data)
+        response = self._api.post(url, data=data)
+        response.raise_for_status()
+        return response.json()
 
     def post_to_rel(self, resource, rel, data, parameters={}, template={}):
         url = self.url_from_rel(resource, rel, parameters, template)
@@ -123,32 +138,6 @@ class Api:
             message = f'{response.status_code} {response.reason}'
             details = response.text
             raise RuntimeError(f'PUT {url}\n{headers}\n{message}\n{details}\n\n{data}')
-
-    def get(self, url='/'):
-        response = self._api.get(url)
-        if response.status_code == 404:
-            return None
-        try:
-            response.raise_for_status()
-            return response.json()
-        except:
-            message = f'GET {url} - {response.status_code} {response.reason}'
-            details = response.text
-            raise RuntimeError(f'{message}\n{details}')
-
-    def get_from_rel(self, resource, rel='self', parameters={}, template={}):        
-        url = self.url_from_rel(resource, rel, parameters, template)
-        return self.get(url)
-
-    def get_from_rel_with_lookup(self, resource, rel, lookup, parameters={}):        
-        url = resource['_links'][rel]['href']
-        if url[-1] != '/':
-            url = url + '/'
-        url += lookup
-        
-        query_string = urlencode(parameters)
-            
-        return self.get(f"{url}{'?' if parameters else ''}{query_string}")        
 
     def delete_collection(self, url):
         response = self._api.delete(url)

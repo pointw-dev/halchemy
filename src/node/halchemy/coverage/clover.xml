@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<coverage generated="1688621463970" clover="3.2.0">
+  <project timestamp="1688621463971" name="All files">
+    <metrics statements="69" coveredstatements="68" conditionals="25" coveredconditionals="22" methods="16" coveredmethods="15" elements="110" coveredelements="105" complexity="0" loc="69" ncloc="69" packages="2" files="3" classes="3"/>
+    <package name="src">
+      <metrics statements="65" coveredstatements="64" conditionals="25" coveredconditionals="22" methods="16" coveredmethods="15"/>
+      <file name="api.ts" path="C:\git\pointw-dev\HALchemy\src\node\halchemy\src\api.ts">
+        <metrics statements="57" coveredstatements="56" conditionals="25" coveredconditionals="22" methods="14" coveredmethods="13"/>
+        <line num="1" count="6" type="stmt"/>
+        <line num="3" count="6" type="stmt"/>
+        <line num="4" count="8" type="stmt"/>
+        <line num="6" count="6" type="stmt"/>
+        <line num="14" count="6" type="stmt"/>
+        <line num="16" count="6" type="stmt"/>
+        <line num="17" count="6" type="stmt"/>
+        <line num="18" count="6" type="stmt"/>
+        <line num="21" count="6" type="stmt"/>
+        <line num="27" count="6" type="stmt"/>
+        <line num="31" count="13" type="stmt"/>
+        <line num="32" count="13" type="stmt"/>
+        <line num="34" count="13" type="cond" truecount="1" falsecount="0"/>
+        <line num="35" count="7" type="stmt"/>
+        <line num="37" count="8" type="stmt"/>
+        <line num="42" count="10" type="stmt"/>
+        <line num="43" count="10" type="stmt"/>
+        <line num="44" count="10" type="stmt"/>
+        <line num="45" count="7" type="stmt"/>
+        <line num="47" count="3" type="stmt"/>
+        <line num="52" count="2" type="stmt"/>
+        <line num="53" count="2" type="stmt"/>
+        <line num="58" count="2" type="stmt"/>
+        <line num="59" count="2" type="stmt"/>
+        <line num="61" count="2" type="cond" truecount="1" falsecount="0"/>
+        <line num="62" count="2" type="stmt"/>
+        <line num="64" count="2" type="stmt"/>
+        <line num="66" count="2" type="cond" truecount="0" falsecount="1"/>
+        <line num="67" count="0" type="stmt"/>
+        <line num="69" count="2" type="stmt"/>
+        <line num="71" count="2" type="stmt"/>
+        <line num="76" count="10" type="stmt"/>
+        <line num="77" count="10" type="stmt"/>
+        <line num="78" count="10" type="stmt"/>
+        <line num="79" count="4" type="stmt"/>
+        <line num="81" count="6" type="stmt"/>
+        <line num="89" count="10" type="stmt"/>
+        <line num="90" count="5" type="stmt"/>
+        <line num="94" count="10" type="cond" truecount="2" falsecount="0"/>
+        <line num="99" count="7" type="stmt"/>
+        <line num="100" count="7" type="stmt"/>
+        <line num="102" count="7" type="stmt"/>
+        <line num="103" count="7" type="stmt"/>
+        <line num="105" count="7" type="cond" truecount="1" falsecount="0"/>
+        <line num="106" count="3" type="stmt"/>
+        <line num="112" count="4" type="stmt"/>
+        <line num="113" count="4" type="cond" truecount="1" falsecount="0"/>
+        <line num="114" count="2" type="stmt"/>
+        <line num="117" count="2" type="stmt"/>
+        <line num="118" count="2" type="cond" truecount="1" falsecount="1"/>
+        <line num="126" count="9" type="cond" truecount="7" falsecount="1"/>
+        <line num="128" count="6" type="stmt"/>
+        <line num="129" count="6" type="stmt"/>
+        <line num="130" count="6" type="stmt"/>
+        <line num="131" count="6" type="stmt"/>
+        <line num="134" count="3" type="stmt"/>
+        <line num="135" count="3" type="stmt"/>
+      </file>
+      <file name="errors.ts" path="C:\git\pointw-dev\HALchemy\src\node\halchemy\src\errors.ts">
+        <metrics statements="8" coveredstatements="8" conditionals="0" coveredconditionals="0" methods="2" coveredmethods="2"/>
+        <line num="4" count="6" type="stmt"/>
+        <line num="7" count="5" type="stmt"/>
+        <line num="8" count="5" type="stmt"/>
+        <line num="12" count="6" type="stmt"/>
+        <line num="18" count="6" type="stmt"/>
+        <line num="19" count="6" type="stmt"/>
+        <line num="20" count="6" type="stmt"/>
+        <line num="21" count="6" type="stmt"/>
+      </file>
+    </package>
+    <package name="src.__tests__">
+      <metrics statements="4" coveredstatements="4" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
+      <file name="_resources.ts" path="C:\git\pointw-dev\HALchemy\src\node\halchemy\src\__tests__\_resources.ts">
+        <metrics statements="4" coveredstatements="4" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
+        <line num="3" count="6" type="stmt"/>
+        <line num="15" count="6" type="stmt"/>
+        <line num="22" count="6" type="stmt"/>
+        <line num="29" count="6" type="stmt"/>
+      </file>
+    </package>
+  </project>
+</coverage>
