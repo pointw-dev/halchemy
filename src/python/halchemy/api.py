@@ -87,7 +87,7 @@ class Api:
     def get_from_rel_with_lookup(self, resource, rel, lookup, parameters={}):        
         url = resource['_links'][rel]['href']
         if url[-1] != '/':
-            url = url + '/'
+            url += '/'
         url += lookup
         
         query_string = urlencode(parameters)
@@ -122,7 +122,7 @@ class Api:
             details = response.text
             raise RuntimeError(f'PATCH {url}\n{headers}\n{message}\n{details}\n\n{data}')
 
-    def put_to_resource(self, resource, data, rel='self'):
+    def put_to_rel(self, resource, rel, data):
         if type(data) is not str:
             data = json.dumps(data)
         url = self.url_from_rel(resource, rel)

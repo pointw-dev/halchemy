@@ -54,7 +54,7 @@ describe('tests for postToUrl()', () => {
         try {
             await api.postToUrl('/catalogs', {name: 'My Name'})
         } catch (error) {
-            expect(error.message).toBe('GET request failed')
+            expect(error.message).toBe('POST request failed')
             expect(error.status).toBe(statusCode)
         }
     });

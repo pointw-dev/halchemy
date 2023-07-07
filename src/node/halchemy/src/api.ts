@@ -44,7 +44,7 @@ export class Api {
             const response = await axios.get(url, {headers: this.headers})
             return response.data
         } catch (error) {
-            this.handleError(error, url)
+            this.handleError('GET', error, url)
         }
     }
 
@@ -78,9 +78,79 @@ export class Api {
             const response = await axios.post(url, data, {headers: this.headers})
             return response.data
         } catch(error) {
-            this.handleError(error, url)
+            this.handleError('POST', error, url)
         }
     }
+
+
+    async postToRel({resource, rel, parameters = {}, template = {}}: RelSpec, data:{}) {
+        const url = this.urlFromRel({resource, rel, parameters, template})
+        try {
+            this.lastError = {}
+            const response = await axios.post(url, data, {headers: this.headers})
+            return response.data
+        } catch(error) {
+            this.handleError('POST', error, url)
+        }
+    }
+
+
+    async patchResource(resource:HalResource, data:{}) {
+        const headers = {
+            ...this.headers,
+            'If-match': resource._etag
+        }
+        const url = this.urlFromRel({resource, rel: 'self'})
+        try {
+            this.lastError = {}
+            const response = await axios.patch(url, data, {headers: headers})
+            return response.data
+        } catch(error) {
+            this.handleError('PATCH', error, url)
+        }
+    }
+
+
+    async putToRel({resource, rel, parameters = {}, template = {}}: RelSpec, data:{}) {
+        const headers = {
+            ...this.headers,
+            'If-match': resource._etag
+        }
+        const url = this.urlFromRel({resource, rel, parameters, template})
+        try {
+            this.lastError = {}
+            const response = await axios.put(url, data, {headers: headers})
+            return response.data
+        } catch(error) {
+            this.handleError('PUT', error, url)
+        }
+    }
+
+
+    async deleteCollection(url) {
+        try {
+            this.lastError = {}
+            await axios.delete(url, {headers: this.headers})
+        } catch(error) {
+            this.handleError('DELETE', error, url)
+        }
+    }
+
+
+    async deleteResource(resource:HalResource) {
+        const headers = {
+            ...this.headers,
+            'If-match': resource._etag
+        }
+        const url = this.urlFromRel({resource, rel: 'self'})
+        try {
+            this.lastError = {}
+            await axios.delete(url, {headers: headers})
+        } catch(error) {
+            this.handleError('DELETE', error, url)
+        }
+    }
+
 
 
 
@@ -120,7 +190,7 @@ export class Api {
     }
 
 
-    private handleError(error, url: string) {
+    private handleError(method, error, url: string) {
         let errorResponse: any;
 
         if (error?.isAxiosError && error.hasOwnProperty('response')) {
@@ -128,7 +198,7 @@ export class Api {
             const axiosError = error as AxiosError;
             errorResponse = axiosError.response; //all the info here
             this.lastError = errorResponse
-            throw new HttpError('GET request failed', errorResponse.status, errorResponse.statusText, url)
+            throw new HttpError(`${method} request failed`, errorResponse.status, errorResponse.statusText, url)
         } else {
             // we did not receive a response from the server
             this.lastError = error

@@ -34,3 +34,13 @@ export const posted: HalResource =  {
         }
     }
 }
+
+export const patched: HalResource =  {
+    name: 'My Name',
+    _links: {
+        self: {
+            href: 'http://localhost:2112/catalogs'
+        }
+    },
+    _status: 'ok'
+}
