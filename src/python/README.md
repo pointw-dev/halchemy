@@ -1,9 +1,9 @@
 # HALchemy for Python
 **HAL-based Hypermedia API clients for humans.**
 
-![](../../img/halchemy-full-word.png)
+![](https://github.com/pointw-dev/HALchemy/blob/main/img/halchemy-full-word.png?raw=True)
 
-![](../../img/python.png)
+![](https://github.com/pointw-dev/HALchemy/blob/main/img/python.png?raw=True)
 
 
 > This project has lofty goals, and is in its very early stages.  Please use with caution and beware of breaking changes until at least v0.7.0
