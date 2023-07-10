@@ -35,8 +35,8 @@ const people = api.getFromRel({resource: root, rel:'people'})  // follow the peo
 * **postToRel**({resource, rel, parameters = {}, template = {}}: RelSpec, data:{})
 * **patchResource**(resource:HalResource, data:{})
 * **putToRel**({resource, rel, parameters = {}, template = {}}: RelSpec, data:{})
-* **delete_collection**(url:string)
-* **delete_resource**(resource:HalResource)
+* **deleteUrl**(url:string)
+* **deleteResource**(resource:HalResource)
 * **urlFromRel**({resource, rel, parameters = {}, template = {}}: RelSpec)
-* **post_to_url**(url:string, data:{})
+* **postToUrl**(url:string, data:{})
 

@@ -37,7 +37,7 @@ people = api.get_from_rel(root, 'people')  # follow the people rel to get the li
 * **post_to_rel**(self, resource, rel, data, parameters={}, template={})
 * **patch_resource**(self, resource, data)
 * **put_to_rel**(self, resource, data, rel='self')
-* **delete_collection**(self, url)
+* **delete_url**(self, url)
 * **delete_resource**(self, resource)
 * **url_from_rel**(resource, rel, parameters={}, template={})
 * **post_to_url**(self, url, data)

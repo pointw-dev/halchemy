@@ -127,7 +127,7 @@ export class Api {
     }
 
 
-    async deleteCollection(url) {
+    async deleteUrl(url) {
         try {
             this.lastError = {}
             await axios.delete(url, {headers: this.headers})
@@ -197,8 +197,9 @@ export class Api {
             // i.e. if we received a response from the server
             const axiosError = error as AxiosError;
             errorResponse = axiosError.response; //all the info here
+            const data = errorResponse.hasOwnProperty('data')? errorResponse.data : null
             this.lastError = errorResponse
-            throw new HttpError(`${method} request failed`, errorResponse.status, errorResponse.statusText, url)
+            throw new HttpError(`${method} request failed`, errorResponse.status, errorResponse.statusText, url, data)
         } else {
             // we did not receive a response from the server
             this.lastError = error

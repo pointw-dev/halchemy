@@ -16,7 +16,7 @@ afterEach(() => server.resetHandlers())
 afterAll(() => server.close())
 
 
-describe('tests for deleteCollection()', () => {
+describe('tests for deleteUrl()', () => {
     const api = new Api('http://localhost:2112')
 
     it('Deletes collection referred to by an absolute url', async () => {
@@ -24,7 +24,7 @@ describe('tests for deleteCollection()', () => {
         server.use(defaultScenario)
 
         // act
-        await api.deleteCollection('http://localhost:2112/absolute')
+        await api.deleteUrl('http://localhost:2112/absolute')
 
         // assert
         expect(resolver).toBeCalled()
@@ -39,7 +39,7 @@ describe('tests for deleteCollection()', () => {
         }))
 
         // act
-        const result = await api.deleteCollection('/relative')
+        const result = await api.deleteUrl('/relative')
 
         // assert
         expect(resolver).toBeCalled()
@@ -57,7 +57,7 @@ describe('tests for deleteCollection()', () => {
         expect.assertions(3)
 
         try {
-            await api.deleteCollection('http://localhost:2112/absolute')
+            await api.deleteUrl('http://localhost:2112/absolute')
         } catch (error) {
             expect(error).toBeInstanceOf(HttpError)
             expect(error.message).toBe('DELETE request failed')
@@ -76,6 +76,6 @@ describe('tests for deleteCollection()', () => {
 
         // act
         // assert
-        await expect(api.deleteCollection('http://localhost:2112/absolute')).rejects.toThrow()
+        await expect(api.deleteUrl('http://localhost:2112/absolute')).rejects.toThrow()
     });
 })

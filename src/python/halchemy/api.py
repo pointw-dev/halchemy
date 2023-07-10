@@ -139,7 +139,7 @@ class Api:
             details = response.text
             raise RuntimeError(f'PUT {url}\n{headers}\n{message}\n{details}\n\n{data}')
 
-    def delete_collection(self, url):
+    def delete_url(self, url):
         response = self._api.delete(url)
 
         try:

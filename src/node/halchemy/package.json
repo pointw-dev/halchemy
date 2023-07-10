@@ -1,6 +1,6 @@
 {
   "name": "halchemy",
-  "version": "0.1.7",
+  "version": "0.1.8",
   "description": "HAL-based Hypermedia API clients for humans",
   "main": "dist/api.js",
   "types": "dist/types/api.d.ts",

@@ -13,12 +13,14 @@ export class HttpError extends Error {
     public readonly status: number
     public readonly reason: string
     public readonly url: string
+    public readonly data?: {}
 
-    constructor (message: string, status: number, reason: string, url: string ) {
+    constructor (message: string, status: number, reason: string, url: string, data?: {} ) {
         super(message)
         this.status = status
         this.reason = reason
         this.url = url
+        this.data = data
     }
 }
 
