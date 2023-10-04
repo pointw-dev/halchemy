@@ -38,6 +38,7 @@ License:
 """
 
 import json
+from requests.exceptions import HTTPError
 from .requests_helper import requests, RequestsWithDefaults
 import socket
 import re
@@ -53,6 +54,7 @@ class Api:
             'Cache-Control': 'no-cache',
             'Authorization': auth
         })
+        self.last_error = {}
 
     @staticmethod
     def url_from_rel(resource, rel, parameters={}, template={}):
@@ -69,16 +71,15 @@ class Api:
         return f"{url}{'?' if parameters else ''}{query_string}"
 
     def get(self, url='/'):
-        response = self._api.get(url)
-        if response.status_code == 404:
-            return None
         try:
+            self.last_error = {}
+            response = self._api.get(url)
+            if response.status_code == 404:
+                return None
             response.raise_for_status()
             return response.json()
-        except:
-            message = f'GET {url} - {response.status_code} {response.reason}'
-            details = response.text
-            raise RuntimeError(f'{message}\n{details}')
+        except HTTPError as ex:
+            self._handle_error('GET', url, response, ex)
 
     def get_from_rel(self, resource, rel='self', parameters={}, template={}):        
         url = self.url_from_rel(resource, rel, parameters, template)
@@ -97,9 +98,13 @@ class Api:
     def post_to_url(self, url, data):
         if type(data) is not str:
             data = json.dumps(data)
-        response = self._api.post(url, data=data)
-        response.raise_for_status()
-        return response.json()
+        try:
+            self.last_error = {}
+            response = self._api.post(url, data=data)
+            response.raise_for_status()
+            return response.json()
+        except HTTPError as ex:
+            self._handle_error('POST', url, response, ex)
 
     def post_to_rel(self, resource, rel, data, parameters={}, template={}):
         url = self.url_from_rel(resource, rel, parameters, template)
@@ -112,15 +117,14 @@ class Api:
         headers = {
             'If-Match': resource['_etag']
         }
-        response = self._api.patch(url, data=data, headers=headers)
 
         try:
+            self._last_error = {}
+            response = self._api.patch(url, data=data, headers=headers)
             response.raise_for_status()
             return response.json()
         except:
-            message = f'{response.status_code} {response.reason}'
-            details = response.text
-            raise RuntimeError(f'PATCH {url}\n{headers}\n{message}\n{details}\n\n{data}')
+            self._handle_error('PATCH', url, response, ex)
 
     def put_to_rel(self, resource, rel, data):
         if type(data) is not str:
@@ -129,36 +133,46 @@ class Api:
         headers = {
             'If-Match': resource['_etag']
         }
-        response = self._api.put(url, data=data, headers=headers)
 
         try:
+            self._last_error = {}
+            response = self._api.put(url, data=data, headers=headers)
             response.raise_for_status()
             return response.json()
         except:
-            message = f'{response.status_code} {response.reason}'
-            details = response.text
-            raise RuntimeError(f'PUT {url}\n{headers}\n{message}\n{details}\n\n{data}')
+            self._handle_error('PUT', url, response, ex)
 
     def delete_url(self, url):
-        response = self._api.delete(url)
-
         try:
+            self._last_error = {}
+            response = self._api.delete(url)
             response.raise_for_status()
         except:
-            message = f'{response.status_code} {response.reason}'
-            details = response.text
-            raise RuntimeError(f'DELETE {url}\n{message}\n{details}')
+            self._handle_error('DELETE', url, response, ex)
 
     def delete_resource(self, resource):
         url = self.url_from_rel(resource, 'self')
         headers = {
             'If-Match': resource['_etag']
         }
-        response = self._api.delete(url, headers=headers)
 
         try:
+            self._last_error = {}
+            response = self._api.delete(url, headers=headers)
             response.raise_for_status()
         except:
-            message = f'{response.status_code} {response.reason}'
-            details = response.text
-            raise RuntimeError(f'DELETE {url}\n{headers}\n{message}\n{details}')
+            self._handle_error('DELETE', url, response, ex)
+
+    def _handle_error(self, method, url, response, error):
+        self.last_error = {
+            'method': method,
+            'url': url,
+            'status_code': response.status_code,
+            'reason': response.reason,
+            'details': response.text,
+            'response': response,
+            'error': error
+        }
+        message = f'{method} {url} - {response.status_code} {response.reason}'
+        details = response.text
+        raise RuntimeError(f'{message}\n{details}\nsee self.last_error for more details')

@@ -16,7 +16,7 @@
 npm install halchemy
 ```
 
-In your code, instantiate an `Api object with the base URL of yoru API
+In your code, instantiate an `Api` object with the base URL of yoru API
 
 ```typescript
 import { Api } from 'halchemy'
