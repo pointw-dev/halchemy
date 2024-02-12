@@ -16,7 +16,7 @@
 npm install halchemy
 ```
 
-In your code, instantiate an `Api` object with the base URL of yoru API
+In your code, instantiate an `Api` object with the URL of your API.
 
 ```typescript
 import { Api } from 'halchemy'
@@ -30,13 +30,13 @@ const people = api.getFromRel({resource: root, rel:'people'})  // follow the peo
 ## Methods
 
 * **get**(url:string = '/')
-* **getFromRel**({resource, rel, parameters = {}, template = {}}: RelSpec)
-* **getFromRelWithLookup**({resource, rel, parameters = {}, template = {}}: RelSpec, lookup: string)
-* **postToRel**({resource, rel, parameters = {}, template = {}}: RelSpec, data:{})
-* **patchResource**(resource:HalResource, data:{})
-* **putToRel**({resource, rel, parameters = {}, template = {}}: RelSpec, data:{})
-* **deleteUrl**(url:string)
-* **deleteResource**(resource:HalResource)
-* **urlFromRel**({resource, rel, parameters = {}, template = {}}: RelSpec)
-* **postToUrl**(url:string, data:{})
+* **getFromRel**({resource, rel, parameters = {}, template = {}}: RelSpec): Promise<HalResource | {}>
+* **getFromRelWithLookup**({resource, rel, parameters = {}, template = {}}: RelSpec, lookup: string): Promise<HalResource | {}>
+* **postToRel**({resource, rel, parameters = {}, template = {}}: RelSpec, data:{}): Promise<any>
+* **patchResource**(resource:HalResource, data:{}): Promise<any>
+* **putToRel**({resource, rel, parameters = {}, template = {}}: RelSpec, data:{}): Promise<any>
+* **deleteUrl**(url:string): Promise<any>
+* **deleteResource**(resource:HalResource): Promise<any>
+* **urlFromRel**({resource, rel, parameters = {}, template = {}}: RelSpec): string
+* **postToUrl**(url:string, data:{}): Promise<any>
 

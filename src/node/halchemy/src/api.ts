@@ -10,6 +10,15 @@ export class RelSpec {
     template?: { [key: string]: string }
 }
 
+function isHalResource(obj: any): obj is HalResource {
+    return obj
+        && typeof obj === 'object'
+        && '_links' in obj
+        && 'self' in obj._links
+        && typeof obj._links.self === 'object'
+        && 'href' in obj._links.self;
+}
+
 
 export class Api {
 
@@ -27,7 +36,7 @@ export class Api {
         axios.defaults.baseURL = baseApiUrl
     }
 
-    urlFromRel({resource, rel, parameters = {}, template = {}}: RelSpec) {
+    urlFromRel({resource, rel, parameters = {}, template = {}}: RelSpec): string {
         const link = resource._links[rel] as HalLink
         let url: string = link.href;
 
@@ -38,23 +47,27 @@ export class Api {
     }
 
 
-    async get(url:string = '/'): Promise<{}> {
+    async get(url:string = '/'): Promise<HalResource | {}> {
         try {
             this.lastError = {}
             const response = await axios.get(url, {headers: this.headers})
-            return response.data
+            if (isHalResource(response.data)) {
+                return response.data as HalResource
+            } else {
+                return response.data as {}
+            }
         } catch (error) {
             this.handleError('GET', error, url)
         }
     }
 
-    async getFromRel({resource, rel, parameters = {}, template = {}}: RelSpec) {
+    async getFromRel({resource, rel, parameters = {}, template = {}}: RelSpec): Promise<HalResource | {}> {
         const url = this.urlFromRel({resource, rel, parameters, template})
         return await this.get(url)
     }
 
 
-    async getFromRelWithLookup({resource, rel, parameters = {}, template = {}}: RelSpec, lookup: string) {
+    async getFromRelWithLookup({resource, rel, parameters = {}, template = {}}: RelSpec, lookup: string): Promise<HalResource | {}> {
         const link = resource._links[rel] as HalLink
         let url: string = link.href;
 
@@ -72,7 +85,7 @@ export class Api {
     }
 
 
-    async postToUrl(url:string, data: {}) {
+    async postToUrl(url:string, data: {}): Promise<any> {
         try {
             this.lastError = {}
             const response = await axios.post(url, data, {headers: this.headers})
@@ -83,7 +96,7 @@ export class Api {
     }
 
 
-    async postToRel({resource, rel, parameters = {}, template = {}}: RelSpec, data:{}) {
+    async postToRel({resource, rel, parameters = {}, template = {}}: RelSpec, data:{}): Promise<any> {
         const url = this.urlFromRel({resource, rel, parameters, template})
         try {
             this.lastError = {}
@@ -95,7 +108,7 @@ export class Api {
     }
 
 
-    async patchResource(resource:HalResource, data:{}) {
+    async patchResource(resource:HalResource, data:{}): Promise<any> {
         const headers = {
             ...this.headers,
             'If-match': resource._etag

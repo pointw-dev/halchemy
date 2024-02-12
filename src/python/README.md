@@ -16,7 +16,7 @@
 pip install halchemy
 ```
 
-In your code, instantiate an `Api` object with the base URL of your API
+In your code, instantiate an `Api` object with the URL of your API.
 
 ```python
 from halchemy import Api

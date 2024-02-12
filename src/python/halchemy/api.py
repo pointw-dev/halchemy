@@ -123,7 +123,7 @@ class Api:
             response = self._api.patch(url, data=data, headers=headers)
             response.raise_for_status()
             return response.json()
-        except:
+        except HTTPError as ex:
             self._handle_error('PATCH', url, response, ex)
 
     def put_to_rel(self, resource, rel, data):
