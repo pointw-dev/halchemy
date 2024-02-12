@@ -139,7 +139,7 @@ class Api:
             response = self._api.put(url, data=data, headers=headers)
             response.raise_for_status()
             return response.json()
-        except:
+        except HTTPError as ex:
             self._handle_error('PUT', url, response, ex)
 
     def delete_url(self, url):
@@ -147,7 +147,7 @@ class Api:
             self._last_error = {}
             response = self._api.delete(url)
             response.raise_for_status()
-        except:
+        except HTTPError as ex:
             self._handle_error('DELETE', url, response, ex)
 
     def delete_resource(self, resource):
@@ -160,7 +160,7 @@ class Api:
             self._last_error = {}
             response = self._api.delete(url, headers=headers)
             response.raise_for_status()
-        except:
+        except HTTPError as ex:
             self._handle_error('DELETE', url, response, ex)
 
     def _handle_error(self, method, url, response, error):
