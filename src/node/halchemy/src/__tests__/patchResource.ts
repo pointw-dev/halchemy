@@ -1,7 +1,7 @@
 import {rest} from "msw"
 import {setupServer} from "msw/node";
-import {Api} from "../api"
-import {absolute, patched} from "./_resources";
+import {Api, RelSpec} from "../api"
+import {absolute, patched, root} from "./_resources";
 
 const defaultScenario = rest.patch('http://localhost:2112/absolute', (req, res, ctx) => {
     return res(ctx.status(200), ctx.json(patched))
@@ -98,4 +98,77 @@ describe('tests for patchResource()', () => {
             expect(error.status).toBe(statusCode)
         }
     });
+
+
+    it('adds additional headers', async() => {
+        let headerExists = false;
+        let headerValueIsCorrect = false; // Variable to store the result of our header check
+
+        const additionalHeaders = {
+            'X-Custom-Header': 'expected'
+        }
+
+        // arrange
+        server.use(
+            rest.post('http://localhost:2112/absolute', (req, res, ctx) => {
+                if (req.headers.has('X-Custom-Header')) {
+                    headerExists = true;
+                    const customHeaderValue = req.headers.get('X-Custom-Header');
+                    if (customHeaderValue === 'expected') {
+                        headerValueIsCorrect = true;
+                    }
+                }
+
+                return res(ctx.json({message: 'Header checked'}));
+            })
+        );
+        const spec: RelSpec = {
+            resource: root,
+            rel: 'absolute'
+        }
+
+        // act
+        await api.postToRel(spec, {name: 'My Name'}, additionalHeaders)
+
+        // assert
+        expect(headerExists).toBe(true);
+        expect(headerValueIsCorrect).toBe(true);
+    });
+
+
+    it('overrides header values', async() => {
+        let headerExists = false;
+        let headerValueIsCorrect = false;
+
+        const additionalHeaders = {
+            'Authorization': 'Bearer token'  // Api() defaults to a Basic token - this should override it
+        }
+
+        // arrange
+        server.use(
+            rest.post('http://localhost:2112/absolute', (req, res, ctx) => {
+                if (req.headers.has('Authorization')) {
+                    headerExists = true;
+                    const authorization = req.headers.get('Authorization');
+                    if (authorization === 'Bearer token') {
+                        headerValueIsCorrect = true;
+                    }
+                }
+
+                return res(ctx.json({message: 'Header checked'}));
+            })
+        );
+        const spec: RelSpec = {
+            resource: root,
+            rel: 'absolute'
+        }
+
+        // act
+        await api.postToRel(spec, {name: 'My Name'}, additionalHeaders)
+
+        // assert
+        expect(headerExists).toBe(true);
+        expect(headerValueIsCorrect).toBe(true);
+    });
+
 })

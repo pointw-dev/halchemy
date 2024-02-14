@@ -36,6 +36,7 @@ License:
 """
 
 import requests
+from copy import deepcopy
 
 
 def urljoin(base, path):
@@ -46,7 +47,7 @@ class RequestsWithDefaults(requests.Session):
     def __init__(self, url_base=None, headers=None, *args, **kwargs):
         super(RequestsWithDefaults, self).__init__(*args, **kwargs)
         self.url_base = url_base
-        self.headers_base = headers
+        self.headers_base = headers if headers else {}
 
     def request(self, method, url, **kwargs):
         if self.url_base and not url.startswith('http'):
@@ -54,10 +55,10 @@ class RequestsWithDefaults(requests.Session):
         else:
             modified_url = url
 
-        if self.headers_base:
-            if "headers" not in kwargs:
-                kwargs["headers"] = {}
-            kwargs["headers"].update(self.headers_base)
+        headers = deepcopy(self.headers_base)
+        if "headers" in kwargs:
+            headers.update(kwargs["headers"])
+        kwargs["headers"] = headers
 
         return super(RequestsWithDefaults, self).request(method, modified_url, **kwargs)
 

@@ -4,8 +4,6 @@
 
 layout: home
 ---
-<link rel="stylesheet" href="{{ '/assets/css/tab-styles.css' | relative_url }}">
-<script src="{{ '/assets/js/tabs.js' | relative_url }}"></script>
 
 # HAL-based Hypermedia API clients for humans.
 
@@ -22,7 +20,7 @@ pip install halchemy
 ```
 {% endtab %}
 
-{% tab install Javascript %}
+{% tab install JavaScript %}
 ```bash
 npm install halchemy
 ```
@@ -44,7 +42,7 @@ people = api.get_from_rel(root, 'people')  # follow the people rel to get the li
 ```
 {% endtab %}
 
-{% tab quick Javascript %}
+{% tab quick JavaScript %}
 ```javascript
 import { Api } from 'halchemy'
 
@@ -62,32 +60,32 @@ The method and signatures of the `Api` object are as follows:
 {% tabs install %}
 {% tab install Python %}
 ```python
-get(url='/')
-get_from_rel(resource, rel='self', parameters={}, template={})
-get_from_rel_with_lookup(resource, rel, lookup, parameters={})
-post_to_rel(resource, rel, data, parameters={}, template={})
-patch_resource(resource, data)
-put_to_rel(resource, data, rel='self')
-delete_url(url)
-delete_resource(resource)
+get(url='/', headers={})
+get_from_rel(resource, rel='self', parameters={}, template={}, headers={})
+get_from_rel_with_lookup(resource, rel, lookup, parameters={}, headers={})
+post_to_url(url, data, headers={})
+post_to_rel(resource, rel, data, parameters={}, template={}, headers={})
+patch_resource(resource, data, headers={})
+put_to_rel(resource, rel, data, headers={})
+delete_url(url, headers={})
+delete_resource(resource, headers={})
 url_from_rel(resource, rel, parameters={}, template={})
-post_to_url(url, data)
 ```
 {% endtab %}
 
-{% tab install Javascript %}
+{% tab install JavaScript %}
 ```javascript
 get(url:string = '/')
 getFromRel({resource, rel, parameters = {}, template = {}}: RelSpec): Promise<HalResource | {}>
 getFromRelWithLookup({resource, rel, parameters = {}, template = {}}: RelSpec, lookup: string): Promise<HalResource | {}>
+postToUrl(url:string, data:{}): Promise<any>
 postToRel({resource, rel, parameters = {}, template = {}}: RelSpec, data:{}): Promise<any>
 patchResource(resource:HalResource, data:{}): Promise<any>
 putToRel({resource, rel, parameters = {}, template = {}}: RelSpec, data:{}): Promise<any>
 deleteUrl(url:string): Promise<any>
 deleteResource(resource:HalResource): Promise<any>
 urlFromRel({resource, rel, parameters = {}, template = {}}: RelSpec): string
-postToUrl(url:string, data:{}): Promise<any>
 ```
-Additional notes for Javascript.
+Additional notes for JavaScript.
 {% endtab %}
 {% endtabs %}

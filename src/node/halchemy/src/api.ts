@@ -22,15 +22,14 @@ function isHalResource(obj: any): obj is HalResource {
 
 export class Api {
 
-    private readonly baseApiUrl: string = 'http://localhost:2112'
     private readonly headers: object = {}
     public lastError: any = {}
 
-    constructor(baseApiUrl: string, auth: string='Basic cm9vdDpwYXNzd29yZA==') {
+    constructor(baseApiUrl: string, headers = {}) {
         this.headers = {
-            Accept: 'application/json',
             'Content-type': 'application/json',
-            Authorization: auth
+            Authorization: 'Basic cm9vdDpwYXNzd29yZA==',  // root:password
+            ...headers
         }
 
         axios.defaults.baseURL = baseApiUrl
@@ -47,10 +46,14 @@ export class Api {
     }
 
 
-    async get(url:string = '/'): Promise<HalResource | {}> {
+    async get(url:string = '/', headers = {}): Promise<HalResource | {}> {
+        const merged_headers = {
+            ...this.headers,
+            ...headers
+        }
         try {
             this.lastError = {}
-            const response = await axios.get(url, {headers: this.headers})
+            const response = await axios.get(url, {headers: merged_headers})
             if (isHalResource(response.data)) {
                 return response.data as HalResource
             } else {
@@ -61,13 +64,13 @@ export class Api {
         }
     }
 
-    async getFromRel({resource, rel, parameters = {}, template = {}}: RelSpec): Promise<HalResource | {}> {
+    async getFromRel({resource, rel, parameters = {}, template = {}}: RelSpec, headers = {}): Promise<HalResource | {}> {
         const url = this.urlFromRel({resource, rel, parameters, template})
-        return await this.get(url)
+        return await this.get(url, headers)
     }
 
 
-    async getFromRelWithLookup({resource, rel, parameters = {}, template = {}}: RelSpec, lookup: string): Promise<HalResource | {}> {
+    async getFromRelWithLookup({resource, rel, parameters = {}, template = {}}: RelSpec, lookup: string, headers = {}): Promise<HalResource | {}> {
         const link = resource._links[rel] as HalLink
         let url: string = link.href;
 
@@ -81,14 +84,18 @@ export class Api {
         }
         url = this.addQueryString(parameters, url);
 
-        return await this.get(url)
+        return await this.get(url, headers)
     }
 
 
-    async postToUrl(url:string, data: {}): Promise<any> {
+    async postToUrl(url:string, data: {}, headers = {}): Promise<any> {
+        const merged_headers = {
+            ...this.headers,
+            ...headers
+        }
         try {
             this.lastError = {}
-            const response = await axios.post(url, data, {headers: this.headers})
+            const response = await axios.post(url, data, {headers: merged_headers})
             return response.data
         } catch(error) {
             this.handleError('POST', error, url)
@@ -96,11 +103,15 @@ export class Api {
     }
 
 
-    async postToRel({resource, rel, parameters = {}, template = {}}: RelSpec, data:{}): Promise<any> {
+    async postToRel({resource, rel, parameters = {}, template = {}}: RelSpec, data:{}, headers = {}): Promise<any> {
+        const merged_headers = {
+            ...this.headers,
+            ...headers
+        }
         const url = this.urlFromRel({resource, rel, parameters, template})
         try {
             this.lastError = {}
-            const response = await axios.post(url, data, {headers: this.headers})
+            const response = await axios.post(url, data, {headers: merged_headers})
             return response.data
         } catch(error) {
             this.handleError('POST', error, url)
@@ -108,15 +119,16 @@ export class Api {
     }
 
 
-    async patchResource(resource:HalResource, data:{}): Promise<any> {
-        const headers = {
+    async patchResource(resource:HalResource, data:{}, headers = {}): Promise<any> {
+        const merged_headers = {
             ...this.headers,
+            ...headers,
             'If-match': resource._etag
         }
         const url = this.urlFromRel({resource, rel: 'self'})
         try {
             this.lastError = {}
-            const response = await axios.patch(url, data, {headers: headers})
+            const response = await axios.patch(url, data, {headers: merged_headers})
             return response.data
         } catch(error) {
             this.handleError('PATCH', error, url)
@@ -124,15 +136,16 @@ export class Api {
     }
 
 
-    async putToRel({resource, rel, parameters = {}, template = {}}: RelSpec, data:{}) {
-        const headers = {
+    async putToRel({resource, rel, parameters = {}, template = {}}: RelSpec, data:{}, headers = {}) {
+        const merged_headers = {
             ...this.headers,
+            ...headers,
             'If-match': resource._etag
         }
         const url = this.urlFromRel({resource, rel, parameters, template})
         try {
             this.lastError = {}
-            const response = await axios.put(url, data, {headers: headers})
+            const response = await axios.put(url, data, {headers: merged_headers})
             return response.data
         } catch(error) {
             this.handleError('PUT', error, url)
@@ -140,25 +153,30 @@ export class Api {
     }
 
 
-    async deleteUrl(url) {
+    async deleteUrl(url: string, headers = {}) {
+        const merged_headers = {
+            ...this.headers,
+            ...headers
+        }
         try {
             this.lastError = {}
-            await axios.delete(url, {headers: this.headers})
+            await axios.delete(url, {headers: merged_headers})
         } catch(error) {
             this.handleError('DELETE', error, url)
         }
     }
 
 
-    async deleteResource(resource:HalResource) {
-        const headers = {
+    async deleteResource(resource:HalResource, headers = {}) {
+        const merged_headers = {
             ...this.headers,
+            ...headers,
             'If-match': resource._etag
         }
         const url = this.urlFromRel({resource, rel: 'self'})
         try {
             this.lastError = {}
-            await axios.delete(url, {headers: headers})
+            await axios.delete(url, {headers: merged_headers})
         } catch(error) {
             this.handleError('DELETE', error, url)
         }
@@ -180,8 +198,8 @@ export class Api {
 
     private fillTemplate(url: string, template: { [p: string]: string }) {
         const segments: Set<string> = new Set()
-        const regex: RegExp = /\{([^}]+)\}/g;
-        let match
+        const regex: RegExp = /\{([^}]+)}/g;
+        let match: string[]
         while ((match = regex.exec(url)) !== null) {
             segments.add(match[1])
         }
@@ -197,13 +215,13 @@ export class Api {
             throw new TemplateValuesMissingError('The template provided is missing values', missingValues)
         }
 
-        return url.replace(/\{([^}]+)\}/g, (match, segment) => {
+        return url.replace(/\{([^}]+)}/g, (match, segment) => {
             return template[segment] || match;
         })
     }
 
 
-    private handleError(method, error, url: string) {
+    private handleError(method: string, error: AxiosError<unknown, any>, url: string) {
         let errorResponse: any;
 
         if (error?.isAxiosError && error.hasOwnProperty('response')) {
