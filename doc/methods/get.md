@@ -2,7 +2,7 @@
 layout: page
 parent: Methods
 title: GET
-permalink: /methods/get
+permalink: /methods/get.html
 nav_order: 1
 ---
 
