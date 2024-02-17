@@ -4,7 +4,7 @@ title: HALchemy
 email: michael@pointw.com
 logo: /assets/img/halchemy.png
 # favicon_ico: 
-baseurl: HALchemy
+baseurl: halchemy
 description: >- 
   HAL-based Hypermedia API clients for humans.
 

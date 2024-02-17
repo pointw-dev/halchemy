@@ -2,77 +2,112 @@
     "doc": "DELETE resource",
     "title": "DELETE resource",
     "content": "Lorem ipsum about halchemy . Our platform’s dashboard is designed to give you quick access to all the features you need. From here, you can easily navigate to different sections, view notifications, and manage your settings. It’s your control center for a seamless experience. To enhance your navigation, familiarize yourself with the dashboard layout. Pay special attention to the “updates” tab, where you’ll find the latest news and features. This is essential for staying informed about what’s new. Another aspect to consider is customizing your dashboard view. This adaptability feature allows you to tailor the information displayed according to your preferences, ensuring you always see what’s most relevant to you. ",
-    "url": "/HALchemy/methods/delete_resource",
+    "url": "/halchemy/methods/delete_resource",
     
     "relUrl": "/methods/delete_resource"
   },"1": {
     "doc": "DELETE url",
     "title": "DELETE url",
     "content": "Lorem ipsum about halchemy . Our platform’s dashboard is designed to give you quick access to all the features you need. From here, you can easily navigate to different sections, view notifications, and manage your settings. It’s your control center for a seamless experience. To enhance your navigation, familiarize yourself with the dashboard layout. Pay special attention to the “updates” tab, where you’ll find the latest news and features. This is essential for staying informed about what’s new. Another aspect to consider is customizing your dashboard view. This adaptability feature allows you to tailor the information displayed according to your preferences, ensuring you always see what’s most relevant to you. ",
-    "url": "/HALchemy/methods/delete_url",
+    "url": "/halchemy/methods/delete_url",
     
     "relUrl": "/methods/delete_url"
   },"2": {
     "doc": "GET",
     "title": "GET",
-    "content": "Sends a GET request to a URL. This method is typically used once in your client application, to get the root resource. Once you have the root resource and its links, you access the rest of the API by following those links. The method signature for GET is: . | Python | JavaScript | . | get(url='/': str, headers=None: Dict[str, Any]) -&gt; JSON . JSON: TypeAlias = dict[str, \"JSON\"] | list[\"JSON\"] | str | int | float | bool | None . | get(url:string = '/', headers = {}): Promise&lt;HalResource | {}&gt; . | . | parameter | description | . | url | the URL or path to the resource you want to GET, defaults to '/' | . | headers | (optional) add to or override the default headers | . | -&gt; returns | the JSON from the payload of the response to this GET request | . Example uses: . | Python | JavaScript | . | from halchemy import Api api = Api('http://example.org/api') root = api.get() # get the root resource . | import { Api } from 'halchemy' const api = new Api('http://example.org/api') const root = api.get() // get the root resource . | . | Python | JavaScript | . | from halchemy import Api api = Api('http://example.org/api') library_root = api.get('/library') art_gallery_root = api.get('/gallery') auto_dealership_root = api.get('https://example.org/dealerships') . | import { Api } from 'halchemy' const api = new Api('http://example.org/api') const libraryRoot = api.get('/library') const artGalleryRoot = api.get('/gallery') const autoDealershipRoot = api.get('https://example.org/dealerships') . | . ",
-    "url": "/HALchemy/methods/get.html",
+    "content": "Sends a GET request to a URL. This method is typically used once in your client application, to get the root resource. Once you have the root resource and its links, you access the rest of the API by following those links. ",
+    "url": "/halchemy/methods/get",
     
-    "relUrl": "/methods/get.html"
+    "relUrl": "/methods/get"
   },"3": {
+    "doc": "GET",
+    "title": "Signature",
+    "content": "The method signature for GET is: . | Python | JavaScript | . | get(url='/': str, headers=None: Dict[str, Any]) -&gt; JSON . JSON: TypeAlias = dict[str, \"JSON\"] | list[\"JSON\"] | str | int | float | bool | None . | get(url:string = '/', headers = {}): Promise&lt;HalResource | {}&gt; . | . | parameter | description | . | url | the URL or path to the resource you want to GET, defaults to '/' | . | headers | (optional) add to or override the default headers | . | -&gt; returns | the JSON from the payload of the response to this GET request | . ",
+    "url": "/halchemy/methods/get#signature",
+    
+    "relUrl": "/methods/get#signature"
+  },"4": {
+    "doc": "GET",
+    "title": "Examples",
+    "content": "This is the usual way to use get() - to GET the root resource from which you will follow links to other resources or affordances. | Python | JavaScript | . | from halchemy import Api api = Api('http://example.org/api') root = api.get() # get the root resource . | import { Api } from 'halchemy' async function getRootResource() { const api = new Api('http://example.org/api') const root = await api.get() // get the root resource } . | . This next example is non-standard, but shows what to do if you have multiple roots in multiple locations: . | Python | JavaScript | . | from halchemy import Api api = Api('http://example.org/api') library_root = api.get('/library') art_gallery_root = api.get('/gallery') auto_dealership_root = api.get('https://example.org/dealerships') . | const halchemy = require('halchemy') async function getRootResources() { const api = new Api('http://example.org/api') const libraryRoot = await api.get('/library') const artGalleryRoot = await api.get('/gallery') const autoDealershipRoot = await api.get('https://example.org/dealerships') } . | . ",
+    "url": "/halchemy/methods/get#examples",
+    
+    "relUrl": "/methods/get#examples"
+  },"5": {
     "doc": "GET from rel",
     "title": "GET from rel",
-    "content": "Sends a GET request to a URL obtained by following a resource’s links using the name of the link relation (rel). The method signature for GET is: . | Python | JavaScript | . | get_from_rel(resource, rel='self', parameters: dict[str, Any] | None = None, template: dict[str, Any] | None = None, headers: dict[str, Any] | None = None ) -&gt; JSON . JSON: TypeAlias = dict[str, \"JSON\"] | list[\"JSON\"] | str | int | float | bool | None . | getFromRel({resource, rel, parameters = {}, template = {}}: RelSpec, headers = {}): Promise&lt;HalResource | {}&gt; . With JavaScript, the first four paramters are actually members of one parameter of type RelSpec, with each being a member of that object. | . | parameter | description | . | resource | The body of a response from a previous request, in HAL format | . | rel | The name of the link relation this GET request will follow. If not supplied, the default is self | . | parameters | (optional) name/value pairs which will be used to create a query string | . | template | (optional) if the link is templated, name/value pairs to fill the template | . | headers | (optional) add to or override the default headers | . | -&gt; returns | the JSON from the payload of the response to this GET request | . Example uses: . ",
-    "url": "/HALchemy/methods/get_from_rel.html",
+    "content": "Sends a GET request to a URL obtained by following a resource’s links using the name of the link relation (rel). ",
+    "url": "/halchemy/methods/get_from_rel#get-from-rel",
     
-    "relUrl": "/methods/get_from_rel.html"
-  },"4": {
+    "relUrl": "/methods/get_from_rel#get-from-rel"
+  },"6": {
+    "doc": "GET from rel",
+    "title": "Signature",
+    "content": "The method signature for GET is: . | Python | JavaScript | . | get_from_rel(resource, rel='self', parameters: dict[str, Any] | None = None, template: dict[str, Any] | None = None, headers: dict[str, Any] | None = None ) -&gt; JSON . JSON: TypeAlias = dict[str, \"JSON\"] | list[\"JSON\"] | str | int | float | bool | None . | getFromRel({resource, rel, parameters = {}, template = {}}: RelSpec, headers = {}): Promise&lt;HalResource | {}&gt; . With JavaScript, the first four paramters are actually members of one parameter of type RelSpec, with each being a member of that object. | . | parameter | description | . | resource | The body of a response from a previous request, in HAL format | . | rel | The name of the link relation this GET request will follow. If not supplied, the default is self | . | parameters | (optional) name/value pairs which will be used to create a query string | . | template | (optional) if the link is templated, name/value pairs to fill the template | . | headers | (optional) add to or override the default headers | . | -&gt; returns | the JSON from the payload of the response to this GET request | . ",
+    "url": "/halchemy/methods/get_from_rel#signature",
+    
+    "relUrl": "/methods/get_from_rel#signature"
+  },"7": {
+    "doc": "GET from rel",
+    "title": "Examples",
+    "content": "The following examples are based on an API which serves the following: . | / . | /people . | /people/1 . | . | { \"_links\": { \"self: { \"href\": \"/\" }, \"people\": { \"href\": \"/people\" }, \"orders\": { \"href\": \"/orders\" } } } . | { \"_items\": [ { \"givenName\": \"Pat\", \"familyName\": \"Smith\", \"_links\": { \"self\": { \"href\": \"/people/1\" }, \"orders: { \"href\": \"/people/1/orders\" }, \"edit-form\": { \"href\": \"/people/1/edit-form\" } } }, { \"givenName\": \"Darcy\", \"familyName\": \"Jones\", \"_links\": { \"self\": { \"href\": \"/people/2\" }, \"orders: { \"href\": \"/people/2/orders\" }, \"edit-form\": { \"href\": \"/people/2/edit-form\" } } } ], \"_links\": { \"self: { \"href\": \"/people\" }, \"create-form\": { \"href\": \"/people/create-form\" } } } . | { \"givenName\": \"Pat\", \"familyName\": \"Smith\", \"active\": true, \"_links\": { \"self\": { \"href\": \"/people/1\" }, \"orders: { \"href\": \"/people/1/orders\" }, \"cancel\": { \"href\": \"/people/1/cancel\", \"title\": \"PUT to cancel membership\" }, \"edit-form\": { \"href\": \"/people/1/edit-form\" } } } . | . For the purposes of the examples (and not recommended practice), this API is configured to show only the name of each person in the people collection, requiring the client to do a GET to see whether they are active. Typical example: . | Python | JavaScript | . | from halchemy import Api api = Api('http://example.org/api') root = api.get() # get the root resource people = api.get_from_rel(root, 'people') for person in people['_items']: full_name = f\"{person['givenName']} {person['familyName']}\" orders = api.get_from_rel(person, 'orders') order_count = len(orders['_items']) print(f'{full_name} has {order_count} {\"order\" if order_count == 1 else \"orders\"}') . | const halchemy = require('halchemy') async function listPeople() { const api = new halchemy.Api('http://localhost:2112') const root = await api.get() // get the root resource const people = await api.getFromRel({ resource: root, rel: 'people' }) for (const person of people._items) { const fullName = `${person.givenName} ${person.familyName}` const orders = await api.getFromRel({ resource: person, rel: 'orders' }) const orderCount = orders._items.length console.log(`${fullName} has ${orderCount} ${orderCount == 1? 'order' : 'orders'}`) } } . | . ",
+    "url": "/halchemy/methods/get_from_rel#examples",
+    
+    "relUrl": "/methods/get_from_rel#examples"
+  },"8": {
+    "doc": "GET from rel",
+    "title": "GET from rel",
+    "content": " ",
+    "url": "/halchemy/methods/get_from_rel",
+    
+    "relUrl": "/methods/get_from_rel"
+  },"9": {
     "doc": "GET from rel with lookup",
     "title": "GET from rel with lookup",
     "content": "Lorem ipsum about halchemy . Our platform’s dashboard is designed to give you quick access to all the features you need. From here, you can easily navigate to different sections, view notifications, and manage your settings. It’s your control center for a seamless experience. To enhance your navigation, familiarize yourself with the dashboard layout. Pay special attention to the “updates” tab, where you’ll find the latest news and features. This is essential for staying informed about what’s new. Another aspect to consider is customizing your dashboard view. This adaptability feature allows you to tailor the information displayed according to your preferences, ensuring you always see what’s most relevant to you. ",
-    "url": "/HALchemy/methods/get_from_rel_with_lookup",
+    "url": "/halchemy/methods/get_from_rel_with_lookup",
     
     "relUrl": "/methods/get_from_rel_with_lookup"
-  },"5": {
+  },"10": {
     "doc": "Methods",
     "title": "Methods",
     "content": "Here are the methods available from an Api object: . ",
-    "url": "/HALchemy/methods/",
+    "url": "/halchemy/methods/",
     
     "relUrl": "/methods/"
-  },"6": {
+  },"11": {
     "doc": "PATCH resource",
     "title": "PATCH resource",
     "content": "Lorem ipsum about halchemy . Our platform’s dashboard is designed to give you quick access to all the features you need. From here, you can easily navigate to different sections, view notifications, and manage your settings. It’s your control center for a seamless experience. To enhance your navigation, familiarize yourself with the dashboard layout. Pay special attention to the “updates” tab, where you’ll find the latest news and features. This is essential for staying informed about what’s new. Another aspect to consider is customizing your dashboard view. This adaptability feature allows you to tailor the information displayed according to your preferences, ensuring you always see what’s most relevant to you. ",
-    "url": "/HALchemy/methods/patch_resource",
+    "url": "/halchemy/methods/patch_resource",
     
     "relUrl": "/methods/patch_resource"
-  },"7": {
+  },"12": {
     "doc": "POST to rel",
     "title": "POST to rel",
     "content": "Lorem ipsum about halchemy . Our platform’s dashboard is designed to give you quick access to all the features you need. From here, you can easily navigate to different sections, view notifications, and manage your settings. It’s your control center for a seamless experience. To enhance your navigation, familiarize yourself with the dashboard layout. Pay special attention to the “updates” tab, where you’ll find the latest news and features. This is essential for staying informed about what’s new. Another aspect to consider is customizing your dashboard view. This adaptability feature allows you to tailor the information displayed according to your preferences, ensuring you always see what’s most relevant to you. ",
-    "url": "/HALchemy/methods/post_to_rel",
+    "url": "/halchemy/methods/post_to_rel",
     
     "relUrl": "/methods/post_to_rel"
-  },"8": {
+  },"13": {
     "doc": "POST to url",
     "title": "POST to url",
     "content": "Lorem ipsum about halchemy . Our platform’s dashboard is designed to give you quick access to all the features you need. From here, you can easily navigate to different sections, view notifications, and manage your settings. It’s your control center for a seamless experience. To enhance your navigation, familiarize yourself with the dashboard layout. Pay special attention to the “updates” tab, where you’ll find the latest news and features. This is essential for staying informed about what’s new. Another aspect to consider is customizing your dashboard view. This adaptability feature allows you to tailor the information displayed according to your preferences, ensuring you always see what’s most relevant to you. ",
-    "url": "/HALchemy/methods/post_to_url",
+    "url": "/halchemy/methods/post_to_url",
     
     "relUrl": "/methods/post_to_url"
-  },"9": {
+  },"14": {
     "doc": "PUT to rel",
     "title": "PUT to rel",
     "content": "Lorem ipsum about halchemy . Our platform’s dashboard is designed to give you quick access to all the features you need. From here, you can easily navigate to different sections, view notifications, and manage your settings. It’s your control center for a seamless experience. To enhance your navigation, familiarize yourself with the dashboard layout. Pay special attention to the “updates” tab, where you’ll find the latest news and features. This is essential for staying informed about what’s new. Another aspect to consider is customizing your dashboard view. This adaptability feature allows you to tailor the information displayed according to your preferences, ensuring you always see what’s most relevant to you. ",
-    "url": "/HALchemy/methods/put_to_rel",
+    "url": "/halchemy/methods/put_to_rel",
     
     "relUrl": "/methods/put_to_rel"
-  },"10": {
+  },"15": {
     "doc": "URL from rel",
     "title": "URL from rel",
     "content": "static method . Lorem ipsum about halchemy . Our platform’s dashboard is designed to give you quick access to all the features you need. From here, you can easily navigate to different sections, view notifications, and manage your settings. It’s your control center for a seamless experience. To enhance your navigation, familiarize yourself with the dashboard layout. Pay special attention to the “updates” tab, where you’ll find the latest news and features. This is essential for staying informed about what’s new. Another aspect to consider is customizing your dashboard view. This adaptability feature allows you to tailor the information displayed according to your preferences, ensuring you always see what’s most relevant to you. ",
-    "url": "/HALchemy/methods/url_from_rel",
+    "url": "/halchemy/methods/url_from_rel",
     
     "relUrl": "/methods/url_from_rel"
   }

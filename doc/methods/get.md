@@ -2,7 +2,7 @@
 layout: page
 parent: Methods
 title: GET
-permalink: /methods/get.html
+permalink: /methods/get
 nav_order: 1
 ---
 
@@ -12,6 +12,7 @@ Sends a GET request to a URL.
 
 This method is typically used once in your client application, to get the root resource.  Once you have the root resource and its links, you access the rest of the API by following those links.
 
+## Signature
 The method signature for GET is:
 {% tabs signature %}
 {% tab signature Python %}
@@ -35,7 +36,8 @@ get(url:string = '/', headers = {}): Promise<HalResource | {}>
 | `headers`       | (optional) add to or override the default headers                        |
 | -> *returns*    | the JSON from the payload of the response to this GET request            |
 
-Example uses:
+## Examples
+This is the usual way to use `get()` - to GET the root resource from which you will follow links to other resources or affordances.
 
 {% tabs example1 %}
 {% tab example1 Python %}
@@ -52,12 +54,16 @@ root = api.get()  # get the root resource
 ```javascript
 import { Api } from 'halchemy'
 
-const api = new Api('http://example.org/api')
-
-const root = api.get()  // get the root resource
+async function getRootResource() {
+    const api = new Api('http://example.org/api')
+    const root = await api.get()  // get the root resource
+}
 ```
 {% endtab %}
 {% endtabs %}
+
+
+This next example is non-standard, but shows what to do if you have multiple roots in multiple locations:
 
 {% tabs example2 %}
 {% tab example2 Python %}
@@ -74,13 +80,15 @@ auto_dealership_root = api.get('https://example.org/dealerships')
 
 {% tab example2 JavaScript %}
 ```javascript
-import { Api } from 'halchemy'
+const halchemy = require('halchemy')
 
-const api = new Api('http://example.org/api')
+async function getRootResources() {
+    const api = new Api('http://example.org/api')
 
-const libraryRoot = api.get('/library')
-const artGalleryRoot = api.get('/gallery')
-const autoDealershipRoot = api.get('https://example.org/dealerships')
+    const libraryRoot = await api.get('/library')
+    const artGalleryRoot = await api.get('/gallery')
+    const autoDealershipRoot = await api.get('https://example.org/dealerships')
+}
 ```
 {% endtab %}
 {% endtabs %}
