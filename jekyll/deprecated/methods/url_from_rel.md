@@ -7,8 +7,9 @@ nav_order: 10
 
 layout: page
 ---
-
 # {{ page.title }}
+Deprecated
+{: .label .label-yellow }
 
 This method is used internally to resolve a resource's rel, with parameters and templates, into a URL to follow.  It is available as a public method in the unlikely event you need to build URLs in a similar fashion.
 

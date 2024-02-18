@@ -7,8 +7,9 @@ nav_order: 2
 
 layout: page
 ---
-<style>pre { font-sze:100px }</style>
 # {{ page.title }}
+Deprecated
+{: .label .label-yellow }
 
 Follows a resource's link by way of its rel and sends a GET request.
 

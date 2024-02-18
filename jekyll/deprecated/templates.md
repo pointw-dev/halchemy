@@ -8,6 +8,9 @@ layout: page
 ---
 
 # {{ page.title }}
+Deprecated
+{: .label .label-yellow }
+
 When a resource's `_links` object contains templated links, you provide the values to fill the template using the `template` parameter of the method.
 
 For example, if you have a collection resource for, say `customers` resource like this:

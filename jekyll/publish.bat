@@ -2,7 +2,7 @@
 echo Make sure the jekyll server is not running
 pause
 
-copy /Y publish_config.txt _config.yml
+copy /Y publish_config.txt _config.yml  > nul
 rd _site /s/q
 start "jekyll halchemy" docker exec -it jekyll-dev bash -c "./run_site halchemy/jekyll"
 
@@ -12,4 +12,4 @@ pause
 del ..\docs\* /s/q
 xcopy _site\* ..\docs /s
 
-copy /Y develop_config.txt _config.yml
+copy /Y develop_config.txt _config.yml > nul

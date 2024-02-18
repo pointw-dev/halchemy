@@ -7,11 +7,11 @@ nav_order: 5
 
 layout: page
 ---
-
 # {{ page.title }}
+Deprecated
+{: .label .label-yellow }
 
 Sends a PATCH request with data to the resource's `self` rel.
-
 
 ## Signature
 The method signature for **PATCH resource** is:

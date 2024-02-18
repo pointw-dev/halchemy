@@ -8,6 +8,9 @@ layout: page
 ---
 
 # {{ page.title }}
+Deprecated
+{: .label .label-yellow }
+
 Most of the time a client blindly follows links from one resource to another or to its affordances.  Sometimes, though, the URL needs query string parameters - for example pagination.  If `halchemy` manages the `href` values, how can the client provide query string parameters when needed?
 
 Most of the methods has `parameters` in its signature.  This is a name/value pair object which is used by the method to build the query string.

@@ -9,6 +9,8 @@ layout: page
 ---
 
 # {{ page.title }}
+Deprecated
+{: .label .label-yellow }
 
 Sends a GET request to a URL.
 

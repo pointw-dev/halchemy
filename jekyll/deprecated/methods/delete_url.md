@@ -9,6 +9,8 @@ layout: page
 ---
 
 # {{ page.title }}
+Deprecated
+{: .label .label-yellow }
 
 This seldom used method is available if, for some reason, you need to send a DELETE request to a URL outside of the web of links provided by the API.
 

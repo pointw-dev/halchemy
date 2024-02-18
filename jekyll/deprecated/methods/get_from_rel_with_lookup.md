@@ -7,8 +7,9 @@ nav_order: 7
 
 layout: page
 ---
-
 # {{ page.title }}
+Deprecated
+{: .label .label-yellow }
 
 Identical to [GET from rel](/methods/get_from_rel), but uses an implicit URL template - if the API is so configured.
 

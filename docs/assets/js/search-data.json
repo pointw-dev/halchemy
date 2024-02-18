@@ -1,7 +1,7 @@
 {"0": {
     "doc": "DELETE resource",
     "title": "DELETE resource",
-    "content": "Sends a DELETE request to the resource’s self rel. ",
+    "content": "Deprecated . Sends a DELETE request to the resource’s self rel. ",
     "url": "/halchemy/deprecated/methods/delete_resource",
     
     "relUrl": "/deprecated/methods/delete_resource"
@@ -22,7 +22,7 @@
   },"3": {
     "doc": "DELETE URL",
     "title": "DELETE URL",
-    "content": "This seldom used method is available if, for some reason, you need to send a DELETE request to a URL outside of the web of links provided by the API. ",
+    "content": "Deprecated . This seldom used method is available if, for some reason, you need to send a DELETE request to a URL outside of the web of links provided by the API. ",
     "url": "/halchemy/deprecated/methods/delete_url",
     
     "relUrl": "/deprecated/methods/delete_url"
@@ -43,7 +43,7 @@
   },"6": {
     "doc": "GET",
     "title": "GET",
-    "content": "Sends a GET request to a URL. This method is typically used once in your client application, to get the root resource. Once you have the root resource and its links, you access the rest of the API by following those links. ",
+    "content": "Deprecated . Sends a GET request to a URL. This method is typically used once in your client application, to get the root resource. Once you have the root resource and its links, you access the rest of the API by following those links. ",
     "url": "/halchemy/methods/get",
     
     "relUrl": "/methods/get"
@@ -64,10 +64,10 @@
   },"9": {
     "doc": "GET from rel",
     "title": "GET from rel",
-    "content": "Follows a resource’s link by way of its rel and sends a GET request. ",
-    "url": "/halchemy/deprecated/methods/get_from_rel#get-from-rel",
+    "content": "Deprecated . Follows a resource’s link by way of its rel and sends a GET request. ",
+    "url": "/halchemy/deprecated/methods/get_from_rel",
     
-    "relUrl": "/deprecated/methods/get_from_rel#get-from-rel"
+    "relUrl": "/deprecated/methods/get_from_rel"
   },"10": {
     "doc": "GET from rel",
     "title": "Signature",
@@ -83,167 +83,160 @@
     
     "relUrl": "/deprecated/methods/get_from_rel#examples"
   },"12": {
-    "doc": "GET from rel",
-    "title": "GET from rel",
-    "content": " ",
-    "url": "/halchemy/deprecated/methods/get_from_rel",
-    
-    "relUrl": "/deprecated/methods/get_from_rel"
-  },"13": {
     "doc": "GET from rel with lookup",
     "title": "GET from rel with lookup",
-    "content": "Identical to GET from rel, but uses an implicit URL template - if the API is so configured. This method is seldom used, and was only created here to take advantage of hypermea’s “additional lookup” field. It allows a resource in the API to designate one field that can be used to lookup an item. It requires the client know which field is so designated, and thus violates strict adherence to the “no out of band knowledge” constraint. NOTE: only GET can use the implicit template of a lookup field. If you need to send a different request, follow the self rel (e.g. patch_resource(the_resource, 'self'). ",
+    "content": "Deprecated . Identical to GET from rel, but uses an implicit URL template - if the API is so configured. This method is seldom used, and was only created here to take advantage of hypermea’s “additional lookup” field. It allows a resource in the API to designate one field that can be used to lookup an item. It requires the client know which field is so designated, and thus violates strict adherence to the “no out of band knowledge” constraint. NOTE: only GET can use the implicit template of a lookup field. If you need to send a different request, follow the self rel (e.g. patch_resource(the_resource, 'self'). ",
     "url": "/halchemy/deprecated/methods/get_from_rel_with_lookup",
     
     "relUrl": "/deprecated/methods/get_from_rel_with_lookup"
-  },"14": {
+  },"13": {
     "doc": "GET from rel with lookup",
     "title": "Signature",
     "content": "The method signature for GET from rel with lookup is: . | Python | JavaScript | . | get_from_rel_with_lookup(resource, rel: str, lookup: str, parameters: dict[str, Any] | None = None, template: dict[str, Any] | None = None, headers: dict[str, Any] | None = None ) -&gt; JSON . JSON: TypeAlias = dict[str, \"JSON\"] | list[\"JSON\"] | str | int | float | bool | None . | getFromRelWithLookup({resource, rel, parameters = {}, template = {}}: RelSpec, lookup: string, headers = {}): Promise&lt;HalResource | {}&gt; . With JavaScript, the first four paramters are actually members of one parameter of type RelSpec, with each being a member of that object. | . | parameter | description | . | resource | The body of a response from a previous request, in HAL format | . | rel | The name of the link relation this GET request will follow. If not supplied, the default is self | . | parameters | (optional) name/value pairs which will be used to create a query string. [learn more] | . | template | (optional) if the link is templated, name/value pairs to fill the template. [learn more] | . | lookup | The value of the “additional lookup” field to GET | . | headers | (optional) add to or override the default headers. [learn more] | . | -&gt; returns | the JSON from the payload of the response to this request | . ",
     "url": "/halchemy/deprecated/methods/get_from_rel_with_lookup#signature",
     
     "relUrl": "/deprecated/methods/get_from_rel_with_lookup#signature"
-  },"15": {
+  },"14": {
     "doc": "GET from rel with lookup",
     "title": "Examples",
     "content": "Simple example: . | Python | JavaScript | . | from halchemy import Api api = Api('http://example.org/api') root = api.get() # get the root resource customer = api.get_from_rel_with_lookup(root, 'customers', 'A375') print(f\"{customer['givenName']} {customer['familyName']} is {'active' if customer['active'] else 'inactive'}\") . | const halchemy = require('halchemy') async function listMember(membershipId) { const api = new halchemy.Api('http://example.org/api') const root = await api.get() // get the root resource const customer = await api.getFromRelWithLookup({ resource: root, rel: 'customers' }, membershipId ) console.log(`${customer.givenName} ${customer.familyName} is ${customer.active? 'active' : 'inactive'}`) } listMember('A375') . | . The example is based on an API which serves the following: . | / . | /customers . | /customers/1 . | . | { \"_links\": { \"self: { \"href\": \"/\" }, \"customers\": { \"href\": \"/customers\" }, \"orders\": { \"href\": \"/orders\" } } } . | { \"_items\": [ { \"membershipId\": \"A375\", \"givenName\": \"Pat\", \"familyName\": \"Smith\", \"active\": true, \"_links\": { \"self\": { \"href\": \"/customers/1\", }, \"edit-form\": { \"href\": \"/customers/1/edit-form\", }, \"orders\": { \"href\": \"/customers/1/orders\", }, \"deactivate\": { \"href\": \"/customers/1/deactivate\", \"_note\": \"PUT to deactivate\" } } }, { \"membershipId\": \"R933\", \"givenName\": \"Darcy\", \"familyName\": \"Jones\", \"active\": false, \"_links\": { \"self\": { \"href\": \"/customers/2\", }, \"edit-form\": { \"href\": \"/customers/2/edit-form\", }, \"orders\": { \"href\": \"/customers/2/orders\", }, \"activate\": { \"href\": \"/customers/2/activate\", \"_note\": \"PUT to activate\" } } } ], \"_links\": { \"self\": { \"href\": \"/customers\" }, \"item\": { \"href\": \"/customers/{id}\", \"templated\": true }, \"create-form\": { \"href\": \"/customers/create-form\", } } } . | { \"membershipId\": \"A375\", \"givenName\": \"Pat\", \"familyName\": \"Smith\", \"active\": true, \"_links\": { \"self\": { \"href\": \"/customers/1\", }, \"edit-form\": { \"href\": \"/customers/1/edit-form\", }, \"orders\": { \"href\": \"/customers/1/orders\", }, \"deactivate\": { \"href\": \"/customers/1/deactivate\", \"_note\": \"PUT to deactivate this member\" } } } . | . ",
     "url": "/halchemy/deprecated/methods/get_from_rel_with_lookup#examples",
     
     "relUrl": "/deprecated/methods/get_from_rel_with_lookup#examples"
-  },"16": {
+  },"15": {
     "doc": "Request Headers",
     "title": "Request Headers",
-    "content": "Here are the methods available from an Api object: . ",
+    "content": "Deprecated . Here are the methods available from an Api object: . ",
     "url": "/halchemy/deprecated/headers",
     
     "relUrl": "/deprecated/headers"
-  },"17": {
+  },"16": {
     "doc": "Methods",
     "title": "Methods",
-    "content": "Here are the methods available from an Api object: . ",
+    "content": "Deprecated . Here are the methods available from an Api object: . ",
     "url": "/halchemy/deprecated/methods/",
     
     "relUrl": "/deprecated/methods/"
-  },"18": {
+  },"17": {
     "doc": "Deprecated API",
     "title": "Deprecated API",
-    "content": "The early versions of halchemy used a more traditional API. However, as more flexibility and options were added, that API started to become unweildly. The preferred API now is the fluent approach. These deprecated methods will continue to live in halchemy for a while, but will not be modified. Please move your client code to the fluent API. ",
+    "content": "Deprecated . The early versions of halchemy used a more traditional API. However, as more flexibility and options were added, that API started to become unweildly. The preferred API now is the fluent approach. These deprecated methods will continue to live in halchemy for a while, but will not be modified. Please move your client code to the fluent API. ",
     "url": "/halchemy/deprecated/",
     
     "relUrl": "/deprecated/"
-  },"19": {
+  },"18": {
     "doc": "Query String Parameters",
     "title": "Query String Parameters",
-    "content": "Most of the time a client blindly follows links from one resource to another or to its affordances. Sometimes, though, the URL needs query string parameters - for example pagination. If halchemy manages the href values, how can the client provide query string parameters when needed? . Most of the methods has parameters in its signature. This is a name/value pair object which is used by the method to build the query string. Let’s want to send a GET request from the root resource to the link whose relation is customers - and you want to add to the href the following query string parameters: ...?max_results=50&amp;page=7 . Here is how you do that using parameters . | Python | JavaScript | . | customers = api.get_from_rel(root, 'customers', parameters={'max_results':50,'page':7}) . | const customers = await api.getFromRel({ resource: root, rel: 'customers', parameters: { max_results: 50, page: 1 } }) . | . ",
+    "content": "Deprecated . Most of the time a client blindly follows links from one resource to another or to its affordances. Sometimes, though, the URL needs query string parameters - for example pagination. If halchemy manages the href values, how can the client provide query string parameters when needed? . Most of the methods has parameters in its signature. This is a name/value pair object which is used by the method to build the query string. Let’s want to send a GET request from the root resource to the link whose relation is customers - and you want to add to the href the following query string parameters: ...?max_results=50&amp;page=7 . Here is how you do that using parameters . | Python | JavaScript | . | customers = api.get_from_rel(root, 'customers', parameters={'max_results':50,'page':7}) . | const customers = await api.getFromRel({ resource: root, rel: 'customers', parameters: { max_results: 50, page: 1 } }) . | . ",
     "url": "/halchemy/deprecated/parameters",
     
     "relUrl": "/deprecated/parameters"
-  },"20": {
+  },"19": {
     "doc": "PATCH resource",
     "title": "PATCH resource",
-    "content": "Sends a PATCH request with data to the resource’s self rel. ",
+    "content": "Deprecated . Sends a PATCH request with data to the resource’s self rel. ",
     "url": "/halchemy/deprecated/methods/patch_resource",
     
     "relUrl": "/deprecated/methods/patch_resource"
-  },"21": {
+  },"20": {
     "doc": "PATCH resource",
     "title": "Signature",
     "content": "The method signature for PATCH resource is: . | Python | JavaScript | . | patch_resource(resource, data: JSON, headers: dict[str, Any] | None = None) -&gt; JSON . JSON: TypeAlias = dict[str, \"JSON\"] | list[\"JSON\"] | str | int | float | bool | None . | patchResource(resource:HalResource, data:{}, headers = {}): Promise&lt;any&gt; . | . | parameter | description | . | resource | The body of a response from a previous request, in HAL format | . | data | The payload to PATCH | . | headers | (optional) add to or override the default headers. [learn more] | . | -&gt; returns | the JSON from the payload of the response to this request | . ",
     "url": "/halchemy/deprecated/methods/patch_resource#signature",
     
     "relUrl": "/deprecated/methods/patch_resource#signature"
-  },"22": {
+  },"21": {
     "doc": "PATCH resource",
     "title": "Examples",
     "content": " ",
     "url": "/halchemy/deprecated/methods/patch_resource#examples",
     
     "relUrl": "/deprecated/methods/patch_resource#examples"
-  },"23": {
+  },"22": {
     "doc": "POST to rel",
     "title": "POST to rel",
-    "content": "Follows a resource’s link by way of its rel and sends a POST request with data. ",
+    "content": "Deprecated . Follows a resource’s link by way of its rel and sends a POST request with data. ",
     "url": "/halchemy/deprecated/methods/post_to_rel",
     
     "relUrl": "/deprecated/methods/post_to_rel"
-  },"24": {
+  },"23": {
     "doc": "POST to rel",
     "title": "Signature",
     "content": "The method signature for POST to rel is: . | Python | JavaScript | . | post_to_rel(resource, rel: string, data: JSON, parameters: dict[str, Any] | None = None, template: dict[str, Any] | None = None, headers: dict[str, Any] | None = None ) -&gt; JSON . JSON: TypeAlias = dict[str, \"JSON\"] | list[\"JSON\"] | str | int | float | bool | None . | postToRel({resource, rel, parameters = {}, template = {}}: RelSpec, data: {}, headers = {}): Promise&lt;any&gt; . With JavaScript, the first four paramters are actually members of one parameter of type RelSpec, with each being a member of that object. | . | parameter | description | . | resource | The body of a response from a previous request, in HAL format | . | rel | The name of the link relation this POST request will follow. If not supplied, the default is self | . | data | The payload to POST | . | parameters | (optional) name/value pairs which will be used to create a query string. [learn more] | . | template | (optional) if the link is templated, name/value pairs to fill the template. [learn more] | . | headers | (optional) add to or override the default headers. [learn more] | . | -&gt; returns | the JSON from the payload of the response to this request | . ",
     "url": "/halchemy/deprecated/methods/post_to_rel#signature",
     
     "relUrl": "/deprecated/methods/post_to_rel#signature"
-  },"25": {
+  },"24": {
     "doc": "POST to rel",
     "title": "Examples",
     "content": ". | Python | JavaScript | . | from halchemy import Api api = Api('http://example.org/api') root = api.get() # get the root resource customer = { 'membershipId': '789', 'givenName': 'Kelly', 'familyName': 'Johnson' } order = { 'orderNumber': 'PO3984', 'partNumber': '0009-043', 'quantity': 3 } # create a new customer and post their first order: customer = api.post_to_rel(root, 'customers', customer) order = api.post_to_rel(customer, 'orders', order) . | const halchemy = require('halchemy') async function placeNewCustomerOrder(customer, order) { const api = new halchemy.Api('http://example.org/api') const root = await api.get() // get the root resource const newCustomer = await api.postToRel({ resource: root, rel: 'customers' }, customer) const newOrder = await api.postToRel({ resource: newCustomer, rel: 'orders' }, order) } const customer = { 'membershipId': '789', 'givenName': 'Kelly', 'familyName': 'Johnson' } const order = { 'orderNumber': 'PO3984', 'partNumber': '0009-043', 'quantity': 3 } placeNewCustomerOrder(customer, order) . | . ",
     "url": "/halchemy/deprecated/methods/post_to_rel#examples",
     
     "relUrl": "/deprecated/methods/post_to_rel#examples"
-  },"26": {
+  },"25": {
     "doc": "POST to URL",
     "title": "POST to URL",
-    "content": "This seldom used method is available if, for some reason, you need to POST data to a URL outside of the web of links provided by the API. ",
+    "content": "Deprecated . This seldom used method is available if, for some reason, you need to POST data to a URL outside of the web of links provided by the API. ",
     "url": "/halchemy/deprecated/methods/post_to_url",
     
     "relUrl": "/deprecated/methods/post_to_url"
-  },"27": {
+  },"26": {
     "doc": "POST to URL",
     "title": "Signature",
     "content": "The method signature for POST to URL is: . | Python | JavaScript | . | post_to_url(url: str, data: JSON, headers: dict[str, Any] | None = None) -&gt; JSON . JSON: TypeAlias = dict[str, \"JSON\"] | list[\"JSON\"] | str | int | float | bool | None . | postToUrl(url:string, data: {}, headers = {}): Promise&lt;any&gt; . With JavaScript, the first four paramters are actually members of one parameter of type RelSpec, with each being a member of that object. | . | parameter | description | . | url | The URL to POST to. | . | data | The payload to POST | . | headers | (optional) add to or override the default headers. [learn more] | . | -&gt; returns | the JSON from the payload of the response to this request | . ",
     "url": "/halchemy/deprecated/methods/post_to_url#signature",
     
     "relUrl": "/deprecated/methods/post_to_url#signature"
-  },"28": {
+  },"27": {
     "doc": "POST to URL",
     "title": "Examples",
     "content": " ",
     "url": "/halchemy/deprecated/methods/post_to_url#examples",
     
     "relUrl": "/deprecated/methods/post_to_url#examples"
-  },"29": {
+  },"28": {
     "doc": "PUT to rel",
     "title": "PUT to rel",
-    "content": "Follows a resource’s link by way of its rel and sends a POST request with data. ",
+    "content": "Deprecated . Follows a resource’s link by way of its rel and sends a POST request with data. ",
     "url": "/halchemy/deprecated/methods/put_to_rel",
     
     "relUrl": "/deprecated/methods/put_to_rel"
-  },"30": {
+  },"29": {
     "doc": "PUT to rel",
     "title": "Signature",
     "content": "The method signature for PUT to rel is: . | Python | JavaScript | . | put_to_rel(resource, rel: str, data: JSON, parameters: dict[str, Any] | None = None, template: dict[str, Any] | None = None, headers: dict[str, Any] | None = None ) -&gt; JSON . JSON: TypeAlias = dict[str, \"JSON\"] | list[\"JSON\"] | str | int | float | bool | None . | putToRel({resource, rel, parameters = {}, template = {}}: RelSpec, data:{}, headers = {}): Promise&lt;HalResource | {}&gt; . With JavaScript, the first four paramters are actually members of one parameter of type RelSpec, with each being a member of that object. | . | parameter | description | . | resource | The body of a response from a previous request, in HAL format | . | rel | The name of the link relation this PUT request will follow. | . | parameters | (optional) name/value pairs which will be used to create a query string. [learn more] | . | template | (optional) if the link is templated, name/value pairs to fill the template. [learn more] | . | headers | (optional) add to or override the default headers. [learn more] | . | -&gt; returns | the JSON from the payload of the response to this request | . ",
     "url": "/halchemy/deprecated/methods/put_to_rel#signature",
     
     "relUrl": "/deprecated/methods/put_to_rel#signature"
-  },"31": {
+  },"30": {
     "doc": "PUT to rel",
     "title": "Examples",
     "content": " ",
     "url": "/halchemy/deprecated/methods/put_to_rel#examples",
     
     "relUrl": "/deprecated/methods/put_to_rel#examples"
-  },"32": {
+  },"31": {
     "doc": "Templated Links",
     "title": "Templated Links",
-    "content": "When a resource’s _links object contains templated links, you provide the values to fill the template using the template parameter of the method. For example, if you have a collection resource for, say customers resource like this: . { \"_items\": [ ..... ], \"_links\": { \"self: { \"href\": \"/customers\" }, \"item\": { \"href\": \"/customers/{id}\", \"templated\": true } } . You can send a GET request to the item rel of the collection by providing an id to fill the template: . | Python | JavaScript | . | customer = api.get_from_rel(customers, 'item', template={'id':'12345'}) . | const customers = await api.getFromRel({ resource: customers, rel: 'item', template: { id: '1' } }) . | . NOTE: when this is a common pattern in hypermea’s collection resources. If you have an ID from a previous session and want to GET the collection without its _items populated, you can do this:   customers = api.get_from_rel(root, 'customers', parameters={'where':'{'1':-1}'}) In other words, search for all customers whose 1 field is equal to -1, returning an empty _items . ",
+    "content": "Deprecated . When a resource’s _links object contains templated links, you provide the values to fill the template using the template parameter of the method. For example, if you have a collection resource for, say customers resource like this: . { \"_items\": [ ..... ], \"_links\": { \"self: { \"href\": \"/customers\" }, \"item\": { \"href\": \"/customers/{id}\", \"templated\": true } } . You can send a GET request to the item rel of the collection by providing an id to fill the template: . | Python | JavaScript | . | customer = api.get_from_rel(customers, 'item', template={'id':'12345'}) . | const customers = await api.getFromRel({ resource: customers, rel: 'item', template: { id: '1' } }) . | . NOTE: when this is a common pattern in hypermea’s collection resources. If you have an ID from a previous session and want to GET the collection without its _items populated, you can do this:   customers = api.get_from_rel(root, 'customers', parameters={'where':'{'1':-1}'}) In other words, search for all customers whose 1 field is equal to -1, returning an empty _items . ",
     "url": "/halchemy/deprecated/templates",
     
     "relUrl": "/deprecated/templates"
-  },"33": {
+  },"32": {
     "doc": "URL from rel",
     "title": "URL from rel",
-    "content": "This method is used internally to resolve a resource’s rel, with parameters and templates, into a URL to follow. It is available as a public method in the unlikely event you need to build URLs in a similar fashion. ",
+    "content": "Deprecated . This method is used internally to resolve a resource’s rel, with parameters and templates, into a URL to follow. It is available as a public method in the unlikely event you need to build URLs in a similar fashion. ",
     "url": "/halchemy/deprecated/methods/url_from_rel",
     
     "relUrl": "/deprecated/methods/url_from_rel"
-  },"34": {
+  },"33": {
     "doc": "URL from rel",
     "title": "Signature",
     "content": "The method signature for URL from rel is: . | Python | JavaScript | . | @staticmethod url_from_rel(resource, rel, parameters={}, template={}) -&gt; str . | urlFromRel({resource, rel, parameters = {}, template = {}}: RelSpec): string . With JavaScript, the first four paramters are actually members of one parameter of type RelSpec, with each being a member of that object. | . | parameter | description | . | resource | The body of a response from a previous request, in HAL format | . | rel | The name of the link relation. | . | parameters | (optional) name/value pairs which will be used to create a query string. [learn more] | . | template | (optional) if the link is templated, name/value pairs to fill the template. [learn more] | . | -&gt; returns | the URL | . ",
     "url": "/halchemy/deprecated/methods/url_from_rel#signature",
     
     "relUrl": "/deprecated/methods/url_from_rel#signature"
-  },"35": {
+  },"34": {
     "doc": "URL from rel",
     "title": "Examples",
     "content": " ",

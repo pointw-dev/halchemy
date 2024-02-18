@@ -9,6 +9,8 @@ layout: page
 ---
 
 # {{ page.title }}
+Deprecated
+{: .label .label-yellow }
 
 Sends a DELETE request to the resource's `self` rel.
 

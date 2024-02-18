@@ -7,8 +7,9 @@ nav_order: 3
 
 layout: page
 ---
-
 # {{ page.title }}
+Deprecated
+{: .label .label-yellow }
 
 Follows a resource's link by way of its rel and sends a POST request with data.
 
