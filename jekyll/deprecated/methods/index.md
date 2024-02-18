@@ -1,9 +1,11 @@
 ---
-layout: page
 title: Methods
-permalink: /methods/
-nav_order: 1
+permalink: /deprecated/methods/
+parent: Deprecated API
 has_children: true
+nav_order: 1
+
+layout: page
 ---
 
 # Methods

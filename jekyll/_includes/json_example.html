@@ -1,0 +1,113 @@
+<table>
+<tr>
+<td> <pre>/</pre> </td> <td> <pre>/customers</pre> </td> <td> <pre>/customers/1</pre> </td>
+</tr>
+<tr style="vertical-align:top">
+<td>
+<pre class="json-table">
+{
+  "_links": {
+    "self: { 
+      "href": "/" 
+    },
+    "customers": { 
+      "href": "/customers"
+    },
+    "orders": { 
+      "href": "/orders" 
+    }
+  }
+}
+</pre>
+</td>
+
+<td>
+<pre class="json-table">
+{
+  "_items": [
+    {
+      "membershipId": "A375",
+      "givenName": "Pat",
+      "familyName": "Smith",
+      "active": true,
+      "_links": {
+        "self": {
+          "href": "/customers/1",
+        },
+        "edit-form": {
+          "href": "/customers/1/edit-form",
+        },
+        "orders": {
+          "href": "/customers/1/orders",
+        },
+        "deactivate": {
+          "href": "/customers/1/deactivate",
+          "_note": "PUT to deactivate"
+        }
+      }
+    },
+    {
+      "membershipId": "R933",
+      "givenName": "Darcy",
+      "familyName": "Jones",
+      "active": false,
+      "_links": {
+        "self": {
+          "href": "/customers/2",
+        },
+        "edit-form": {
+          "href": "/customers/2/edit-form",
+        },
+        "orders": {
+          "href": "/customers/2/orders",
+        },
+        "activate": {
+          "href": "/customers/2/activate",
+          "_note": "PUT to activate"
+        }
+      }
+    }
+  ],
+  "_links": {
+    "self": {
+      "href": "/customers"
+    },
+    "item": {
+      "href": "/customers/{id}",
+      "templated": true
+    },
+    "create-form": {
+      "href": "/customers/create-form",
+    }
+  }
+}</pre>
+</td>
+
+<td>
+<pre class="json-table">
+{
+  "membershipId": "A375",
+  "givenName": "Pat",
+  "familyName": "Smith",
+  "active": true,
+  "_links": {
+    "self": {
+      "href": "/customers/1",
+    },
+    "edit-form": {
+      "href": "/customers/1/edit-form",
+    },
+    "orders": {
+      "href": "/customers/1/orders",
+    },
+    "deactivate": {
+      "href": "/customers/1/deactivate",
+      "_note": "PUT to deactivate this member"
+    }
+  }
+}
+</pre>
+</td>
+
+</tr>
+</table>

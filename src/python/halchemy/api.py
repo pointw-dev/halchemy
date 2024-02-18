@@ -105,26 +105,7 @@ class Api:
         self._api = RequestsWithDefaults(url_base=self.base_api_url, headers=default_headers)
         self.last_error = {}
 
-    @staticmethod
-    def url_from_rel(resource, rel, parameters=None, template=None):
-        if template is None:
-            template = {}
-        if parameters is None:
-            parameters = {}
-
-        url = resource['_links'][rel]['href']
-        if resource['_links'][rel].get('templated', False):
-            try:
-                url = url.format(**template)
-            except KeyError as ex:
-                print(f'This link is templated.  You must supply a value for {ex}')
-                return ''
-        
-        query_string = urlencode(parameters)
-            
-        return f"{url}{'?' if parameters else ''}{query_string}"
-
-    def get(self, url='/', headers: dict[str, Any] | None = None) -> JSON:
+    def get(self, url: str = '/', headers: dict[str, Any] | None = None) -> JSON:
         if headers is None:
             headers = {}
 
@@ -141,7 +122,7 @@ class Api:
             self._handle_error('GET', url, response, ex)
 
     def get_from_rel(self, resource,
-                     rel='self',
+                     rel: str,
                      parameters: dict[str, Any] | None = None,
                      template: dict[str, Any] | None = None,
                      headers: dict[str, Any] | None = None
@@ -155,43 +136,6 @@ class Api:
 
         url = self.url_from_rel(resource, rel, parameters, template)
         return self.get(url, headers=headers)
-
-    def get_from_rel_with_lookup(self, resource,
-                                 rel,
-                                 lookup,
-                                 parameters: dict[str, Any] | None = None,
-                                 headers: dict[str, Any] | None = None
-                                 ) -> JSON:
-        # no template because lookup is an implicit template
-        if headers is None:
-            headers = {}
-        if parameters is None:
-            parameters = {}
-
-        url = resource['_links'][rel]['href']
-        if url[-1] != '/':
-            url += '/'
-        url += lookup
-        
-        query_string = urlencode(parameters)
-            
-        return self.get(f"{url}{'?' if parameters else ''}{query_string}", headers=headers)
-
-    def post_to_url(self, url, data: JSON, headers: dict[str, Any] | None = None) -> JSON:
-        if headers is None:
-            headers = {}
-
-        if type(data) is not str:
-            data = json.dumps(data)
-
-        response = None
-        try:
-            self.last_error = {}
-            response = self._api.post(url, data=data, headers=headers)
-            response.raise_for_status()
-            return response.json()
-        except HTTPError as ex:
-            self._handle_error('POST', url, response, ex)
 
     def post_to_rel(self, resource,
                     rel: str,
@@ -209,6 +153,24 @@ class Api:
 
         url = self.url_from_rel(resource, rel, parameters, template)
         return self.post_to_url(url, data, headers=headers)
+
+    def delete_resource(self, resource, headers: dict[str, Any] | None = None) -> JSON:
+        if headers is None:
+            headers = {}
+
+        url = self.url_from_rel(resource, 'self')
+        headers.update({
+            'If-Match': resource['_etag']
+        })
+
+        response = None
+        try:
+            self.last_error = {}
+            response = self._api.delete(url, headers=headers)
+            response.raise_for_status()
+            return response.json()
+        except HTTPError as ex:
+            self._handle_error('DELETE', url, response, ex)
 
     def patch_resource(self, resource, data: JSON, headers: dict[str, Any] | None = None) -> JSON:
         if headers is None:
@@ -230,13 +192,19 @@ class Api:
         except HTTPError as ex:
             self._handle_error('PATCH', url, response, ex)
 
-    def put_to_rel(self, resource, rel, data: JSON, headers: dict[str, Any] | None = None) -> JSON:
+    def put_to_rel(self, resource,
+                   rel: str,
+                   data: JSON,
+                   parameters: dict[str, Any] | None = None,
+                   template: dict[str, Any] | None = None,
+                   headers: dict[str, Any] | None = None
+                   ) -> JSON:
         if headers is None:
             headers = {}
 
         if type(data) is not str:
             data = json.dumps(data)
-        url = self.url_from_rel(resource, rel)
+        url = self.url_from_rel(resource, rel, parameters, template)
         headers.update({
             'If-Match': resource['_etag']
         })
@@ -250,7 +218,44 @@ class Api:
         except HTTPError as ex:
             self._handle_error('PUT', url, response, ex)
 
-    def delete_url(self, url, headers: dict[str, Any] | None = None) -> JSON:
+    def get_from_rel_with_lookup(self, resource,
+                                 rel: str,
+                                 lookup: str,
+                                 parameters: dict[str, Any] | None = None,
+                                 headers: dict[str, Any] | None = None
+                                 ) -> JSON:
+        # no template because lookup is an implicit template
+        if headers is None:
+            headers = {}
+        if parameters is None:
+            parameters = {}
+
+        url = resource['_links'][rel]['href']
+        if url[-1] != '/':
+            url += '/'
+        url += lookup
+
+        query_string = urlencode(parameters)
+
+        return self.get(f"{url}{'?' if parameters else ''}{query_string}", headers=headers)
+
+    def post_to_url(self, url: str, data: JSON, headers: dict[str, Any] | None = None) -> JSON:
+        if headers is None:
+            headers = {}
+
+        if type(data) is not str:
+            data = json.dumps(data)
+
+        response = None
+        try:
+            self.last_error = {}
+            response = self._api.post(url, data=data, headers=headers)
+            response.raise_for_status()
+            return response.json()
+        except HTTPError as ex:
+            self._handle_error('POST', url, response, ex)
+
+    def delete_url(self, url: str, headers: dict[str, Any] | None = None) -> JSON:
         if headers is None:
             headers = {}
 
@@ -263,23 +268,24 @@ class Api:
         except HTTPError as ex:
             self._handle_error('DELETE', url, response, ex)
 
-    def delete_resource(self, resource, headers: dict[str, Any] | None = None) -> JSON:
-        if headers is None:
-            headers = {}
+    @staticmethod
+    def url_from_rel(resource, rel, parameters=None, template=None):
+        if template is None:
+            template = {}
+        if parameters is None:
+            parameters = {}
 
-        url = self.url_from_rel(resource, 'self')
-        headers.update({
-            'If-Match': resource['_etag']
-        })
+        url = resource['_links'][rel]['href']
+        if resource['_links'][rel].get('templated', False):
+            try:
+                url = url.format(**template)
+            except KeyError as ex:
+                print(f'This link is templated.  You must supply a value for {ex}')
+                return ''
 
-        response = None
-        try:
-            self.last_error = {}
-            response = self._api.delete(url, headers=headers)
-            response.raise_for_status()
-            return response.json()
-        except HTTPError as ex:
-            self._handle_error('DELETE', url, response, ex)
+        query_string = urlencode(parameters)
+
+        return f"{url}{'?' if parameters else ''}{query_string}"
 
     def _handle_error(self, method, url, response, error):
         self.last_error = {

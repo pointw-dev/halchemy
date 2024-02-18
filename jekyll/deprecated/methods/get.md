@@ -1,9 +1,11 @@
 ---
-layout: page
-parent: Methods
 title: GET
 permalink: /methods/get
+grand_parent: Deprecated API
+parent: Methods
 nav_order: 1
+
+layout: page
 ---
 
 # {{ page.title }}
@@ -13,11 +15,11 @@ Sends a GET request to a URL.
 This method is typically used once in your client application, to get the root resource.  Once you have the root resource and its links, you access the rest of the API by following those links.
 
 ## Signature
-The method signature for GET is:
+The method signature for **GET** is:
 {% tabs signature %}
 {% tab signature Python %}
 ```python
-get(url='/': str, headers=None: Dict[str, Any]) -> JSON
+get(url: str = '/', headers: dict[str, Any] | None = None) -> JSON
 ```
 > `JSON: TypeAlias = dict[str, "JSON"] | list["JSON"] | str | int | float | bool | None`
 {% endtab %}
@@ -30,11 +32,11 @@ get(url:string = '/', headers = {}): Promise<HalResource | {}>
 {% endtabs %}
 
 {: style="text-align: left" } 
-| parameter       | description                                                              |
-| --------------- | ------------------------------------------------------------------------ |
-| `url`           | the URL or path to the resource you want to GET, defaults to `'/'`       |
-| `headers`       | (optional) add to or override the default headers                        |
-| -> *returns*    | the JSON from the payload of the response to this GET request            |
+| parameter       | description                                                                 |
+| --------------- | ----------------------------------------------------------------------------|
+| `url`           | the URL or path to the resource you want to GET, defaults to `'/'`          |
+| `headers`       | (optional) add to or override the default headers. [[learn more]](/headers) |
+| -> *returns*    | the JSON from the payload of the response to this request                   |
 
 ## Examples
 This is the usual way to use `get()` - to GET the root resource from which you will follow links to other resources or affordances.
