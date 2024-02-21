@@ -29,6 +29,8 @@ npm install halchemy
 
 
 In your code, instantiate an `Api` object with the URL of your API.
+Deprecated
+{: .label .label-yellow }
 
 {% tabs quick %}
 {% tab quick Python %}
@@ -56,6 +58,8 @@ const people = api.getFromRel({resource: root, rel:'people'})  // follow the peo
 
 ## Methods
 The method and signatures of the `Api` object are as follows:
+Deprecated
+{: .label .label-yellow }
 
 {% tabs install %}
 {% tab install Python %}
@@ -86,6 +90,5 @@ deleteUrl(url:string): Promise<any>
 deleteResource(resource:HalResource): Promise<any>
 urlFromRel({resource, rel, parameters = {}, template = {}}: RelSpec): string
 ```
-Additional notes for JavaScript.
 {% endtab %}
 {% endtabs %}
