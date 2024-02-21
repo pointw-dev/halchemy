@@ -6,7 +6,6 @@ layout: home
 ---
 
 # HAL-based Hypermedia API clients for humans.
-
 Do you have an API that serves data following the [HAL specification](https://stateless.group/hal_specification.html)?  The **halchemy** library makes it easy for your client to make the most of that API.
 
 ## Getting started
