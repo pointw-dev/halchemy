@@ -7,11 +7,11 @@ layout: home
 
 # HAL-based Hypermedia API clients for humans.
 
-Do you have an API that serves data following the [HAL specification](https://stateless.group/hal_specification.html)?  The **HALchemy** library makes it easy for your client to make the most of that API.
+Do you have an API that serves data following the [HAL specification](https://stateless.group/hal_specification.html)?  The **halchemy** library makes it easy for your client to make the most of that API.
 
 ## Getting started
 
-Install HALchemy using the package manager of your chosen language:
+Install halchemy using the package manager of your chosen language:
 
 {% tabs install %}
 {% tab install Python %}
@@ -29,8 +29,6 @@ npm install halchemy
 
 
 In your code, instantiate an `Api` object with the URL of your API.
-Deprecated
-{: .label .label-yellow }
 
 {% tabs quick %}
 {% tab quick Python %}
@@ -56,10 +54,13 @@ const people = api.getFromRel({resource: root, rel:'people'})  // follow the peo
 {% endtab %}
 {% endtabs %}
 
-## Methods
-The method and signatures of the `Api` object are as follows:
 Deprecated
 {: .label .label-yellow }
+
+
+## Methods
+The method and signatures of the `Api` object are as follows:
+
 
 {% tabs install %}
 {% tab install Python %}
@@ -92,3 +93,6 @@ urlFromRel({resource, rel, parameters = {}, template = {}}: RelSpec): string
 ```
 {% endtab %}
 {% endtabs %}
+
+Deprecated
+{: .label .label-yellow }
