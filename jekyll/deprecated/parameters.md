@@ -2,7 +2,7 @@
 title: Query String Parameters
 permalink: /deprecated/parameters
 parent: Deprecated API
-nav_order: 2
+nav_order: 4
 
 layout: page
 ---

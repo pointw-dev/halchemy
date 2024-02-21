@@ -228,11 +228,27 @@ export class Api {
             const axiosError = error as AxiosError;
             errorResponse = axiosError.response; //all the info here
             const data = errorResponse.hasOwnProperty('data')? errorResponse.data : null
-            this.lastError = errorResponse
+            this.lastError =             this.lastError = {
+                method,
+                url,
+                'statusCode': errorResponse.status,
+                'reason': errorResponse.statusText,
+                'details': data,
+                'response': errorResponse,
+                'error': error
+            }
             throw new HttpError(`${method} request failed`, errorResponse.status, errorResponse.statusText, url, data)
         } else {
             // we did not receive a response from the server
-            this.lastError = error
+            this.lastError = {
+                method,
+                url,
+                'statusCode': 0,
+                'reason': "Did not receive a response from the server",
+                'details': {},
+                'response': {},
+                'error': error
+            }
             throw error;
         }
     }

@@ -11,7 +11,9 @@ layout: page
 Deprecated
 {: .label .label-yellow }
 
-Sends a PATCH request with data to the resource's `self` rel.
+Sends a PATCH request with data to the resource's `self` rel.  
+
+> Note, you should handle exceptions thrown by the request.  See [Optimistic Concurrency] for more details.
 
 ## Signature
 The method signature for **PATCH resource** is:

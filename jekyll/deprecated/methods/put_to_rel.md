@@ -13,6 +13,8 @@ Deprecated
 
 Follows a resource's link by way of its rel and sends a POST request with data.
 
+> Note, you should handle exceptions thrown by the request.  See [Optimistic Concurrency] for more details.
+
 ## Signature
 The method signature for **PUT to rel** is:
 {% tabs signature %}

@@ -14,6 +14,8 @@ Deprecated
 
 Sends a DELETE request to the resource's `self` rel.
 
+> Note, you should handle exceptions thrown by the request.  See [Optimistic Concurrency] for more details.
+
 ## Signature
 The method signature for **DELETE resource** is:
 {% tabs signature %}
