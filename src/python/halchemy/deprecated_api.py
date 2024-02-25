@@ -6,7 +6,7 @@ Usage:
     the value of the Authorization: header
 
 Examples:
-    api = Api('http://localhost:2112')
+    api = Api('http://example.org/api')
     people = api.get('/people')  # responds with collection whose members are in _items
     for person in people['_items']:
         print(f"{person['firstName']} {person['lastName']}")
@@ -16,7 +16,7 @@ Examples:
 License:
     MIT License
 
-    Copyright (c) 2023 Michael Ottoson
+    Copyright (c) 2024 Michael Ottoson
 
     Permission is hereby granted, free of charge, to any person obtaining a copy
     of this software and associated documentation files (the "Software"), to deal
@@ -37,58 +37,16 @@ License:
     SOFTWARE.
 """
 
+from typing import Any
 import json
 from requests.exceptions import HTTPError
-from .requests_helper import RequestsWithDefaults
 from urllib.parse import urlencode
-from typing import Any, TypeAlias
+from json_type import JSON
+from requests_helper import RequestsWithDefaults
 
 
-JSON: TypeAlias = dict[str, "JSON"] | list["JSON"] | str | int | float | bool | None
-
-
-class Actor:
-    def __init__(self, api, resource, rel):
-        self.api = api
-        self.resource = resource
-        self.rel = rel
-        self.headers = {}
-        self.params = {}
-        self.template = {}
-
-    def with_headers(self, headers: dict[str, Any]):
-        self.headers.update(headers)
-        return self
-
-    def with_params(self, params: dict[str, Any]):
-        self.params.update(params)
-        return self
-
-    def with_template(self, template: dict[str, Any]):
-        self.template.update(template)
-        return self
-
-    def get(self):
-        print(f"GET {self.resource['_links'][self.rel]['href']}")
-        if self.params:
-            print(f'params = {self.params}')
-        if self.template:
-            print(f'template = {self.template}')
-        if self.headers:
-            print(f'headers = {self.headers}')
-
-
-class Follower:
-    def __init__(self, api, resource):
-        self.api = api
-        self.resource = resource
-
-    def to(self, rel):
-        return Actor(self.api, self.resource, rel)
-
-
-class Api:
-    def __init__(self, base_api_url: str, headers: dict[str, Any] | None = None):  # root:password
+class DeprecatedApi:
+    def __init__(self, base_api_url: str, headers: dict[str, Any] | None = None):
         if headers is None:
             headers = {}
 
@@ -301,5 +259,8 @@ class Api:
         details = response.text
         raise RuntimeError(f'{message}\n{details}\nsee self.last_error for more details')
 
-    def follow(self, resource):
-        return Follower(self, resource)
+    # def follow(self, resource):
+    #     return Follower(self, resource)
+
+
+Api = DeprecatedApi
