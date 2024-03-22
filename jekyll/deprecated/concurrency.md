@@ -50,7 +50,7 @@ except RuntimeError as ex:
 const halchemy = require('halchemy')
 
 async function patchExample() {
-    const api = new halchemy.Api('http://localhost:2112')
+    const api = new halchemy.Api('http://example.org/api')
     const root = await api.get()  // get the root resource
 
     const customer = await api.getFromRelWithLookup({
@@ -75,7 +75,6 @@ async function patchExample() {
         }
     }
 }
-
 patchExample()
 ```
 {% endtab %}

@@ -29,16 +29,3 @@ people = api.get_from_rel(root, 'people')  # follow the people rel to get the li
 
 (more docs coming)
 
-## Methods
-
-* **get**(self, url='/')
-* **get_from_rel**(self, resource, rel='self', parameters={}, template={})
-* **get_from_rel_with_lookup**(self, resource, rel, lookup, parameters={})
-* **post_to_rel**(self, resource, rel, data, parameters={}, template={})
-* **patch_resource**(self, resource, data)
-* **put_to_rel**(self, resource, data, rel='self')
-* **delete_url**(self, url)
-* **delete_resource**(self, resource)
-* **url_from_rel**(resource, rel, parameters={}, template={})
-* **post_to_url**(self, url, data)
-

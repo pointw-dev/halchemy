@@ -1,0 +1,21 @@
+{
+    "version": "0.3.10",
+    "files": [
+        {
+            "path": "./node/halchemy/package.json",
+            "pattern": "^  \"version\": \"{version}\","
+        },
+        {
+            "path": "./node/halchemy/package-lock.json",
+            "pattern": "^  \"version\": \"{version}\","
+        },
+        {
+            "path": "./python/version.py",
+            "pattern": "VERSION = '{version}'"
+        },
+        {
+            "path": "../jekyll/_includes/nav_footer_custom.html",
+            "pattern": "<p class=\"version-number\">Version {version}</p>"
+        }
+    ]
+}

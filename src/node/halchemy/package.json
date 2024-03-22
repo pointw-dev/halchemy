@@ -1,29 +1,28 @@
 {
   "name": "halchemy",
-  "version": "0.2.3",
+  "version": "0.3.10",
   "description": "HAL-based Hypermedia API clients for humans",
-  "main": "dist/api.js",
-  "types": "dist/types/api.d.ts",
+  "main": "dist/index.js",
+  "types": "dist/types/index.d.ts",
+  "files": [
+    "dist/**/*"
+  ],
   "scripts": {
-    "test": "jest",
+    "test": "npx cucumber-js --tags \"not @wip and not @skip\"",
     "build": "tsc && npm pack"
   },
   "keywords": [],
   "author": "Michael Ottoson",
   "license": "MIT",
-  "dependencies": {
-    "@types/jest": "^29.5.2",
-    "axios": "^1.4.0",
-    "hal-types": "^1.9.0",
-    "ts-jest": "^29.1.1"
-  },
   "devDependencies": {
-    "@babel/core": "^7.22.6",
-    "@babel/preset-env": "^7.22.6",
-    "babel-jest": "^29.6.0",
-    "jest": "^29.6.0",
-    "msw": "^1.2.2",
-    "ts-node": "^10.9.1",
-    "typescript": "^5.1.6"
+    "cucumber": "^6.0.7",
+    "cucumber-tsflow": "^4.4.1",
+    "msw": "^2.2.1",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.3.3"
+  },
+  "dependencies": {
+    "axios": "^1.6.7",
+    "hal-types": "^1.9.0"
   }
 }

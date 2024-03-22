@@ -36,8 +36,14 @@ from halchemy import Api
 
 api = Api('http://example.org/api')
 
-root = api.get()                           # get the root resource
-people = api.get_from_rel(root, 'people')  # follow the people rel to get the list of people
+root = api.root.get()                           # get the root resource
+people = api.follow(root).to('people').get()    # follow the people rel to get the list of people
+
+# Issue a refund of $5 to everyone
+for person in people['_items']:
+    account = api.follow(person).to('account').get()
+    api.follow(account).to('deposit').post({'amount':5.00})
+    print(f"{person['name']} has a new balance of ${account['balance']}")
 ```
 {% endtab %}
 
@@ -47,51 +53,16 @@ import { Api } from 'halchemy'
 
 const api = new Api('http://example.org/api')
 
-const root = api.get()                                         // get the root resource
-const people = api.getFromRel({resource: root, rel:'people'})  // follow the people rel to get the list of people
+const root = api.root.get()                          // get the root resource
+const people = api.follow(root).to('people').get()  // follow the people rel to get the list of people
+
+// Issue a refund of $5 to everyone
+for (const person of people._items) {
+    const account = async api.follow(person).to('account').get()
+    async api.follow(account).to('deposit').post({amount:5.00})
+    console.log(`${person.name} has a new balance of ${account.balance}`)
+}
 ```
 {% endtab %}
 {% endtabs %}
 
-Deprecated
-{: .label .label-yellow }
-
-
-## Methods
-The method and signatures of the `Api` object are as follows:
-
-
-{% tabs install %}
-{% tab install Python %}
-```python
-get(url='/', headers={})
-get_from_rel(resource, rel='self', parameters={}, template={}, headers={})
-get_from_rel_with_lookup(resource, rel, lookup, parameters={}, headers={})
-post_to_url(url, data, headers={})
-post_to_rel(resource, rel, data, parameters={}, template={}, headers={})
-patch_resource(resource, data, headers={})
-put_to_rel(resource, rel, data, headers={})
-delete_url(url, headers={})
-delete_resource(resource, headers={})
-url_from_rel(resource, rel, parameters={}, template={})
-```
-{% endtab %}
-
-{% tab install JavaScript %}
-```javascript
-get(url:string = '/')
-getFromRel({resource, rel, parameters = {}, template = {}}: RelSpec): Promise<HalResource | {}>
-getFromRelWithLookup({resource, rel, parameters = {}, template = {}}: RelSpec, lookup: string): Promise<HalResource | {}>
-postToUrl(url:string, data:{}): Promise<any>
-postToRel({resource, rel, parameters = {}, template = {}}: RelSpec, data:{}): Promise<any>
-patchResource(resource:HalResource, data:{}): Promise<any>
-putToRel({resource, rel, parameters = {}, template = {}}: RelSpec, data:{}): Promise<any>
-deleteUrl(url:string): Promise<any>
-deleteResource(resource:HalResource): Promise<any>
-urlFromRel({resource, rel, parameters = {}, template = {}}: RelSpec): string
-```
-{% endtab %}
-{% endtabs %}
-
-Deprecated
-{: .label .label-yellow }

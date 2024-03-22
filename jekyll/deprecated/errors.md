@@ -54,7 +54,7 @@ except RuntimeError as ex:
 const halchemy = require('halchemy')
 
 async function errorHandlingExample() {
-    const api = new halchemy.Api('http://localhost:2112')
+    const api = new halchemy.Api('http://example.org/api')
     
     try {
         const root = await api.get()  // get the root resource
@@ -68,7 +68,6 @@ async function errorHandlingExample() {
         console.log(api.lastError.details)
     }
 }
-
 errorHandlingExample()
 ```
 

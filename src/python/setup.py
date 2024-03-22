@@ -1,9 +1,9 @@
-from setuptools import setup
+from setuptools import setup, find_packages
 from version import VERSION
 
 
 setup(
-    name='HALchemy',
+    name='halchemy',
     version=VERSION,
     description='Toolkit for creating clients of HAL based Hypermedia APIs.',
     long_description=open('./README.md').read(),
@@ -18,9 +18,11 @@ setup(
         'Topic :: Internet :: WWW/HTTP',
         'Topic :: Utilities'
     ],
-    url='https://github.com/pointw-dev/HALchemy',
+    url='https://github.com/pointw-dev/halchemy',
     author='Michael Ottoson',
     author_email='michael@pointw.com',
+    package_dir={'halchemy': 'halchemy/lib'},
+    # packages=find_packages(where='halchemy/lib'),
     packages=['halchemy'],
     include_package_data=True,
     install_requires=[

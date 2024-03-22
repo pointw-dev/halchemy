@@ -2,7 +2,7 @@
 title: Deprecated API
 permalink: /deprecated/
 has_children: true
-nav_order: 1
+nav_order: 100
 
 layout: page
 ---
