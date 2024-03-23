@@ -14,7 +14,7 @@ export class Follower {
 
     to(rel: string): Requester {
         if (!(rel in this._resource._links)) {
-            throw new Error(`Link relation "${rel}" not found in resource`)
+            throw new Error(`This resource does not have a link relation named '${rel}'`)
         }
         return new Requester(this._api, {resource: this._resource, rel: rel})
     }

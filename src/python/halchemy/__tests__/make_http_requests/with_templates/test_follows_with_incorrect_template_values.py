@@ -1,6 +1,7 @@
 import json
 
 import requests_mock
+from lib.resource import HalResource
 from pytest_bdd import scenario, given, when, then, parsers
 from assertpy import assert_that
 from halchemy.__tests__ import ALL_METHODS
@@ -18,7 +19,7 @@ def test_follows_with_template_values():
 def context(template_href):
     context.api = Api('http://example.org')
     add_root_to_context(context)
-    context.resource = {
+    context.resource = HalResource({
         '_links': {
             'self': {'href': '/resource1'},
             'next': {
@@ -26,7 +27,7 @@ def context(template_href):
                 'templated': True
             }
         }
-    }
+    })
     return context
 
 

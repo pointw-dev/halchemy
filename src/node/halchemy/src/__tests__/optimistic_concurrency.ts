@@ -77,15 +77,12 @@ Scenario: Out-of-the-box (AUTO_ETAG) uses _etag field if Etag header is missing
     Then the If-Match header uses the resource's _etag field
 */
 
-
 // Given a modifiable HAL resource
-
 
 Given('the response does not have an Etag header',
     function () {
         this.resource._halchemy.response.headers.delete('Etag')
     })
-
 
 Then("the If-Match header uses the resource's _etag field",
     function () {
@@ -107,7 +104,6 @@ Scenario: Out-of-the-box (AUTO_ETAG) _etag field and Etag header is missing
     When I request a change to the resource
     Then the request is made without an If-Match header
  */
-
 
 // Given a modifiable HAL resource
 

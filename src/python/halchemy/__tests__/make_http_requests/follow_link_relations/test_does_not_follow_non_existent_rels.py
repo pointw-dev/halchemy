@@ -25,3 +25,5 @@ def follow_link_rels():
 @then('the request fails, informing me of the issue')
 def verify_requests():
     assert_that(context.error).is_not_none()
+    assert_that(context.error).is_instance_of(KeyError)
+    assert_that(str(context.error)).is_equal_to("\"This resource does not have a link relation named 'non-existent'\"")

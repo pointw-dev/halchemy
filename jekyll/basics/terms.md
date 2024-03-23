@@ -8,7 +8,7 @@ layout: page
 ---
 # {{ page.title }}
 ## URL
-A URL (universal resource locator) is a URI that identifies a resource how and where on the internet to obtain a representation of a resource.
+A URL (universal resource locator) is a URI that identifies how and where on the internet to obtain a representation of a resource.
 > NOTE: a URN (universal resource name) uniquely identifies a resource, but without specifying its location.  Collectively, both URNs and URLs are called URIs (universal resource identifiers) - that is resources are identified (URI) by name (URN) or location (URL).
 
 ## Resource

@@ -35,6 +35,7 @@ BeforeFeature('Configuring the default headers causes requests to include them.'
         )
 })
 
+
 /*
 Scenario Outline:  Has sensible out-of-the-box headers
     Given the Api is created with no headers
@@ -42,7 +43,6 @@ Scenario Outline:  Has sensible out-of-the-box headers
     Then the request contains each <header> with its <value> for all sensible ones for the <method_type>
     # And the request does not contain the <header> if its method is not of the corresponding <method_type>
  */
-
 
 Given('the Api is created with no headers',
     function () {
@@ -139,7 +139,6 @@ Scenario Outline:  Can add or override headers after creation
 
 // Given the Api is created with no headers
 
-// And...
 Given(/later is given new a new (?<header>.+) with its (?<value>.+)/,
     function (header: string, value: string) {
         this.api.addHeaders({[header]: value})
@@ -168,7 +167,6 @@ Scenario: Can remove headers after creation
 
 // Given the Api is created with headers
 
-// And...
 Given('later some headers are removed',
     function () {
         this.api.removeHeaders(removeHeaders)
@@ -198,7 +196,6 @@ Scenario: Header changes are case-insensitive
 
 // Given the Api is created with headers
 
-
 When('I set a new value to a previously added header but with a different case',
     async function () {
         const upper: Record<string, string> = {}
@@ -217,7 +214,6 @@ When('I set a new value to a previously added header but with a different case',
             })
         )
     })
-
 
 Then('the header is changed not added',
     function () {

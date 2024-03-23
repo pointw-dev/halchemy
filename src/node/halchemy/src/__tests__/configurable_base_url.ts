@@ -120,7 +120,6 @@ Scenario Outline:  Can change the base URL
 
 // Given the Api is created with a <base_url>
 
-// And...
 Given(/is later changed to a (?<newBaseUrl>.*)/,
     function (newBaseUrl: string) {
         this.api.baseUrl = newBaseUrl

@@ -21,12 +21,20 @@ export function enhanceHalResource(resource: HalResource) {
     });
 
     resource.collection = function*(field: string) {
-        if (field in this && Array.isArray(this[field])) {
+        if (!(field in this)) {
+            throw new Error(`Field '${field}' does not exist, so cannot be iterated as a collection`);
+        }
+        if (!Array.isArray(this[field])) {
+            throw new Error(`Field '${field}' is not a collection`);
+        }
+        try {
             for (const item of this[field]) {
                 let halResource = item as HalResource;
                 enhanceHalResource(halResource)
                 yield halResource;
             }
+        } catch (e) {
+            throw new Error(`The '${field}' collection contains non-HAL formatted objects`);
         }
     }
 }

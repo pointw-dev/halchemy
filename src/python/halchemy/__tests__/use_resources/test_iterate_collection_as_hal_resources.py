@@ -5,12 +5,12 @@ from halchemy.__tests__.use_resources import FEATURE
 from halchemy.lib.resource import HalResource
 
 
-@scenario(FEATURE, 'Iterate an array of HAL formatted objects, each as a HAL resource')
+@scenario(FEATURE, 'Iterate a collection of HAL formatted objects, each as a HAL resource')
 def test_iterate_collection_as_hal_resources():
     pass
 
 
-@given('a HAL resource that has a field which is an array of objects in HAL format', target_fixture='context')
+@given('a HAL resource that has a field which is a collection of objects in HAL format', target_fixture='context')
 def context():
     context.resource = HalResource({
         '_items': [
@@ -32,7 +32,7 @@ def context():
     return context
 
 
-@when("I iterate the items in that field's array")
+@when("I iterate the items in that field's collection")
 def iterate_resources(context):
     context.error_occurred = False
     context.all_hal = True

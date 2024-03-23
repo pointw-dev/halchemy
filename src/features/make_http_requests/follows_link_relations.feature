@@ -77,10 +77,3 @@ Feature: Follows link relations provided by a HAL resource.
         | object:{"name":"John Doe","age":50}=>name=John+Doe&age=50 | application/x-www-form-urlencoded |
         | <person><name>John Doe</name><age>50</age></person>       | application/xml                   |
         | My name is John Doe.  I am 50 years old.                  | text/plain                        |
-
-
-    @skip
-    Scenario:  I can upload a file
-        Given a HAL resource
-        When I upload a file and its content-type
-        Then the file is fully and accurately sent

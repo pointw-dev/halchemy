@@ -73,14 +73,14 @@ Then('the href of the link is used for the request',
             for (const [rel, result] of Object.entries(this.calls[method])) {
                 const actualUrl = (result as {_halchemy: any})._halchemy.response.body.url
                 const expectedUrl = this.root._links[rel].href
-                assert.ok( actualUrl.endsWith(expectedUrl) )
+                assert.ok(actualUrl.endsWith(expectedUrl) )
             }
         })
     })
 
 
 /*
- Scenario: Make request to non-existent link relation
+Scenario: Make request to non-existent link relation
     Given a HAL resource
     When I make a request to a link relation the resource does not have
     Then the request fails, informing me of the issue
@@ -101,14 +101,15 @@ When('I make a request to a link relation the resource does not have',
 Then('the request fails, informing me of the issue',
     function () {
         assert.ok(this.error)
+        assert.equal(this.error.message, "This resource does not have a link relation named 'non-existent'")
     })
 
 
 /*
-    Scenario: Inspect links
-        Given a HAL resource
-        When I ask for the links it has
-        Then I get a list of its relations
+Scenario: Inspect links
+    Given a HAL resource
+    When I ask for the links it has
+    Then I get a list of its relations
 */
 
 // Given a HAL resource
@@ -126,10 +127,10 @@ Then('I get a list of its relations',
 
 
 /*
-    Scenario: Has link relation
-        Given a HAL resource
-        When I ask if it has a link relation
-        Then it tells me whether it does or not
+Scenario: Has link relation
+    Given a HAL resource
+    When I ask if it has a link relation
+    Then it tells me whether it does or not
  */
 
 // Given a HAL resource
@@ -146,7 +147,6 @@ Then('it tells me whether it does or not',
         assert.ok(this.hasRel('resource2'))
         assert.ok(!this.hasRel('non-existent'))
     })
-
 
 
 /*
@@ -258,11 +258,16 @@ Scenario Outline: Can change how lists are serialized to query string
     Then the parameters are added to the URL as a RFC3986 compliant <query_string>
  */
 
-// And...
+// Given a HAL resource
+
 Given(/I choose a parameters (?<listStyle>.*)/,
     function (listStyle: string) {
         this.api.parametersListStyle = listStyle
     })
+
+// When I supply <parameters>
+
+// Then the parameters are added to the URL as a RFC3986 compliant <query_string>
 
 
 /*
@@ -407,7 +412,6 @@ When(/the request I made fails: (?<failure>.*)/,
         }
     })
 
-
 Then('I can access the error details',
     function() {
         AllMethods.forEach((method) => {
@@ -434,7 +438,6 @@ Scenario: I can pass a native-language object representation of a JSON body
     Then the request body is properly formatted JSON
  */
 
-
 // Given a HAL resource
 
 When('I use an object my language uses to represent JSON as the payload of a request',
@@ -460,7 +463,6 @@ When('I use an object my language uses to represent JSON as the payload of a req
         }
     })
 
-
 Then('the request body is properly formatted JSON',
     function () {
         PayloadMethods.forEach((method) => {
@@ -471,6 +473,7 @@ Then('the request body is properly formatted JSON',
             assert.ok(compareJsonStrings(this.bodies[method], expectedJsonString), 'response body should be the same as the payload')
         })
     })
+
 
 /*
 Scenario Outline: I can pass a native-language non-object representation of a JSON body
@@ -503,9 +506,7 @@ When(/I use data type that is not an object but is valid as JSON, e.g. (?<data>.
         }
     })
 
-
 // Then the request body is properly formatted JSON
-
 
 
 /*
@@ -515,9 +516,7 @@ Scenario Outline: I can pass non-JSON data and set its content-type
     Then the request is made with the correct <data> and <content_type> header
  */
 
-
 // Given a HAL resource
-
 
 When(/the payload of a request is has (?<data>.*) of a different (?<contentType>.*)/,
     async function (data: string, contentType: string) {
@@ -532,7 +531,6 @@ When(/the payload of a request is has (?<data>.*) of a different (?<contentType>
             this.bodies[method] = resource._halchemy.request.body
         }
     })
-
 
 Then(/the request is made with the correct (?<data>.*) and (?<contentType>.*) header/,
     function (data: string, contentType: string) {
