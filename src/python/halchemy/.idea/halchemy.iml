@@ -11,7 +11,13 @@
     <orderEntry type="jdk" jdkName="Python 3.11 (halchemy)" jdkType="Python SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
   </component>
+  <component name="PackageRequirementsSettings">
+    <option name="requirementsPath" value="" />
+  </component>
   <component name="SonarLintModuleSettings">
     <option name="uniqueId" value="cfd3fc7f-dd62-44b2-b987-38807083e9b5" />
+  </component>
+  <component name="TestRunnerService">
+    <option name="PROJECT_TEST_RUNNER" value="py.test" />
   </component>
 </module>
