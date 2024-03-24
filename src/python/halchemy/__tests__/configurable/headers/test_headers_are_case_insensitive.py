@@ -2,8 +2,8 @@ import requests_mock
 from requests.structures import CaseInsensitiveDict
 from pytest_bdd import scenario, given, when, then
 from assertpy import assert_that  # https://github.com/assertpy/assertpy
-from halchemy.__tests__ import ALL_METHODS
-from halchemy.__tests__.configurable.headers import FEATURE, HEADERS
+from __tests__ import ALL_METHODS
+from __tests__.configurable.headers import FEATURE, HEADERS
 from lib.api import Api
 
 

@@ -1,7 +1,7 @@
 import requests_mock
 from pytest_bdd import scenario, given, when, then, parsers
 from assertpy import assert_that  # https://github.com/assertpy/assertpy
-from halchemy.__tests__.configurable.base_url import FEATURE
+from __tests__.configurable.base_url import FEATURE
 from lib.api import Api
 
 

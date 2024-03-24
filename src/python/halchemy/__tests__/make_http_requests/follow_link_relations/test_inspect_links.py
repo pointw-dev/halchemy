@@ -1,6 +1,6 @@
 from pytest_bdd import scenario
-from halchemy.__tests__.make_http_requests.follow_link_relations import FEATURE
-from halchemy.__tests__.make_http_requests.shared_step_definitions import *
+from __tests__.make_http_requests.follow_link_relations import FEATURE
+from __tests__.make_http_requests.shared_step_definitions import *
 
 
 @scenario(FEATURE, 'Inspect links')

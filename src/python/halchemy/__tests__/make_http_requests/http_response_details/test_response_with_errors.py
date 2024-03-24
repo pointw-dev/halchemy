@@ -1,7 +1,7 @@
 import requests
 from pytest_bdd import scenario
-from halchemy.__tests__.make_http_requests.http_response_details import FEATURE
-from halchemy.__tests__.make_http_requests.shared_step_definitions import *
+from __tests__.make_http_requests.http_response_details import FEATURE
+from __tests__.make_http_requests.shared_step_definitions import *
 
 
 @scenario(FEATURE, 'Error details available after a failed request')

@@ -1,7 +1,7 @@
 from pytest_bdd import scenario, given, when, then
-from halchemy.__tests__.use_resources import FEATURE
-from halchemy.__tests__.make_http_requests.shared_step_definitions import *
-from halchemy.lib.resource import HalResource
+from __tests__.use_resources import FEATURE
+from __tests__.make_http_requests.shared_step_definitions import *
+from lib.resource import HalResource
 
 
 '''

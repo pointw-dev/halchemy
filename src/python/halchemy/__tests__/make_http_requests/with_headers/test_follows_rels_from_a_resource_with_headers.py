@@ -1,6 +1,6 @@
 from pytest_bdd import scenario
-from halchemy.__tests__.make_http_requests.with_headers import FEATURE
-from halchemy.__tests__.make_http_requests.shared_step_definitions import *
+from __tests__.make_http_requests.with_headers import FEATURE
+from __tests__.make_http_requests.shared_step_definitions import *
 
 HEADERS = {
     'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9'

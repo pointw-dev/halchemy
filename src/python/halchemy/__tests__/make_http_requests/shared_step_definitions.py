@@ -2,8 +2,8 @@ import json
 import requests_mock
 from assertpy import assert_that
 from pytest_bdd import given, when, then, parsers
-from halchemy.__tests__ import ALL_METHODS, MODIFY_METHODS
-from halchemy.__tests__.make_http_requests import add_root_to_context, are_query_strings_equal
+from __tests__ import ALL_METHODS, MODIFY_METHODS
+from __tests__.make_http_requests import add_root_to_context, are_query_strings_equal
 from lib.api import Api
 
 

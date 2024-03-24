@@ -3,9 +3,9 @@ import json
 import requests_mock
 from pytest_bdd import scenario, given, when, then, parsers
 from assertpy import assert_that
-from halchemy.__tests__ import ALL_METHODS
-from halchemy.__tests__.make_http_requests import add_root_to_context
-from halchemy.__tests__.make_http_requests.with_templates import FEATURE
+from __tests__ import ALL_METHODS
+from __tests__.make_http_requests import add_root_to_context
+from __tests__.make_http_requests.with_templates import FEATURE
 from lib.api import Api
 
 
