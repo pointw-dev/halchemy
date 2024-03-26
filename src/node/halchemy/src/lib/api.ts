@@ -13,11 +13,17 @@ export {TemplateValuesMissingError, HttpError} from './errors'
 // DEPRECATED
 //////////////////////////////////////////////////////////////////////////////////////////
 
+class ErrorHandling {
+    public raiseForNetworkError: boolean = true
+    public raiseForStatusCodes: string | null = null
+}
+
 
 export class Api {
 
     private _headers: CaseInsensitiveHeaders = new CaseInsensitiveHeaders({})
     private _baseUrl: string = ''
+    private _errorHandling = new ErrorHandling()
 
     public parametersListStyle: string = 'repeat_key'
     public etagField: string = '_etag'
@@ -29,6 +35,9 @@ export class Api {
     //////////////////////////////////////////////////////////////////////////////////////////
 
     constructor(baseApiUrl: string, headers = {}) {
+        this._errorHandling.raiseForNetworkError = true
+        this._errorHandling.raiseForStatusCodes = null
+
         this._headers = new CaseInsensitiveHeaders({
             'Content-type': 'application/json',
             Authorization: 'Basic cm9vdDpwYXNzd29yZA==',  // root:password
@@ -89,7 +98,6 @@ export class Api {
         const merged_headers = this._mergeHeaders(this._headers, new CaseInsensitiveHeaders(headers))
         let request = new Request(method, url, merged_headers, data)
         try {
-            // PERFORM THE REQUEST ALREADY!
             const result = await axios.request({
                 method: method,
                 url: url,
@@ -118,7 +126,11 @@ export class Api {
             }
             return rtn
         } catch (error) {
-            return this._handleError(method, url, error, request)
+            const response = this._handleError(method, url, error, request)
+            if (this._errorHandling.raiseForNetworkError) {
+                throw response
+            }
+            return response
         }
     }
 

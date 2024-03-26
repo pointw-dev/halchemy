@@ -408,7 +408,11 @@ When(/the request I made fails: (?<failure>.*)/,
         this.failures = {}
         for (const method of AllMethods) {
             this.failures[method] = failure
-            this.resources[method] = await this.api.usingEndpoint(url)[method.toLowerCase()]()
+            try {
+                this.resources[method] = await this.api.usingEndpoint(url)[method.toLowerCase()]()
+            } catch (resource) {
+                this.resources[method] = resource
+            }
         }
     })
 
