@@ -3,13 +3,14 @@ from typing import Any
 
 from requests import JSONDecodeError
 from requests.structures import CaseInsensitiveDict
+
+from .error_handling import ErrorHandling
 from .follower import Follower
 from .requester import Requester, ReadOnlyRequester
 from .resource import Resource, HalResource, HalchemyMetadata
 from .requests_helper import RequestsWithDefaults
 from .json_type import JSON
 from .http_model import Request, Response
-from .json_null import JsonNullType
 
 
 ##########
@@ -20,10 +21,12 @@ from urllib.parse import urlencode
 
 
 class Api:
-    parameters_list_style = "repeat_key"
-    etag_field = "_etag"
 
     def __init__(self, base_url: str, headers: dict[str, Any] | None = None):
+        self.parameters_list_style = "repeat_key"
+        self.etag_field = "_etag"
+        self.error_handling = ErrorHandling()
+
         if headers is None:
             headers = {}
 
@@ -144,6 +147,8 @@ class Api:
             )
             resource = Resource()
             resource._halchemy = HalchemyMetadata(request, response, e)
+            if self.error_handling.raise_for_network_error:
+                raise ConnectionError(resource)
             return resource
 
         response = Response(
@@ -168,7 +173,59 @@ class Api:
             error = e
 
         rtn._halchemy = HalchemyMetadata(request, response, error)
+        self._raise_for_status_code(result.status_code, rtn)
         return rtn
+
+    def _parse_status_code_setting(self):
+        parts = self.error_handling.raise_for_status_codes.replace(',', ' ').split()
+        ranges = []
+        for part in parts:
+            part = part.strip()
+            if '-' in part:
+                start, end = map(int, part.split('-'))
+                ranges.append(('range', start, end))
+            elif part.startswith('>='):
+                value = int(part[2:])
+                ranges.append(('gte', value))
+            elif part.startswith('<='):
+                value = int(part[2:])
+                ranges.append(('lte', value))
+            elif part.startswith('>'):
+                value = int(part[1:])
+                ranges.append(('gt', value))
+            elif part.startswith('<'):
+                value = int(part[1:])
+                ranges.append(('lt', value))
+            else:
+                value = int(part)
+                ranges.append(('eq', value))
+        return ranges
+
+    def _raise_for_status_code(self, status_code, response):
+        if self.error_handling.raise_for_status_codes is None:
+            return
+        should_raise = False
+        range_setting = self._parse_status_code_setting()
+        for condition, *values in range_setting:
+            if condition == 'range' and values[0] <= status_code <= values[1]:
+                should_raise = True
+            elif condition == 'gt' and status_code > values[0]:
+                should_raise = True
+            elif condition == 'lt' and status_code < values[0]:
+                should_raise = True
+            elif condition == 'gte' and status_code >= values[0]:
+                should_raise = True
+            elif condition == 'lte' and status_code <= values[0]:
+                should_raise = True
+            elif condition == 'eq' and status_code == values[0]:
+                should_raise = True
+
+        if should_raise:
+            raise HTTPError(response)
+
+
+
+
 
 ##################################################################################
     def get(self, url: str = '/', headers: dict[str, Any] | None = None) -> JSON:
@@ -366,4 +423,5 @@ class Api:
         message = f'{method} {url} - {response.status_code} {response.reason}'
         details = response.text
         raise RuntimeError(f'{message}\n{details}\nsee self.last_error for more details')
+
 ##################################################################################

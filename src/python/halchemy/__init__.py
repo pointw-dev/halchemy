@@ -1,2 +1,2 @@
 from .lib import Api
-from .lib.json_null import JSON_NULL
+from lib.json_type import JSON_NULL

@@ -28,7 +28,11 @@ def call_with_each_method(failure):
         context.failures = {}
         for method in ALL_METHODS:
             context.failures[method] = failure
-            context.resources[method] = getattr(context.api.using_endpoint(url), method.lower())()
+            # context.resources[method] = getattr(context.api.using_endpoint(url), method.lower())()
+            try:
+                context.resources[method] = getattr(context.api.using_endpoint(url), method.lower())()
+            except ConnectionError as e:
+                context.resources[method] = e.args[0]
 
 
 @then('I can access the error details')

@@ -2,7 +2,7 @@ from pytest_bdd import scenario
 from __tests__ import PAYLOAD_METHODS
 from __tests__.make_http_requests.follow_link_relations import FEATURE, compare_json_strings
 from __tests__.make_http_requests.shared_step_definitions import *
-from halchemy import JSON_NULL
+from lib.json_type import JSON_NULL
 
 
 @scenario(FEATURE, 'I can pass a native-language non-object representation of a JSON body')
