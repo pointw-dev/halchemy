@@ -12,18 +12,17 @@ import {HttpError, TemplateValuesMissingError} from "./errors";
 import {ErrorHandling} from "./errorHandling";
 import {doSettingsIncludeStatusCode} from "./status_codes";
 import {HalchemyMetadata} from "./metadata";
-
+import {loadConfig} from "./config";
 export {TemplateValuesMissingError, HttpError} from './errors'
 // DEPRECATED
 //////////////////////////////////////////////////////////////////////////////////////////
-
 
 export class Api {
 
     private _headers: CaseInsensitiveHeaders = new CaseInsensitiveHeaders({})
     private _baseUrl: string = ''
     public errorHandling : ErrorHandling = {
-        raiseForNetworkError: true,
+        raiseForNetworkErrors: true,
         raiseForStatusCodes: null
     }
 
@@ -36,18 +35,19 @@ export class Api {
     // DEPRECATED
     //////////////////////////////////////////////////////////////////////////////////////////
 
-    constructor(baseApiUrl: string, headers = {}) {
-        this.errorHandling.raiseForNetworkError = true
-        this.errorHandling.raiseForStatusCodes = null
-
+    constructor(baseApiUrl: string | null, headers = {}) {
+        const config = loadConfig()
+        this.parametersListStyle = config.parametersListStyle
+        this.etagField = config.etagField
+        this.errorHandling = config.errorHandling
         this._headers = new CaseInsensitiveHeaders({
-            'Content-type': 'application/json',
-            Authorization: 'Basic cm9vdDpwYXNzd29yZA==',  // root:password
-            Accept: 'application/hal+json, application/json;q=0.9, */*;q=0.8',
+            ...config.headers,
             ...headers
         })
-        this._baseUrl = baseApiUrl
-
+        this._baseUrl = baseApiUrl as string ?? config.baseApiUrl
+        if (!this._baseUrl) {
+            throw new Error('You must provide a base URL, either in the constructor or in a config file.')
+        }
         axios.defaults.baseURL = this._baseUrl
     }
 
@@ -97,7 +97,7 @@ export class Api {
         if (data == 'true' || data == 'false') {
             data = JSON.stringify(data)
         }
-        const merged_headers = this._mergeHeaders(this._headers, new CaseInsensitiveHeaders(headers))
+        const merged_headers: CaseInsensitiveHeaders = this._mergeHeaders(this._headers, new CaseInsensitiveHeaders(headers))
         let request = new Request(method, url, merged_headers, data)
         try {
             const result = await axios.request({
@@ -168,7 +168,7 @@ export class Api {
             const resource = {
                 _halchemy: new HalchemyMetadata(request, response, error)
             }
-            if (this.errorHandling.raiseForNetworkError) {
+            if (this.errorHandling.raiseForNetworkErrors) {
                 throw resource
             }
             return resource

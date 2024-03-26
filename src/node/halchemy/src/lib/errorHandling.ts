@@ -1,4 +1,4 @@
 export interface ErrorHandling {
-    raiseForNetworkError: boolean
+    raiseForNetworkErrors: boolean
     raiseForStatusCodes: string | null
 }

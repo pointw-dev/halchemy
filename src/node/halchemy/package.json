@@ -23,6 +23,7 @@
   },
   "dependencies": {
     "axios": "^1.6.7",
-    "hal-types": "^1.9.0"
+    "hal-types": "^1.9.0",
+    "read-ini-file": "^4.0.0"
   }
 }
