@@ -1,6 +1,8 @@
 from typing import Iterator
 
 from .http_model import Response, Request
+from .status_codes import do_settings_include_status_code
+from requests.exceptions import HTTPError
 
 
 class HalchemyMetadata:
@@ -8,6 +10,13 @@ class HalchemyMetadata:
         self.response: Response | None = response
         self.request: Request | None = request
         self.error = error
+
+    def raise_for_status_codes(self, settings: str = '>399'):
+        status_code = self.response.status_code
+        should_raise = do_settings_include_status_code(settings, status_code)
+
+        if should_raise:
+            raise HTTPError(self)
 
 
 class Resource(dict):

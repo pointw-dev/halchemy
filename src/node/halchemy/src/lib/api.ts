@@ -9,21 +9,23 @@ import {CaseInsensitiveHeaders} from "./case_insensitive_headers";
 //////////////////////////////////////////////////////////////////////////////////////////
 // DEPRECATED
 import {HttpError, TemplateValuesMissingError} from "./errors";
+import {ErrorHandling} from "./errorHandling";
+import {doSettingsIncludeStatusCode} from "./status_codes";
+import {HalchemyMetadata} from "./metadata";
+
 export {TemplateValuesMissingError, HttpError} from './errors'
 // DEPRECATED
 //////////////////////////////////////////////////////////////////////////////////////////
-
-class ErrorHandling {
-    public raiseForNetworkError: boolean = true
-    public raiseForStatusCodes: string | null = null
-}
 
 
 export class Api {
 
     private _headers: CaseInsensitiveHeaders = new CaseInsensitiveHeaders({})
     private _baseUrl: string = ''
-    private _errorHandling = new ErrorHandling()
+    public errorHandling : ErrorHandling = {
+        raiseForNetworkError: true,
+        raiseForStatusCodes: null
+    }
 
     public parametersListStyle: string = 'repeat_key'
     public etagField: string = '_etag'
@@ -35,8 +37,8 @@ export class Api {
     //////////////////////////////////////////////////////////////////////////////////////////
 
     constructor(baseApiUrl: string, headers = {}) {
-        this._errorHandling.raiseForNetworkError = true
-        this._errorHandling.raiseForStatusCodes = null
+        this.errorHandling.raiseForNetworkError = true
+        this.errorHandling.raiseForStatusCodes = null
 
         this._headers = new CaseInsensitiveHeaders({
             'Content-type': 'application/json',
@@ -119,18 +121,10 @@ export class Api {
                 rtn = result.data as HalResource
                 enhanceHalResource(rtn)
             }
-            rtn._halchemy = {
-                request: request,
-                response: response,
-                error: null
-            }
+            rtn._halchemy = new HalchemyMetadata(request, response, null)
             return rtn
         } catch (error) {
-            const response = this._handleError(method, url, error, request)
-            if (this._errorHandling.raiseForNetworkError) {
-                throw response
-            }
-            return response
+            return this._handleError(method, url, error, request)
         }
     }
 
@@ -159,25 +153,25 @@ export class Api {
             const axiosError = error as AxiosError;
             errorResponse = axiosError.response; //all the info here
             const data = errorResponse.hasOwnProperty('data')? errorResponse.data : null
-            const detailedRequest = new Request(method, url, new CaseInsensitiveHeaders(errorResponse.config.headers), errorResponse.config.data)
+            const request = new Request(method, url, new CaseInsensitiveHeaders(errorResponse.config.headers), errorResponse.config.data)
             const response = new Response(errorResponse.status, errorResponse.statusText, new CaseInsensitiveHeaders(errorResponse.headers), data)
-            return {
-                _halchemy: {
-                    detailedRequest,
-                    response,
-                    error
-                }
+            const resource = {
+                _halchemy: new HalchemyMetadata(request, response, error)
             }
+            if (doSettingsIncludeStatusCode(this.errorHandling.raiseForStatusCodes, errorResponse.status)) {
+                throw resource
+            }
+            return resource
         } else {
             // we did not receive a response from the server
             const response = new Response(0, 'Did not receive a response from the server', new CaseInsensitiveHeaders({}), '')
-            return {
-                _halchemy: {
-                    request,
-                    response,
-                    error
-                }
+            const resource = {
+                _halchemy: new HalchemyMetadata(request, response, error)
             }
+            if (this.errorHandling.raiseForNetworkError) {
+                throw resource
+            }
+            return resource
         }
     }
 

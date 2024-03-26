@@ -11,11 +11,11 @@ from .resource import Resource, HalResource, HalchemyMetadata
 from .requests_helper import RequestsWithDefaults
 from .json_type import JSON
 from .http_model import Request, Response
-
+from .status_codes import do_settings_include_status_code
+from requests.exceptions import HTTPError  # TODO: make our own!
 
 ##########
 # DEPRECATED
-from requests.exceptions import HTTPError
 from urllib.parse import urlencode
 ##########
 
@@ -176,49 +176,8 @@ class Api:
         self._raise_for_status_code(result.status_code, rtn)
         return rtn
 
-    def _parse_status_code_setting(self):
-        parts = self.error_handling.raise_for_status_codes.replace(',', ' ').split()
-        ranges = []
-        for part in parts:
-            part = part.strip()
-            if '-' in part:
-                start, end = map(int, part.split('-'))
-                ranges.append(('range', start, end))
-            elif part.startswith('>='):
-                value = int(part[2:])
-                ranges.append(('gte', value))
-            elif part.startswith('<='):
-                value = int(part[2:])
-                ranges.append(('lte', value))
-            elif part.startswith('>'):
-                value = int(part[1:])
-                ranges.append(('gt', value))
-            elif part.startswith('<'):
-                value = int(part[1:])
-                ranges.append(('lt', value))
-            else:
-                value = int(part)
-                ranges.append(('eq', value))
-        return ranges
-
     def _raise_for_status_code(self, status_code, response):
-        if self.error_handling.raise_for_status_codes is None:
-            return
-        should_raise = False
-        range_setting = self._parse_status_code_setting()
-        for condition, *values in range_setting:
-            if condition == 'range' and values[0] <= status_code <= values[1]:
-                should_raise = True
-            elif condition == 'gt' and status_code > values[0]:
-                should_raise = True
-            elif condition == 'lt' and status_code < values[0]:
-                should_raise = True
-            elif condition == 'gte' and status_code >= values[0]:
-                should_raise = True
-            elif condition == 'lte' and status_code <= values[0]:
-                should_raise = True
-            elif condition == 'eq' and status_code == values[0]:
-                should_raise = True
+        should_raise = do_settings_include_status_code(self.error_handling.raise_for_status_codes, status_code)
 
         if should_raise:
             raise HTTPError(response)
