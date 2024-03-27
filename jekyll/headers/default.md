@@ -7,8 +7,6 @@ nav_order: 1
 layout: page
 ---
 # {{ page.title }}
-![work-in-progress.png](..%2Fassets%2Fimg%2Fwork-in-progress.png)
-
 Each Api object carries a set of default headers.  These are the headers that are sent with every request (unless overridden for any given request).
 
 > Note: the underlying http library used by halchemy has its default headers too.  You can override them, but you cannot directly access or remove them using halchemy.
@@ -17,7 +15,7 @@ Each Api object carries a set of default headers.  These are the headers that ar
 * [Setting the default headers](#setting-the-default-headers)
   * [Using a configuration file](#using-a-configuration-file)
   * [Using the `Api` constructor](#using-the-api-constructor)
-  * [Using the `Api` object](#using-api-object)
+  * [Using the `Api` object](#using-the-api-object)
 
 ## The default headers
 Out of the box, the set of default headers is:
@@ -79,8 +77,122 @@ Accept: application/hal+json, application/json;q=0.9, */*;q=0
 * The 'Accept' header remains the same
 
 ### Using the `Api` Constructor
-details
+The constructor takes two parameters: base url and headers.  Here is an example of setting the default headers using the constructor:
+
+{% tabs example1 %}
+{% tab example1 Python %}
+```python
+api = Api('http://example.org/api', {'Accept':'application/xml'})
+```
+If you do not want to specify a base URL, you can use Python's named parameters, like this:
+
+```python
+api = Api(headers={'Accept':'application/xml'})
+```
+
+{% endtab %}
+
+{% tab example1 JavaScript %}
+```javascript
+const api = new Api('http://example.org/api', {accept: 'application/xml'})
+```
+If you do not want to specify a base URL, you can pass `undefined` as the first parameter, like this:
+```javascript
+const api = new Api(undefined, {accept: 'application/xml'})
+```
+{% endtab %}
+{% endtabs %}
+
+> The example above only sets one header.  You can set as many headers as you like in the dictionary/object passed to the constructor.
+
+Like the `.halchemy` file, the headers passed to the constructor are merged with the out-of-the-box default headers.
 
 ### Using the `Api` Object
-details
+There are three ways to use the `Api` object to manipulate the default headers:
+* the `headers` property
+* the `add headers` method
+* the `remove headers` method
 
+#### The headers property
+This property replaces the default headers with the headers you provide.  Here is an example:
+
+{% tabs example1 %}
+{% tab example1 Python %}
+```python
+api = Api()
+
+api.headers = {
+  'Cache-control': 'no-cache',
+  'Accept-language': 'Accept-Language: en-CA, en;q=0.9, fr-CA;q=0.8, fr;q=0.7',
+  'Authorization': 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwiaWF0IjoyfQ.nMoAK-oiZTdVT0CcGhgS5yCscaNSf49BYFR3DiGT3tM'
+}
+```
+{% endtab %}
+
+{% tab example1 JavaScript %}
+```javascript
+const api = new Api()
+
+api.headers = {
+  'Cache-control': 'no-cache',
+  'Accept-language': 'Accept-Language: en-CA, en;q=0.9, fr-CA;q=0.8, fr;q=0.7',
+  Authorization: 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwiaWF0IjoyfQ.nMoAK-oiZTdVT0CcGhgS5yCscaNSf49BYFR3DiGT3tM'
+}
+```
+{% endtab %}
+{% endtabs %}
+
+This has the following results:
+* the `Content-type` and `Accept` headers are removed from the `Api` object's default headers
+* the `Cache-control` and `Accept-language` headers are added
+* the `Authorization` header's value is replaced with the bearer token
+
+#### The add headers method
+This method adds headers to the default headers.  If the header you are adding already exists, it is replaced.  Here is an example:
+
+{% tabs example2 %}
+{% tab example2 Python %}
+```python
+api = Api()
+api.add_headers({
+    'Cache-control': 'no-cache',
+    'Accept-language': 'en-CA, en;q=0.9, fr-CA;q=0.8, fr;q=0.7',
+    'Authorization': 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwiaWF0IjoyfQ.nMoAK-oiZTdVT0CcGhgS5yCscaNSf49BYFR3DiGT3tM'
+})
+```
+{% endtab %}
+
+{% tab example2 JavaScript %}
+```javascript
+const api = new Api()
+api.addHeaders({
+    'Cache-control': 'no-cache',
+    'Accept-language': 'en-CA, en;q=0.9, fr-CA;q=0.8, fr;q=0.7',
+    'Authorization': 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwiaWF0IjoyfQ.nMoAK-oiZTdVT0CcGhgS5yCscaNSf49BYFR3DiGT3tM'
+})
+```
+{% endtab %}
+{% endtabs %}
+
+Now the default headers are have the two new ones (`Cache-control` and `Accept-language`) and the `Authorization` header's value is replaced with the bearer token.
+
+#### The remove headers method
+This method removes headers from the default headers.  If the header you are removing does not exist, it is ignored.  Here is an example:
+
+{% tabs example3 %}
+{% tab example3 Python %}
+```python
+api = Api()
+api.remove_headers(['Authorization', 'Accept'])
+```
+{% endtab %}
+
+{% tab example3 JavaScript %}
+```javascript
+const api = new Api()
+api.removeHeaders(['Authorization', 'Accept'])
+```
+{% endtab %}
+{% endtabs %}
+
+> NOTE: removing the `Accept` header only removes it from the default headers of the `Api` object.  This lets the underlying http library use its default `Accept` header.

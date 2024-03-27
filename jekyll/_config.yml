@@ -17,4 +17,5 @@ plugins:
   - jekyll-seo-tag
   - jekyll-tabs
 
+
 color_scheme: dark

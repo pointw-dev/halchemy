@@ -133,7 +133,7 @@ class Api:
             request = Request(
                 method=method,
                 url=result.url,
-                headers=CaseInsensitiveDict(dict(result.request._request.headers)),  # TODO: is there a safer way?
+                headers=CaseInsensitiveDict(dict(result.request.headers)),
                 body=result.request.body
             )
         except Exception as e:
