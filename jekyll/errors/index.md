@@ -7,6 +7,8 @@ nav_order: 7
 layout: page
 ---
 # {{ page.title }}
+![work-in-progress.png](..%2Fassets%2Fimg%2Fwork-in-progress.png)
+
 There are two settings you can change to control how errors are handled.  
 
 ## Network errors

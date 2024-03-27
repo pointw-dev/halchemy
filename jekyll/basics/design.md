@@ -7,6 +7,8 @@ nav_order: 11
 layout: page
 ---
 # {{ page.title }}
+![work-in-progress.png](..%2Fassets%2Fimg%2Fwork-in-progress.png)
+
 * Standards-based
   * RFC 7230-7235 (HTTP/1.1)
   * RFC 3968 (URI)

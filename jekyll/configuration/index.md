@@ -3,13 +3,20 @@ title: Configuration
 permalink: /configuration/
 has_children: false
 nav_order: 2
-
 layout: page
 ---
 # {{ page.title }}
 Halchemy takes a batteries-included approach to configuration.  It starts with sensible defaults, and allows you to configure everything the way you like.  This page outlines the settings you can change, and the various ways you can change them.
 
+* [Configuration Settings](#configuration-settings)
+  * [Default Headers](#default-headers)
+  * [Default Error Handling](#default-error-handling)
+* [Changing Configuration Settings](#changing-configuration-settings)
+  * [Configuration File](#configuration-file)
+  * [Configuration Properties](#configuration-properties)
+
 ## Configuration Settings
+The Api object gives you the following settings:
 
 <style>
 table th:first-of-type {
@@ -23,12 +30,12 @@ table th:nth-of-type(3) {
 }
 </style>
 
-| Setting                                                                                                                                                            | Description                                                                                                                                                                                                                                                                                                                                                                                     | Default                                                           |
-|--------------------------------------------------------------------------------------------------------------------------------------------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-------------------------------------------------------------------|
-| ![python-16.png](..%2Fassets%2Fimg%2Fpython-16.png) `base_url`<br/>![javascript-16.png](..%2Fassets%2Fimg%2Fjavascript-16.png)  `baseUrl`                          | The base URL to the API you are working with.  This default matches the default URL for a hypermea API running locally                                                                                                                                                                                                                                                                          | `http://localhost:2112`                                           |
-| ![python-16.png](..%2Fassets%2Fimg%2Fpython-16.png) `parameters_list_style`<br/>![javascript-16.png](..%2Fassets%2Fimg%2Fjavascript-16.png)  `parametersListStyle` | When creating a query string, this setting determines how lists are serialzied.  The options are: `repeat_key`, `bracket`, `index`, `comma`, `pipe`                                                                                                                                                                                                                                             | `repeat_key`                                                      |
-| ![python-16.png](..%2Fassets%2Fimg%2Fpython-16.png) `etag_field`<br/>![javascript-16.png](..%2Fassets%2Fimg%2Fjavascript-16.png)  `etagField`                      | When using optimistic concurrency, you need to set the `If-Match` header with the ETag of the resource you are changing.  Halchemy takes this from the `ETag` header, but if it is missing it will look for this field.  This default matches the field emitted by hypermea.                                                                                                                    | `_etag`                                                           | 
-| ![python-16.png](..%2Fassets%2Fimg%2Fpython-16.png) ![javascript-16.png](..%2Fassets%2Fimg%2Fjavascript-16.png) `headers`                                          | A dictionary of headers to include with each request.  This is useful for setting authentication headers, or other headers that are common to all requests.                                                                                                                                                                                                                                     | (see [below](#default-headers) for default headers)               |
+| Setting                                                                                                                                                            | Description                                                                                                                                                                                                                                                                                                                      | Default                                                       |
+|--------------------------------------------------------------------------------------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|---------------------------------------------------------------|
+| ![python-16.png](..%2Fassets%2Fimg%2Fpython-16.png) `base_url`<br/>![javascript-16.png](..%2Fassets%2Fimg%2Fjavascript-16.png)  `baseUrl`                          | The base URL to the API you are working with.  This default matches the default URL for a hypermea API running locally                                                                                                                                                                                                           | `http://localhost:2112`                                       |
+| ![python-16.png](..%2Fassets%2Fimg%2Fpython-16.png) `parameters_list_style`<br/>![javascript-16.png](..%2Fassets%2Fimg%2Fjavascript-16.png)  `parametersListStyle` | When creating a query string, this setting determines how lists are serialzied.  The options are:<br/>`repeat_key`, `bracket`, `index`, `comma`, `pipe`<br/>See [Query String Parameters](/parameters) for more details.                                                                                                         | `repeat_key`                                                  |
+| ![python-16.png](..%2Fassets%2Fimg%2Fpython-16.png) `etag_field`<br/>![javascript-16.png](..%2Fassets%2Fimg%2Fjavascript-16.png)  `etagField`                      | This is the field used to populate `If-Match` on a change request if ETag header is missing.  This default is tuned for use with a hypermea API.<br/>See [Optimistic Concurrency](/concurrency) for more details.                                                                                                               | `_etag`                                                       | 
+| ![python-16.png](..%2Fassets%2Fimg%2Fpython-16.png) ![javascript-16.png](..%2Fassets%2Fimg%2Fjavascript-16.png) `headers`                                          | A dictionary of headers to include with each request.  This is useful for setting authentication headers, or other headers that are common to all requests.  You can use this API property directly, and there are helper functions too.<br/>See [Request Headers](/headers) for more details.                                   | (see [below](#default-headers) for default headers)           |
 | ![python-16.png](..%2Fassets%2Fimg%2Fpython-16.png) `error_handling`<br/>![javascript-16.png](..%2Fassets%2Fimg%2Fjavascript-16.png)  `errorHandling`              | Determines when exceptions are thrown/raised.  There are two properties: <br/>![python-16.png](..%2Fassets%2Fimg%2Fpython-16.png)<br/>`raise_for_network_errors` <br/>`raise_for_status_codes`<br/>------<br/>![javascript-16.png](..%2Fassets%2Fimg%2Fjavascript-16.png)<br/>`raiseForNetworkErrors`<br/> `raiseForStatusCodes` | (see [below](#default-error-handling) for default error handling) |
 
 ### Default Headers
@@ -101,7 +108,7 @@ raise_on_status_codes = 400-403, >404
 > * any headers you set this way are merged with the default headers.  To remove a default header you must use "remove headers" (see [Request Headers](/headers) for more details).
 
 ### Configuration Properties
-Here is how you can change the settings after creating an `Api` object:
+Here is how you can change a settings after creating an `Api` object, using the "base url" setting as an example:
 
 {% tabs example3 %}
 {% tab example3 Python %}
