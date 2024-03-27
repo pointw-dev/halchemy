@@ -26,7 +26,7 @@ function findProjectRoot(currentPath: string = __dirname): string | undefined {
 
 
 export function loadConfig(): any {
-    const configFileName = '.halchemy.ini';
+    const configFileName = '.halchemy';
     const projectRoot = findProjectRoot();
     let config: any = {}
 
@@ -58,9 +58,11 @@ export function loadConfig(): any {
     }
 
     return {
-        baseApiUrl: config.base_api_url ?? 'http://localhost:2112',
-        parametersListStyle: config.parameters_list_style ?? 'repeat_key',
-        etagField: config.etag_field ?? '_etag',
+        halchemy: {
+            baseUrl: config.halchemy?.base_url ?? 'http://localhost:2112',
+            parametersListStyle: config.halchemy?.parameters_list_style ?? 'repeat_key',
+            etagField: config.halchemy?.etag_field ?? '_etag',
+        },
         headers:  {
             'Content-type': 'application/json',
             Authorization: 'Basic cm9vdDpwYXNzd29yZA==',  // root:password

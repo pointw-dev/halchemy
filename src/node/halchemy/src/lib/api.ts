@@ -12,7 +12,7 @@ import {HttpError, TemplateValuesMissingError} from "./errors";
 import {ErrorHandling} from "./errorHandling";
 import {doSettingsIncludeStatusCode} from "./status_codes";
 import {HalchemyMetadata} from "./metadata";
-import {loadConfig} from "./config";
+import {loadConfig} from "./configuration";
 export {TemplateValuesMissingError, HttpError} from './errors'
 // DEPRECATED
 //////////////////////////////////////////////////////////////////////////////////////////
@@ -35,16 +35,17 @@ export class Api {
     // DEPRECATED
     //////////////////////////////////////////////////////////////////////////////////////////
 
-    constructor(baseApiUrl: string | null, headers = {}) {
+    constructor(baseUrl: string | null, headers = {}) {
         const config = loadConfig()
-        this.parametersListStyle = config.parametersListStyle
-        this.etagField = config.etagField
+        this._baseUrl = baseUrl as string ?? config.halchemy.baseUrl
+        this.parametersListStyle = config.halchemy.parametersListStyle
+        this.etagField = config.halchemy.etagField
         this.errorHandling = config.errorHandling
         this._headers = new CaseInsensitiveHeaders({
             ...config.headers,
             ...headers
         })
-        this._baseUrl = baseApiUrl as string ?? config.baseApiUrl
+
         if (!this._baseUrl) {
             throw new Error('You must provide a base URL, either in the constructor or in a config file.')
         }

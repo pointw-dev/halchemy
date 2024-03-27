@@ -4,6 +4,7 @@ from typing import Any
 from requests import JSONDecodeError
 from requests.structures import CaseInsensitiveDict
 
+from .configuration import load_config
 from .error_handling import ErrorHandling
 from .follower import Follower
 from .requester import Requester, ReadOnlyRequester
@@ -22,20 +23,15 @@ from urllib.parse import urlencode
 
 class Api:
 
-    def __init__(self, base_url: str, headers: dict[str, Any] | None = None):
-        self.parameters_list_style = "repeat_key"
-        self.etag_field = "_etag"
+    def __init__(self, base_url: str | None = None, headers: dict[str, Any] | None = None):
+        config = load_config()
+        self._base_url = base_url if base_url else config['halchemy']['base_url']
+        self.parameters_list_style = config['halchemy']['parameters_list_style']
+        self.etag_field = config['halchemy']['etag_field']
         self.error_handling = ErrorHandling()
-
-        if headers is None:
-            headers = {}
-
-        self._base_url = base_url
-        self._headers = CaseInsensitiveDict({
-            'Content-type': 'application/json',
-            'Accept': 'application/hal+json, application/json;q=0.9, */*;q=0.8',
-            'Authorization': 'Basic cm9vdDpwYXNzd29yZA=='  # root:password
-        })
+        self.error_handling.raise_for_network_error = config['error_handling']['raise_for_network_errors']
+        self.error_handling.raise_for_status_codes = config['error_handling']['raise_for_status_codes']
+        self._headers = CaseInsensitiveDict(config['headers'])
 
         if headers:
             self._headers.update(headers)
@@ -44,7 +40,9 @@ class Api:
         # DEPRECATED
         self.last_error = {}
         ####################
-        
+
+        if not self._base_url:
+            raise ValueError('You must provide a base API URL, either in the constructor or in a config file.')
         self._api = RequestsWithDefaults(url_base=self._base_url, headers=self._headers)
 
     @property
