@@ -84,7 +84,7 @@ auto_dealership_root = api.get('https://example.org/dealerships')
 
 {% tab example2 JavaScript %}
 ```javascript
-const halchemy = require('halchemy')
+const {Api} = require('halchemy')
 
 async function getRootResources() {
     const api = new Api('http://example.org/api')

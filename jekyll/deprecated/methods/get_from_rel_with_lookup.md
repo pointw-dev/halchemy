@@ -73,10 +73,10 @@ print(f"{customer['givenName']} {customer['familyName']} is {'active' if custome
 
 {% tab example1 JavaScript %}
 ```javascript
-const halchemy = require('halchemy')
+const {Api} = require('halchemy')
 
 async function listMember(membershipId) {
-    const api = new halchemy.Api('http://example.org/api')
+    const api = new Api('http://example.org/api')
 
     const root = await api.get()  // get the root resource
 

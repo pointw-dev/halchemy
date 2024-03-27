@@ -80,10 +80,10 @@ order = api.post_to_rel(customer, 'orders', order)
 
 {% tab example1 JavaScript %}
 ```javascript
-const halchemy = require('halchemy')
+const {Api} = require('halchemy')
 
 async function placeNewCustomerOrder(customer, order) {
-    const api = new halchemy.Api('http://example.org/api')
+    const api = new Api('http://example.org/api')
 
     const root = await api.get()  // get the root resource
 

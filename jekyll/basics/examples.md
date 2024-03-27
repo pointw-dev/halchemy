@@ -34,13 +34,13 @@ for customer in customers.collection('_items'):
 
 {% tab example1 JavaScript %}
 ```javascript
-const halchemy = require('halchemy')
+const {Api} = require('halchemy')
 
 async function activateCustomers() {
     const authHeader = {
         authorization: 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJpYXQiOjB9.49jV8bS3WGLP20VBpCDane-kjxfGmO8L6LHgE7mLO9I'
     }
-    const api = new halchemy.Api('http://example.org/api', headers=authHeader)
+    const api = new Api('http://example.org/api', headers=authHeader)
     const root = await api.root.get()
     const customers = await api.follow(root).to('customers').get()
 
@@ -113,7 +113,7 @@ while True:
 
 {% tab example2 JavaScript %}
 ```javascript
-const halchemy = require('halchemy')
+const {Api} = require('halchemy')
 const readline = require('readline/promises')
 
 async function prompt(message) {
@@ -124,7 +124,7 @@ async function prompt(message) {
 }
 
 async function displayOrders() {
-    const api = new halchemy.Api('http://example.org/api')
+    const api = new Api('http://example.org/api')
     const root = await api.root.get()
     const customers = await api.follow(root).to('customers').get()
 
@@ -208,7 +208,7 @@ while True:
 
 {% tab example3 JavaScript %}
 ```javascript
-const halchemy = require('halchemy')
+const {Api} = require('halchemy')
 const readline = require('readline/promises')
 
 async function prompt(message) {
@@ -222,7 +222,7 @@ async function prompt(message) {
 }
 
 async function displayCustomers() {
-    const api = new halchemy.Api('http://example.org/api')
+    const api = new Api('http://example.org/api')
     const root = await api.root.get()
     let page = 1
 

@@ -71,10 +71,10 @@ for customer in customers['_items']:
 
 {% tab example1 JavaScript %}
 ```javascript
-const halchemy = require('halchemy')
+const {Api} = require('halchemy')
 
 async function listCustomers() {
-    const api = new halchemy.Api('http://example.org/api')
+    const api = new Api('http://example.org/api')
 
     const root = await api.get()  // get the root resource
 

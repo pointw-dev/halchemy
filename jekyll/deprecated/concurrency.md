@@ -47,10 +47,10 @@ except RuntimeError as ex:
 
 {% tab quick JavaScript %}
 ```javascript
-const halchemy = require('halchemy')
+const {Api} = require('halchemy')
 
 async function patchExample() {
-    const api = new halchemy.Api('http://example.org/api')
+    const api = new Api('http://example.org/api')
     const root = await api.get()  // get the root resource
 
     const customer = await api.getFromRelWithLookup({

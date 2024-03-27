@@ -46,7 +46,7 @@ api = Api('http://example.org/api', headers={
 
 {% tab quick JavaScript %}
 ```javascript
-const halchemy = require('halchemy')
+const {Api} = require('halchemy')
 
 const api = new Api('http://example.org/api', headers={
     'Cache-Control': 'no-cache',
@@ -74,7 +74,7 @@ xml_resource = api.get_from_rel(root, 'some-xml', headers={'Accept: application/
 
 {% tab quick JavaScript %}
 ```javascript
-const halchemy = require('halchemy')
+const {Api} = require('halchemy')
 
 const api = new Api('http://example.org/api', headers={'Accept': 'application/json'})
 const root = api.get()

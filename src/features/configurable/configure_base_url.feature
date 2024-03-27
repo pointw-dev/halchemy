@@ -16,6 +16,10 @@ Feature: Configuring the base URL influences requests to relative urls but not a
 
     Finally (though I'm not sure when this will be useful), you can change the base URL at any time.
 
+    NOTE:  Although there are no scenarios below for this, you can also configure everything with a
+           configuration file.  Place a file named `.halchemy` in the root of your project, or in
+           your home directory.
+
 
     Scenario Outline:  Request the root resource
         Given the Api is created with a <base_url>
