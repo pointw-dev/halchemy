@@ -29,7 +29,7 @@ Authorization': 'Basic cm9vdDpwYXNzd29yZA==
 The `Authorization` header's token is the base-64 encoded string `root:password`, i.e. the client will attempt to access the resource using user name `root` and the password `password` using Basic Authentication ([RFC7617](https://datatracker.ietf.org/doc/html/rfc7617)).  If your API does not require authorizaiton, this header will, of course, be ignored.
 
 ### Add/override default headers
-When you create the Api object, you can supply additional headers, and/or override the built-in ones.
+When you create the `Api` object, you can supply additional headers, and/or override the built-in ones.
 
 {% tabs quick %}
 {% tab quick Python %}

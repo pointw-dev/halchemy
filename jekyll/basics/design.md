@@ -19,7 +19,7 @@ layout: page
   * https://datatracker.ietf.org/doc/html/draft-kelly-json-hal-08  (HAL)
   * https:/github.com/mamund/hal-forms (HAL-FORMS)
   * https://www.iana.org/assignments/http-link-relations/http-link-relations.xhtml (Link Relations)
-* The Api object is responsible for all http requests to the server.
+* The `Api` object is responsible for all http requests to the server.
 * All requests are made explicitly, e.g. api.root.get(), not api.root with an automatic or hidden GET.
 * The object returned by a request is a Resource object, which can be used directly as a data payload.
 * Each Resource object carries its request and response context in a deeper structure, out of the way of the data payload.

@@ -58,7 +58,7 @@ activateCustomers()
 
 This example demonstrates:
 * setting default headers for all requests
-  * in this example, an authorization header is set when creating the api object
+  * in this example, an authorization header is set when creating the `Api` object
   * each request will include this header
 * getting the root resource
 * following a link to a collection resource

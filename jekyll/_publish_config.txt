@@ -8,7 +8,7 @@ logo: /assets/img/halchemy.png
 tagline: >- 
   HAL-based Hypermedia API clients for humans.
 description: >-
-  A simple but powerful library for consuming HAL based APIs.  Create an Api() object with the URL to the API, then with a simple approach follow the links from resource to resource, and access each affordance.  Optimized for developer convenience without sacrificing fine-grained control.  An excellent client library for use with hypermea based APIs.  Each supported language follows idiomatic conventions.
+  A simple but powerful library for consuming HAL based APIs.  Create an Api object with the URL to the API, then with a simple approach follow the links from resource to resource, and access each affordance.  Optimized for developer convenience without sacrificing fine-grained control.  An excellent client library for use with hypermea based APIs.  Each supported language follows idiomatic conventions.
 
 theme: just-the-docs
 plugins:

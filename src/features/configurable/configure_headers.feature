@@ -36,10 +36,10 @@ Feature: Configuring the default headers causes requests to include them.
         Then the request contains the <header> with the new <value>
 
         Examples:
-        | header        | value                                                                                                                                                              |
-        | Authorization | Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c |
-        | Content-type  | application/xml                                                                                                                                                    |
-        | Accept        | application/xml                                                                                                                                                    |
+            | header        | value                                                                                              |
+            | Authorization | Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwiaWF0IjoyfQ.nMoAK-oiZTdVT0CcGhgS5yCscaNSf49BYFR3DiGT3tM |
+            | Content-type  | application/xml                                                                                    |
+            | Accept        | application/xml                                                                                    |
 
 
     Scenario Outline:  Can add or override headers after creation
