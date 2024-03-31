@@ -7,9 +7,7 @@ nav_order: 2
 layout: page
 ---
 # {{ page.title }}
-Sometimes you want just this one request to have headers different than the default headers.  Halchemy makes this easy.
-
-The fluent API for setting headers is the "with headers" method.  This method takes a dictionary of headers to set for this request.  Here is an example:
+Sometimes you want just this one request to have headers different from the default headers.  Halchemy makes this easy.  You use the "with headers" method.  This method takes a dictionary/object of headers to set for this request.  Here is an example:
 
 {% tabs example1 %}
 {% tab example1 Python %}
