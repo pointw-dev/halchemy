@@ -1,396 +1,501 @@
 {"0": {
     "doc": "Optimistic Concurrency",
     "title": "Optimistic Concurrency",
-    "content": "Deprecated . When sending requests that are intended to change an existing resource (PUT, PATCH, DELETE) there is a chance someone else has made a change between your GET request the request with your intended changes. Halchemy relies on optimistic concurrency to handle this possibility. That is, it assumes no one else has made a change, but populates the If-Match header with the resource’s ETag so the server can reject the request if a change to the resource has taken place - that is if the ETag of the resource on the server doesn’t match the requested change. For your client to handle this, you must handle exceptions thrown by the request. If the status code is 412 that means someone else has snuck in a change. What the client does is up to you. For example, you could: . | show the user the updated version, let them merge their change into it then resubmit the request | cancel the operation, advise the user they should refresh and start over | GET the updated resource, automatically merge the changes - or even overwrite them with the version you are trying to submit | etc. | . Here is an example that advises the user to refresh and try again. | Python | JavaScript | . | from halchemy import Api api = Api('http://example.org/api') root = api.get() # get the root resource customer = api.get_from_rel_with_lookup(root, 'customers', lookup='A375') try: # this patch simulates someone else making a change # the customer has a new ETag on the server, which throwaway_customer also has throwaway_customer = api.patch_resource(customer, {'givenName': 'Lesley'}) # customer still has the old ETag, so this request will fail api.patch_resource(customer, {'givenName': 'Leslie'}) except RuntimeError as ex: if api.last_error['status_code'] == 412: print(f'Someone else has changed customer #{customer[\"membershipId\"]}. Please refresh to see the changes, then try again if necessary.') else: raise RuntimeError(f'Could not patch customer #{customer[\"membershipId\"]}', ex) . | const halchemy = require('halchemy') async function patchExample() { const api = new halchemy.Api('http://example.org/api') const root = await api.get() // get the root resource const customer = await api.getFromRelWithLookup({ resource: root, rel: 'customers' }, lookup='A375') console.log(customer) try { // this patch simulates someone else making a change // the customer has a new ETag on the server, which throwaway_customer also has const throwawayCustomer = await api.patchResource(customer, {'givenName': 'Lesley'}) // customer still has the old ETag, so this request will fail await api.patchResource(customer, {'givenName': 'Leslie'}) } catch(error) { if (api.lastError &amp;&amp; api.lastError.statusCode == 412) { console.log(api.lastError.statusCode) console.log(`Someone else has changed customer #${customer.membershipId}. Please refresh to see the changes, then try again if necessary.`) } else { throw new Error(`Could not patch customer #${customer.membershipId}`, error) } } } patchExample() . | . ",
+    "content": "Deprecated . When sending requests that are intended to change an existing resource (PUT, PATCH, DELETE) there is a chance someone else has made a change between your GET request the request with your intended changes. Halchemy relies on optimistic concurrency to handle this possibility. That is, it assumes no one else has made a change, but populates the If-Match header with the resource’s ETag so the server can reject the request if a change to the resource has taken place - that is if the ETag of the resource on the server doesn’t match the requested change. For your client to handle this, you must handle exceptions thrown by the request. If the status code is 412 that means someone else has snuck in a change. What the client does is up to you. For example, you could: . | show the user the updated version, let them merge their change into it then resubmit the request | cancel the operation, advise the user they should refresh and start over | GET the updated resource, automatically merge the changes - or even overwrite them with the version you are trying to submit | etc. | . Here is an example that advises the user to refresh and try again. | Python | JavaScript | . | from halchemy import Api api = Api('http://example.org/api') root = api.get() # get the root resource customer = api.get_from_rel_with_lookup(root, 'customers', lookup='A375') try: # this patch simulates someone else making a change # the customer has a new ETag on the server, which throwaway_customer also has throwaway_customer = api.patch_resource(customer, {'givenName': 'Lesley'}) # customer still has the old ETag, so this request will fail api.patch_resource(customer, {'givenName': 'Leslie'}) except RuntimeError as ex: if api.last_error['status_code'] == 412: print(f'Someone else has changed customer #{customer[\"membershipId\"]}. Please refresh to see the changes, then try again if necessary.') else: raise RuntimeError(f'Could not patch customer #{customer[\"membershipId\"]}', ex) . | const {Api} = require('halchemy') async function patchExample() { const api = new Api('http://example.org/api') const root = await api.get() // get the root resource const customer = await api.getFromRelWithLookup({ resource: root, rel: 'customers' }, lookup='A375') console.log(customer) try { // this patch simulates someone else making a change // the customer has a new ETag on the server, which throwaway_customer also has const throwawayCustomer = await api.patchResource(customer, {'givenName': 'Lesley'}) // customer still has the old ETag, so this request will fail await api.patchResource(customer, {'givenName': 'Leslie'}) } catch(error) { if (api.lastError &amp;&amp; api.lastError.statusCode == 412) { console.log(api.lastError.statusCode) console.log(`Someone else has changed customer #${customer.membershipId}. Please refresh to see the changes, then try again if necessary.`) } else { throw new Error(`Could not patch customer #${customer.membershipId}`, error) } } } patchExample() . | . ",
     "url": "/halchemy/deprecated/concurrency",
     
     "relUrl": "/deprecated/concurrency"
   },"1": {
+    "doc": "Default Headers",
+    "title": "Default Headers",
+    "content": "Each Api object carries a set of default headers. These are the headers that are sent with every request (unless overridden for any given request). Note: the underlying http library used by halchemy has its default headers too. You can override them, but you cannot directly access or remove them using halchemy. | The default headers | Setting the default headers . | Using a configuration file | Using the Api constructor | Using the Api object | . | . ",
+    "url": "/halchemy/headers/default",
+    
+    "relUrl": "/headers/default"
+  },"2": {
+    "doc": "Default Headers",
+    "title": "The default headers",
+    "content": "Out of the box, the set of default headers is: . Content-type: application/json Accept: application/hal+json, application/json;q=0.9, */*;q=0 Authorization: Basic cm9vdDpwYXNzd29yZA== . Content-type . As halchemy is designed to work with APIs that use HAL, the default Content-type is application/json on the assumption that any data you send to the API will be JSON. Accept . This configures halchemy to prefer HAL JSON, accept any JSON, and not to accept any other type of data. You can use change this so halchemy will work with non JSON data, but since it is tuned for HAL / JSON you will not benefit from some of the automation provided by halchemy. Rest assured, you can fully utilize your API with other types of content. Authorization . This configures halchemy to use Basic authentication. The token is the base64 encoding of root:password. This is convenient if you are using an auth-enabled halchemy API in a certain developer configuration. You will, of course, want to change the Authorization header the requirements of the API you are using. You can ignore this header if your API does not require authorization. If your API uses OAuth, for example, you would change the default Authorization header to something like: . Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwiaWF0IjoyfQ.nMoAK-oiZTdVT0CcGhgS5yCscaNSf49BYFR3DiGT3tM . ",
+    "url": "/halchemy/headers/default#the-default-headers",
+    
+    "relUrl": "/headers/default#the-default-headers"
+  },"3": {
+    "doc": "Default Headers",
+    "title": "Setting the default headers",
+    "content": "There are four ways to set or change the default headers: . | Place a file named .halchemy in your home directory, containing headers | Place a file named .halchemy in your project’s root directory, containing headers | Pass default headers to the Api constructor | Use Api object’s properties and methods to change the headers | . These are listed in order of priority. That is, the headers in the home directory’s .halchemy file will be overridden by the headers in the project’s root directory’s .halchemy file, and so on down the list. Using a configuration file . The .halchemy file goes either in your home directory, or in your project root directory. If in both, the one in your project root takes precedence and the one in your home directory is ignored. Set default headers in this file under the headers section, in INI format: . [headers] Content-type = application/xml Authorization = eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwiaWF0IjoyfQ.nMoAK-oiZTdVT0CcGhgS5yCscaNSf49BYFR3DiGT3tM Cache-control = no-cache . Please see Configuration File for full details on the .halchemy file. Headers in the .halchemy file are merged with the out-of-the-box default headers. The .halchemy file above would result in the following default headers: . Content-type: application/xml Authorization: eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwiaWF0IjoyfQ.nMoAK-oiZTdVT0CcGhgS5yCscaNSf49BYFR3DiGT3tM Cache-control: no-cache Accept: application/hal+json, application/json;q=0.9, */*;q=0 . | The Content-type header is changed to application/xml | The Authorization header is changed to that JWT token | The Cache-control header is added | The ‘Accept’ header remains the same | . Using the Api Constructor . The constructor takes two parameters: base url and headers. Here is an example of setting the default headers using the constructor: . | Python | JavaScript | . | api = Api('http://example.org/api', {'Accept':'application/xml'}) . If you do not want to specify a base URL, you can use Python’s named parameters, like this: . api = Api(headers={'Accept':'application/xml'}) . | const api = new Api('http://example.org/api', {accept: 'application/xml'}) . If you do not want to specify a base URL, you can pass undefined as the first parameter, like this: . const api = new Api(undefined, {accept: 'application/xml'}) . | . The example above only sets one header. You can set as many headers as you like in the dictionary/object passed to the constructor. Like the .halchemy file, the headers passed to the constructor are merged with the out-of-the-box default headers. Using the Api Object . There are three ways to use the Api object to manipulate the default headers: . | the headers property | the add headers method | the remove headers method | . The headers property . This property replaces the default headers with the headers you provide. Here is an example: . | Python | JavaScript | . | api = Api() api.headers = { 'Cache-control': 'no-cache', 'Accept-language': 'Accept-Language: en-CA, en;q=0.9, fr-CA;q=0.8, fr;q=0.7', 'Authorization': 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwiaWF0IjoyfQ.nMoAK-oiZTdVT0CcGhgS5yCscaNSf49BYFR3DiGT3tM' } . | const api = new Api() api.headers = { 'Cache-control': 'no-cache', 'Accept-language': 'Accept-Language: en-CA, en;q=0.9, fr-CA;q=0.8, fr;q=0.7', Authorization: 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwiaWF0IjoyfQ.nMoAK-oiZTdVT0CcGhgS5yCscaNSf49BYFR3DiGT3tM' } . | . This has the following results: . | the Content-type and Accept headers are removed from the Api object’s default headers | the Cache-control and Accept-language headers are added | the Authorization header’s value is replaced with the bearer token | . The add headers method . This method adds headers to the default headers. If the header you are adding already exists, it is replaced. Here is an example: . | Python | JavaScript | . | api = Api() api.add_headers({ 'Cache-control': 'no-cache', 'Accept-language': 'en-CA, en;q=0.9, fr-CA;q=0.8, fr;q=0.7', 'Authorization': 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwiaWF0IjoyfQ.nMoAK-oiZTdVT0CcGhgS5yCscaNSf49BYFR3DiGT3tM' }) . | const api = new Api() api.addHeaders({ 'Cache-control': 'no-cache', 'Accept-language': 'en-CA, en;q=0.9, fr-CA;q=0.8, fr;q=0.7', 'Authorization': 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwiaWF0IjoyfQ.nMoAK-oiZTdVT0CcGhgS5yCscaNSf49BYFR3DiGT3tM' }) . | . Now the default headers are have the two new ones (Cache-control and Accept-language) and the Authorization header’s value is replaced with the bearer token. The remove headers method . This method removes headers from the default headers. If the header you are removing does not exist, it is ignored. Here is an example: . | Python | JavaScript | . | api = Api() api.remove_headers(['Authorization', 'Accept']) . | const api = new Api() api.removeHeaders(['Authorization', 'Accept']) . | . NOTE: removing the Accept header only removes it from the default headers of the Api object. This lets the underlying http library use its default Accept header. ",
+    "url": "/halchemy/headers/default#setting-the-default-headers",
+    
+    "relUrl": "/headers/default#setting-the-default-headers"
+  },"4": {
     "doc": "DELETE resource",
     "title": "DELETE resource",
     "content": "Deprecated . Sends a DELETE request to the resource’s self rel. Note, you should handle exceptions thrown by the request. See [Optimistic Concurrency] for more details. ",
     "url": "/halchemy/deprecated/methods/delete_resource",
     
     "relUrl": "/deprecated/methods/delete_resource"
-  },"2": {
+  },"5": {
     "doc": "DELETE resource",
     "title": "Signature",
     "content": "The method signature for DELETE resource is: . | Python | JavaScript | . | delete_resource(resource, headers: dict[str, Any] | None = None) -&gt; JSON . JSON: TypeAlias = dict[str, \"JSON\"] | list[\"JSON\"] | str | int | float | bool | None . | deleteResource(resource:HalResource, headers = {}): Promise&lt;any&gt; . | . | parameter | description | . | resource | The resource, from a previous request, that you wish to delete | . | headers | (optional) add to or override the default headers. [learn more] | . | -&gt; returns | the JSON from the payload of the response to this request | . ",
     "url": "/halchemy/deprecated/methods/delete_resource#signature",
     
     "relUrl": "/deprecated/methods/delete_resource#signature"
-  },"3": {
+  },"6": {
     "doc": "DELETE resource",
     "title": "Examples",
     "content": " ",
     "url": "/halchemy/deprecated/methods/delete_resource#examples",
     
     "relUrl": "/deprecated/methods/delete_resource#examples"
-  },"4": {
+  },"7": {
     "doc": "DELETE URL",
     "title": "DELETE URL",
     "content": "Deprecated . This seldom used method is available if, for some reason, you need to send a DELETE request to a URL outside of the web of links provided by the API. ",
     "url": "/halchemy/deprecated/methods/delete_url",
     
     "relUrl": "/deprecated/methods/delete_url"
-  },"5": {
+  },"8": {
     "doc": "DELETE URL",
     "title": "Signature",
     "content": "The method signature for DELETE URL is: . | Python | JavaScript | . | delete_url(url:str, headers: dict[str, Any] | None = None) -&gt; JSON . JSON: TypeAlias = dict[str, \"JSON\"] | list[\"JSON\"] | str | int | float | bool | None . | deleteUrl(url: string, headers: {}): Promise&lt;any&gt; . | . | parameter | description | . | url | The URL to send the DELETE request to | . | headers | (optional) add to or override the default headers. [learn more] | . | -&gt; returns | the JSON from the payload of the response to this request | . ",
     "url": "/halchemy/deprecated/methods/delete_url#signature",
     
     "relUrl": "/deprecated/methods/delete_url#signature"
-  },"6": {
+  },"9": {
     "doc": "DELETE URL",
     "title": "Examples",
     "content": " ",
     "url": "/halchemy/deprecated/methods/delete_url#examples",
     
     "relUrl": "/deprecated/methods/delete_url#examples"
-  },"7": {
+  },"10": {
     "doc": "Handling Errors",
     "title": "Handling Errors",
-    "content": "Deprecated . All requests are made over the network, and as the first fallacy of distributed computing tells us the network is not reliable. More often than network failures are other server-side issues that may prevent your requests from being handled as you expect. For simplicity, most of the examples in this doc do not include exception handling, but of course your client code should always. When halchemy encounteres an issue when submitting your request it does two things: . | records the details in a public member called “last error” | throws an exception | . Here is an example of how to handle the exception: . | Python | JavaScript | . | import json from halchemy import Api api = Api('http://example.org/api') try: root = api.get() customer = api.get_from_rel(root, 'customers') except RuntimeError as ex: print(f'Could not fetch the list of customers: {api.last_error[\"status_code\"]} {api.last_error[\"reason\"]}') print(json.dumps(api.last_error[\"details\"], indent=4})) # handle accordingly... | last_error key | Description | . | method | The method of the request sent to the server, e.g. GET, POST, etc. | . | url | The URL the request was sent to. | . | status_code | The http status code returned by the server. | . | reason | The reason phrase returned by the server. | . | details | The body of the response, hopefully providing additional details about the error. | . | response | The response object returned by the requests library method. | . | error | The exception that was caught by halchemy before rethrowing. | . | const halchemy = require('halchemy') async function errorHandlingExample() { const api = new halchemy.Api('http://example.org/api') try { const root = await api.get() // get the root resource const customer = await api.getFromRel({ resource: root, rel: 'customers' }) } catch(error) { console.log(`Could not fetch the list of customers: ${api.last_error.statusCode} ${api.last_error.reason}`) console.log(api.lastError.details) } } errorHandlingExample() . | lastError member | Description | . | method | The method of the request sent to the server, e.g. GET, POST, etc. | . | url | The URL the request was sent to. | . | statusCode | The http status code returned by the server. | . | reason | The reason phrase returned by the server. | . | details | The body of the response, hopefully providing additional details about the error. | . | response | The response object returned by the axios library method. | . | error | The exception that was caught by halchemy before rethrowing. | . | . ",
+    "content": "Deprecated . All requests are made over the network, and as the first fallacy of distributed computing tells us the network is not reliable. More often than network failures are other server-side issues that may prevent your requests from being handled as you expect. For simplicity, most of the examples in this doc do not include exception handling, but of course your client code should always. When halchemy encounteres an issue when submitting your request it does two things: . | records the details in a public member called “last error” | throws an exception | . Here is an example of how to handle the exception: . | Python | JavaScript | . | import json from halchemy import Api api = Api('http://example.org/api') try: root = api.get() customer = api.get_from_rel(root, 'customers') except RuntimeError as ex: print(f'Could not fetch the list of customers: {api.last_error[\"status_code\"]} {api.last_error[\"reason\"]}') print(json.dumps(api.last_error[\"details\"], indent=4})) # handle accordingly... | last_error key | Description | . | method | The method of the request sent to the server, e.g. GET, POST, etc. | . | url | The URL the request was sent to. | . | status_code | The http status code returned by the server. | . | reason | The reason phrase returned by the server. | . | details | The body of the response, hopefully providing additional details about the error. | . | response | The response object returned by the requests library method. | . | error | The exception that was caught by halchemy before rethrowing. | . | const {Api} = require('halchemy') async function errorHandlingExample() { const api = new Api('http://example.org/api') try { const root = await api.get() // get the root resource const customer = await api.getFromRel({ resource: root, rel: 'customers' }) } catch(error) { console.log(`Could not fetch the list of customers: ${api.last_error.statusCode} ${api.last_error.reason}`) console.log(api.lastError.details) } } errorHandlingExample() . | lastError member | Description | . | method | The method of the request sent to the server, e.g. GET, POST, etc. | . | url | The URL the request was sent to. | . | statusCode | The http status code returned by the server. | . | reason | The reason phrase returned by the server. | . | details | The body of the response, hopefully providing additional details about the error. | . | response | The response object returned by the axios library method. | . | error | The exception that was caught by halchemy before rethrowing. | . | . ",
     "url": "/halchemy/deprecated/errors",
     
     "relUrl": "/deprecated/errors"
-  },"8": {
+  },"11": {
     "doc": "Examples",
     "title": "Examples",
     "content": "These examples are based on an imaginary API. Jump here to see the resources it serves. ",
     "url": "/halchemy/basics/examples",
     
     "relUrl": "/basics/examples"
-  },"9": {
+  },"12": {
     "doc": "Examples",
     "title": "Example 1",
-    "content": "Activate all customers who are deactivated. | Python | JavaScript | . | from halchemy import Api auth_header = { 'Authorization': 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJpYXQiOjB9.49jV8bS3WGLP20VBpCDane-kjxfGmO8L6LHgE7mLO9I' } api = Api('http://example.org/api', headers=auth_header) root = api.root.get() customers = api.follow(root).to('customers').get() for customer in customers.collection('_items'): if not customer['active'] and customer.has_rel('activate'): print(f'Activating {customer[\"givenName\"]} {customer[\"familyName\"]}') api.follow(customer).to('activate').put() . | const halchemy = require('halchemy') async function activateCustomers() { const authHeader = { authorization: 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJpYXQiOjB9.49jV8bS3WGLP20VBpCDane-kjxfGmO8L6LHgE7mLO9I' } const api = new halchemy.Api('http://example.org/api', headers=authHeader) const root = await api.root.get() const customers = await api.follow(root).to('customers').get() for (const customer of customers.collection('_items')) { if (!customer.active &amp;&amp; customer.hasRel('activate')) { console.log(`Activating ${customer.givenName} ${customer.familyName}`) await api.follow(customer).to('activate').put() } } } activateCustomers() . | . This example demonstrates: . | setting default headers for all requests . | in this example, an authorization header is set when creating the api object | each request will include this header | . | getting the root resource | following a link to a collection resource . | from root to customers | . | iterating over a collection . | accessing the items in the collection using the collection() method ensures that each item is a HAL resource object | in other words, if you access the items directly, each item would not have the “has rel” method (for example) | . | checking if a resource has a specific link | using a resource’s affordance to change its state (using PUT to activate a customer) . | contrast this with setting the active property directly | by using the affordance, the API can enforce business rules, and it can change how activation occur without changing the client code | . | . ",
+    "content": "Activate all customers who are deactivated. | Python | JavaScript | . | from halchemy import Api auth_header = { 'Authorization': 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJpYXQiOjB9.49jV8bS3WGLP20VBpCDane-kjxfGmO8L6LHgE7mLO9I' } api = Api('http://example.org/api', headers=auth_header) root = api.root.get() customers = api.follow(root).to('customers').get() for customer in customers.collection('_items'): if not customer['active'] and customer.has_rel('activate'): print(f'Activating {customer[\"givenName\"]} {customer[\"familyName\"]}') api.follow(customer).to('activate').put() . | const {Api} = require('halchemy') async function activateCustomers() { const authHeader = { authorization: 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJpYXQiOjB9.49jV8bS3WGLP20VBpCDane-kjxfGmO8L6LHgE7mLO9I' } const api = new Api('http://example.org/api', headers=authHeader) const root = await api.root.get() const customers = await api.follow(root).to('customers').get() for (const customer of customers.collection('_items')) { if (!customer.active &amp;&amp; customer.hasRel('activate')) { console.log(`Activating ${customer.givenName} ${customer.familyName}`) await api.follow(customer).to('activate').put() } } } activateCustomers() . | . This example demonstrates: . | setting default headers for all requests . | in this example, an authorization header is set when creating the Api object | each request will include this header | . | getting the root resource | following a link to a collection resource . | from root to customers | . | iterating over a collection . | accessing the items in the collection using the collection() method ensures that each item is a HAL resource object | in other words, if you access the items directly, each item would not have the “has rel” method (for example) | . | checking if a resource has a specific link | using a resource’s affordance to change its state (using PUT to activate a customer) . | contrast this with setting the active property directly | by using the affordance, the API can enforce business rules, and it can change how activation occur without changing the client code | . | . ",
     "url": "/halchemy/basics/examples#example-1",
     
     "relUrl": "/basics/examples#example-1"
-  },"10": {
+  },"13": {
     "doc": "Examples",
     "title": "Example 2",
-    "content": "Print the orders for a given customer. | Python | JavaScript | . | from halchemy import Api api = Api('http://example.org/api') root = api.root.get() customers = api.follow(root).to('customers').get() print('Show orders') print('-----------') while True: membership_id = input('\\nEnter the membership ID: ').upper() if not membership_id: break customer = api.follow(customers).to('item').with_template_values({'membershipId': membership_id}).get() status_code = customer._halchemy.response.status_code if not status_code == 200: if status_code == 404: print(f'Customer #{membership_id} was not found') continue else: print(f'Something went wrong: {status_code} {customer._halchemy.response.reason}') break orders = api.follow(customer).to('orders').get() if len(orders['_items']) == 0: print(f'Customer #{membership_id} has no orders') else: for order in orders.collection('_items'): print(order['orderNumber']) . | const halchemy = require('halchemy') const readline = require('readline/promises') async function prompt(message) { const rl = readline.createInterface({input: process.stdin, output: process.stdout}) const answer = await rl.question(message) rl.close() return answer } async function displayOrders() { const api = new halchemy.Api('http://example.org/api') const root = await api.root.get() const customers = await api.follow(root).to('customers').get() console.log('Show Orders') console.log('-----------') while (true) { let membershipId = await prompt('\\nEnter the membership ID: ') if (!membershipId) { break } membershipId = membershipId.toUpperCase() const customer = await api.follow(customers).to('item').withTemplateValues({'membershipId': membershipId}).get() const statusCode = customer._halchemy.response.statusCode if (statusCode !== 200) { if (statusCode === 404) { console.log(`Customer #${membershipId} was not found`) continue } else { console.log(`Something went wrong: ${statusCode} ${customer._halchemy.response.reason}`) break } } const orders = await api.follow(customer).to('orders').get() if (orders._items.length == 0) { console.log(`Customer #${membershipId} has no orders`) } else { for (const order of orders.collection('_items')) { console.log(order['orderNumber']) } } } } displayOrders() . | . This example demonstrates: . | following a link to a resource with a templated URL | using the response status code to navigate the user’s workflow | following a link from one resource to its child resource collection | mixing direct access to _items with managed iteration using the collection() method | . ",
+    "content": "Print the orders for a given customer. | Python | JavaScript | . | from halchemy import Api api = Api('http://example.org/api') root = api.root.get() customers = api.follow(root).to('customers').get() print('Show orders') print('-----------') while True: membership_id = input('\\nEnter the membership ID: ').upper() if not membership_id: break customer = api.follow(customers).to('item').with_template_values({'membershipId': membership_id}).get() status_code = customer._halchemy.response.status_code if not status_code == 200: if status_code == 404: print(f'Customer #{membership_id} was not found') continue else: print(f'Something went wrong: {status_code} {customer._halchemy.response.reason}') break orders = api.follow(customer).to('orders').get() if len(orders['_items']) == 0: print(f'Customer #{membership_id} has no orders') else: for order in orders.collection('_items'): print(order['orderNumber']) . | const {Api} = require('halchemy') const readline = require('readline/promises') async function prompt(message) { const rl = readline.createInterface({input: process.stdin, output: process.stdout}) const answer = await rl.question(message) rl.close() return answer } async function displayOrders() { const api = new Api('http://example.org/api') const root = await api.root.get() const customers = await api.follow(root).to('customers').get() console.log('Show Orders') console.log('-----------') while (true) { let membershipId = await prompt('\\nEnter the membership ID: ') if (!membershipId) { break } membershipId = membershipId.toUpperCase() const customer = await api.follow(customers).to('item').withTemplateValues({'membershipId': membershipId}).get() const statusCode = customer._halchemy.response.statusCode if (statusCode !== 200) { if (statusCode === 404) { console.log(`Customer #${membershipId} was not found`) continue } else { console.log(`Something went wrong: ${statusCode} ${customer._halchemy.response.reason}`) break } } const orders = await api.follow(customer).to('orders').get() if (orders._items.length == 0) { console.log(`Customer #${membershipId} has no orders`) } else { for (const order of orders.collection('_items')) { console.log(order['orderNumber']) } } } } displayOrders() . | . This example demonstrates: . | following a link to a resource with a templated URL | using the response status code to navigate the user’s workflow | following a link from one resource to its child resource collection | mixing direct access to _items with managed iteration using the collection() method | . ",
     "url": "/halchemy/basics/examples#example-2",
     
     "relUrl": "/basics/examples#example-2"
-  },"11": {
+  },"14": {
     "doc": "Examples",
     "title": "Example 3",
-    "content": "Pagination using query string parameters. | Python | JavaScript | . | from halchemy import Api api = Api('http://example.org/api') root = api.root.get() page = 1 while True: pagination = { 'max_results': 10, 'page': page } customers = api.follow(root).to('customers').with_parameters(pagination).get() for customer in customers.collection('_items'): print(f'{customer[\"membershipId\"]} - {customer[\"givenName\"]} {customer[\"familyName\"]}') prompt = '[N]ext page' if page &gt; 1: prompt += ', [P]revious page' choice = input(prompt + ': ').upper() if choice in ['N', 'P']: page += 1 if choice == 'N' else -1 else: break . | const halchemy = require('halchemy') const readline = require('readline/promises') async function prompt(message) { const rl = readline.createInterface({ input: process.stdin, output: process.stdout }) const answer = await rl.question(message) rl.close() return answer } async function displayCustomers() { const api = new halchemy.Api('http://example.org/api') const root = await api.root.get() let page = 1 while (true) { const pagination = { max_results: 10, page } const customers = await api.follow(root).to('customers').withParameters(pagination).get() for (const customer of customers.collection('_items')) { console.log(`${customer.membershipId} - ${customer.givenName} ${customer.familyName}`) } let prompt_message = '[N]ext page' if (page &gt; 1) { prompt_message += ', [P]revious page' } const choice = (await prompt(prompt_message + ': ')).toUpperCase() if (choice === 'N' || choice === 'P') { page += choice === 'N' ? 1 : -1 } else { break } } } displayCustomers() . | . This example demonstrates: . | using query string parameters to do pagination | . ",
+    "content": "Pagination using query string parameters. | Python | JavaScript | . | from halchemy import Api api = Api('http://example.org/api') root = api.root.get() page = 1 while True: pagination = { 'max_results': 10, 'page': page } customers = api.follow(root).to('customers').with_parameters(pagination).get() for customer in customers.collection('_items'): print(f'{customer[\"membershipId\"]} - {customer[\"givenName\"]} {customer[\"familyName\"]}') prompt = '[N]ext page' if page &gt; 1: prompt += ', [P]revious page' choice = input(prompt + ': ').upper() if choice in ['N', 'P']: page += 1 if choice == 'N' else -1 else: break . | const {Api} = require('halchemy') const readline = require('readline/promises') async function prompt(message) { const rl = readline.createInterface({ input: process.stdin, output: process.stdout }) const answer = await rl.question(message) rl.close() return answer } async function displayCustomers() { const api = new Api('http://example.org/api') const root = await api.root.get() let page = 1 while (true) { const pagination = { max_results: 10, page } const customers = await api.follow(root).to('customers').withParameters(pagination).get() for (const customer of customers.collection('_items')) { console.log(`${customer.membershipId} - ${customer.givenName} ${customer.familyName}`) } let prompt_message = '[N]ext page' if (page &gt; 1) { prompt_message += ', [P]revious page' } const choice = (await prompt(prompt_message + ': ')).toUpperCase() if (choice === 'N' || choice === 'P') { page += choice === 'N' ? 1 : -1 } else { break } } } displayCustomers() . | . This example demonstrates: . | using query string parameters to do pagination | . ",
     "url": "/halchemy/basics/examples#example-3",
     
     "relUrl": "/basics/examples#example-3"
-  },"12": {
+  },"15": {
     "doc": "Examples",
     "title": "Sample API",
     "content": "The examples above are based on an imaginary API that serves the following resources: . | / . | /customers . | . | { \"_links\": { \"self: { \"href\": \"/\" }, \"customers\": { \"href\": \"/customers\" }, \"orders\": { \"href\": \"/orders\" } } } . | { \"_items\": [ { \"membershipId\": \"A375\", \"givenName\": \"Pat\", \"familyName\": \"Smith\", \"active\": true, \"_links\": { \"self\": { \"href\": \"/customers/A375\", }, \"edit-form\": { \"href\": \"/customers/A375/edit-form\", }, \"orders\": { \"href\": \"/customers/A375/orders\", }, \"deactivate\": { \"href\": \"/customers/A375/deactivate\", \"_note\": \"PUT to deactivate\" } } }, { \"membershipId\": \"R933\", \"givenName\": \"Darcy\", \"familyName\": \"Jones\", \"active\": false, \"_links\": { \"self\": { \"href\": \"/customers/R933\", }, \"edit-form\": { \"href\": \"/customers/R933/edit-form\", }, \"orders\": { \"href\": \"/customers/R933/orders\", }, \"activate\": { \"href\": \"/customers/R933/activate\", \"_note\": \"PUT to activate\" } } }, ....... ], \"_links\": { \"self\": { \"href\": \"/customers\" }, \"item\": { \"href\": \"/customers/{membershipId}\", \"templated\": true }, \"create-form\": { \"href\": \"/customers/create-form\", } } } . | . | /customers/A375 . | /customers/A375/orders . | . | { \"membershipId\": \"A375\", \"givenName\": \"Pat\", \"familyName\": \"Smith\", \"active\": true, \"_links\": { \"self\": { \"href\": \"/customers/A375\", }, \"edit-form\": { \"href\": \"/customers/A375/edit-form\", }, \"orders\": { \"href\": \"/customers/A375/orders\", }, \"deactivate\": { \"href\": \"/customers/A375/deactivate\", \"_note\": \"PUT to deactivate this member\" } } } . | { \"_items\": [ { \"orderNumber\": \"FK9384\", \"partNumber\": \"009343-12\", \"quantity\": 3, \"_customer_ref\": \"A375\", \"_links\": { \"self\": { \"href\": \"/orders/65fd80549561b2884948c312\", }, \"edit-form\": { \"href\": \"/orders/65fd80549561b2884948c312/edit-form\", }, \"parent\": { \"href\": \"/customers/A375\", }, \"collection\": { \"href\": \"/customers/A375/orders\" } } }, ....... ], \"_links\": { \"self\": { \"href\": \"/customers/A375/orders\" }, \"item\": { \"href\": \"/orders/{id}\", \"templated\": true }, \"create-form\": { \"href\": \"/customers/A375/create-form\", } } } . | . ",
     "url": "/halchemy/basics/examples#sample-api",
     
     "relUrl": "/basics/examples#sample-api"
-  },"13": {
+  },"16": {
     "doc": "GET",
     "title": "GET",
     "content": "Deprecated . Sends a GET request to a URL. This method is typically used once in your client application, to get the root resource. Once you have the root resource and its links, you access the rest of the API by following those links. ",
     "url": "/halchemy/methods/get",
     
     "relUrl": "/methods/get"
-  },"14": {
+  },"17": {
     "doc": "GET",
     "title": "Signature",
     "content": "The method signature for GET is: . | Python | JavaScript | . | get(url: str = '/', headers: dict[str, Any] | None = None) -&gt; JSON . JSON: TypeAlias = dict[str, \"JSON\"] | list[\"JSON\"] | str | int | float | bool | None . | get(url:string = '/', headers = {}): Promise&lt;HalResource | {}&gt; . | . | parameter | description | . | url | the URL or path to the resource you want to GET, defaults to '/' | . | headers | (optional) add to or override the default headers. [learn more] | . | -&gt; returns | the JSON from the payload of the response to this request | . ",
     "url": "/halchemy/methods/get#signature",
     
     "relUrl": "/methods/get#signature"
-  },"15": {
+  },"18": {
     "doc": "GET",
     "title": "Examples",
-    "content": "This is the usual way to use get() - to GET the root resource from which you will follow links to other resources or affordances. | Python | JavaScript | . | from halchemy import Api api = Api('http://example.org/api') root = api.get() # get the root resource . | import { Api } from 'halchemy' async function getRootResource() { const api = new Api('http://example.org/api') const root = await api.get() // get the root resource } . | . This next example is non-standard, but shows what to do if you have multiple roots in multiple locations: . | Python | JavaScript | . | from halchemy import Api api = Api('http://example.org/api') library_root = api.get('/library') art_gallery_root = api.get('/gallery') auto_dealership_root = api.get('https://example.org/dealerships') . | const halchemy = require('halchemy') async function getRootResources() { const api = new Api('http://example.org/api') const libraryRoot = await api.get('/library') const artGalleryRoot = await api.get('/gallery') const autoDealershipRoot = await api.get('https://example.org/dealerships') } . | . ",
+    "content": "This is the usual way to use get() - to GET the root resource from which you will follow links to other resources or affordances. | Python | JavaScript | . | from halchemy import Api api = Api('http://example.org/api') root = api.get() # get the root resource . | import { Api } from 'halchemy' async function getRootResource() { const api = new Api('http://example.org/api') const root = await api.get() // get the root resource } . | . This next example is non-standard, but shows what to do if you have multiple roots in multiple locations: . | Python | JavaScript | . | from halchemy import Api api = Api('http://example.org/api') library_root = api.get('/library') art_gallery_root = api.get('/gallery') auto_dealership_root = api.get('https://example.org/dealerships') . | const {Api} = require('halchemy') async function getRootResources() { const api = new Api('http://example.org/api') const libraryRoot = await api.get('/library') const artGalleryRoot = await api.get('/gallery') const autoDealershipRoot = await api.get('https://example.org/dealerships') } . | . ",
     "url": "/halchemy/methods/get#examples",
     
     "relUrl": "/methods/get#examples"
-  },"16": {
+  },"19": {
     "doc": "GET from rel",
     "title": "GET from rel",
     "content": "Deprecated . Follows a resource’s link by way of its rel and sends a GET request. ",
     "url": "/halchemy/deprecated/methods/get_from_rel",
     
     "relUrl": "/deprecated/methods/get_from_rel"
-  },"17": {
+  },"20": {
     "doc": "GET from rel",
     "title": "Signature",
     "content": "The method signature for GET from rel is: . | Python | JavaScript | . | get_from_rel(resource, rel: str, parameters: dict[str, Any] | None = None, template: dict[str, Any] | None = None, headers: dict[str, Any] | None = None ) -&gt; JSON . JSON: TypeAlias = dict[str, \"JSON\"] | list[\"JSON\"] | str | int | float | bool | None . | getFromRel({resource, rel, parameters = {}, template = {}}: RelSpec, headers = {}): Promise&lt;HalResource | {}&gt; . With JavaScript, the first four paramters are actually members of one parameter of type RelSpec, with each being a member of that object. | . | parameter | description | . | resource | The body of a response from a previous request, in HAL format | . | rel | The name of the link relation this GET request will follow. | . | parameters | (optional) name/value pairs which will be used to create a query string. [learn more] | . | template | (optional) if the link is templated, name/value pairs to fill the template. [learn more] | . | headers | (optional) add to or override the default headers. [learn more] | . | -&gt; returns | the JSON from the payload of the response to this request | . ",
     "url": "/halchemy/deprecated/methods/get_from_rel#signature",
     
     "relUrl": "/deprecated/methods/get_from_rel#signature"
-  },"18": {
+  },"21": {
     "doc": "GET from rel",
     "title": "Examples",
-    "content": "Simple example: . | Python | JavaScript | . | from halchemy import Api api = Api('http://example.org/api') root = api.get() # get the root resource customers = api.get_from_rel(root, 'customers') for customer in customers['_items']: full_name = f\"{customer['givenName']} {customer['familyName']}\" orders = api.get_from_rel(customer, 'orders') order_count = len(orders['_items']) print(f'{full_name} has {order_count} {\"order\" if order_count == 1 else \"orders\"}') . | const halchemy = require('halchemy') async function listCustomers() { const api = new halchemy.Api('http://example.org/api') const root = await api.get() // get the root resource const customers = await api.getFromRel({ resource: root, rel: 'customers' }) for (const customer of customers._items) { const fullName = `${customer.givenName} ${customer.familyName}` const orders = await api.getFromRel({ resource: customer, rel: 'orders' }) const orderCount = orders._items.length console.log(`${fullName} has ${orderCount} ${orderCount == 1? 'order' : 'orders'}`) } } listCustomers() . | . The example is based on an API which serves the following: . | / . | /customers . | . | { \"_links\": { \"self: { \"href\": \"/\" }, \"customers\": { \"href\": \"/customers\" }, \"orders\": { \"href\": \"/orders\" } } } . | { \"_items\": [ { \"membershipId\": \"A375\", \"givenName\": \"Pat\", \"familyName\": \"Smith\", \"active\": true, \"_links\": { \"self\": { \"href\": \"/customers/A375\", }, \"edit-form\": { \"href\": \"/customers/A375/edit-form\", }, \"orders\": { \"href\": \"/customers/A375/orders\", }, \"deactivate\": { \"href\": \"/customers/A375/deactivate\", \"_note\": \"PUT to deactivate\" } } }, { \"membershipId\": \"R933\", \"givenName\": \"Darcy\", \"familyName\": \"Jones\", \"active\": false, \"_links\": { \"self\": { \"href\": \"/customers/R933\", }, \"edit-form\": { \"href\": \"/customers/R933/edit-form\", }, \"orders\": { \"href\": \"/customers/R933/orders\", }, \"activate\": { \"href\": \"/customers/R933/activate\", \"_note\": \"PUT to activate\" } } }, ....... ], \"_links\": { \"self\": { \"href\": \"/customers\" }, \"item\": { \"href\": \"/customers/{membershipId}\", \"templated\": true }, \"create-form\": { \"href\": \"/customers/create-form\", } } } . | . | /customers/A375 . | /customers/A375/orders . | . | { \"membershipId\": \"A375\", \"givenName\": \"Pat\", \"familyName\": \"Smith\", \"active\": true, \"_links\": { \"self\": { \"href\": \"/customers/A375\", }, \"edit-form\": { \"href\": \"/customers/A375/edit-form\", }, \"orders\": { \"href\": \"/customers/A375/orders\", }, \"deactivate\": { \"href\": \"/customers/A375/deactivate\", \"_note\": \"PUT to deactivate this member\" } } } . | { \"_items\": [ { \"orderNumber\": \"FK9384\", \"partNumber\": \"009343-12\", \"quantity\": 3, \"_customer_ref\": \"A375\", \"_links\": { \"self\": { \"href\": \"/orders/65fd80549561b2884948c312\", }, \"edit-form\": { \"href\": \"/orders/65fd80549561b2884948c312/edit-form\", }, \"parent\": { \"href\": \"/customers/A375\", }, \"collection\": { \"href\": \"/customers/A375/orders\" } } }, ....... ], \"_links\": { \"self\": { \"href\": \"/customers/A375/orders\" }, \"item\": { \"href\": \"/orders/{id}\", \"templated\": true }, \"create-form\": { \"href\": \"/customers/A375/create-form\", } } } . | . ",
+    "content": "Simple example: . | Python | JavaScript | . | from halchemy import Api api = Api('http://example.org/api') root = api.get() # get the root resource customers = api.get_from_rel(root, 'customers') for customer in customers['_items']: full_name = f\"{customer['givenName']} {customer['familyName']}\" orders = api.get_from_rel(customer, 'orders') order_count = len(orders['_items']) print(f'{full_name} has {order_count} {\"order\" if order_count == 1 else \"orders\"}') . | const {Api} = require('halchemy') async function listCustomers() { const api = new Api('http://example.org/api') const root = await api.get() // get the root resource const customers = await api.getFromRel({ resource: root, rel: 'customers' }) for (const customer of customers._items) { const fullName = `${customer.givenName} ${customer.familyName}` const orders = await api.getFromRel({ resource: customer, rel: 'orders' }) const orderCount = orders._items.length console.log(`${fullName} has ${orderCount} ${orderCount == 1? 'order' : 'orders'}`) } } listCustomers() . | . The example is based on an API which serves the following: . | / . | /customers . | . | { \"_links\": { \"self: { \"href\": \"/\" }, \"customers\": { \"href\": \"/customers\" }, \"orders\": { \"href\": \"/orders\" } } } . | { \"_items\": [ { \"membershipId\": \"A375\", \"givenName\": \"Pat\", \"familyName\": \"Smith\", \"active\": true, \"_links\": { \"self\": { \"href\": \"/customers/A375\", }, \"edit-form\": { \"href\": \"/customers/A375/edit-form\", }, \"orders\": { \"href\": \"/customers/A375/orders\", }, \"deactivate\": { \"href\": \"/customers/A375/deactivate\", \"_note\": \"PUT to deactivate\" } } }, { \"membershipId\": \"R933\", \"givenName\": \"Darcy\", \"familyName\": \"Jones\", \"active\": false, \"_links\": { \"self\": { \"href\": \"/customers/R933\", }, \"edit-form\": { \"href\": \"/customers/R933/edit-form\", }, \"orders\": { \"href\": \"/customers/R933/orders\", }, \"activate\": { \"href\": \"/customers/R933/activate\", \"_note\": \"PUT to activate\" } } }, ....... ], \"_links\": { \"self\": { \"href\": \"/customers\" }, \"item\": { \"href\": \"/customers/{membershipId}\", \"templated\": true }, \"create-form\": { \"href\": \"/customers/create-form\", } } } . | . | /customers/A375 . | /customers/A375/orders . | . | { \"membershipId\": \"A375\", \"givenName\": \"Pat\", \"familyName\": \"Smith\", \"active\": true, \"_links\": { \"self\": { \"href\": \"/customers/A375\", }, \"edit-form\": { \"href\": \"/customers/A375/edit-form\", }, \"orders\": { \"href\": \"/customers/A375/orders\", }, \"deactivate\": { \"href\": \"/customers/A375/deactivate\", \"_note\": \"PUT to deactivate this member\" } } } . | { \"_items\": [ { \"orderNumber\": \"FK9384\", \"partNumber\": \"009343-12\", \"quantity\": 3, \"_customer_ref\": \"A375\", \"_links\": { \"self\": { \"href\": \"/orders/65fd80549561b2884948c312\", }, \"edit-form\": { \"href\": \"/orders/65fd80549561b2884948c312/edit-form\", }, \"parent\": { \"href\": \"/customers/A375\", }, \"collection\": { \"href\": \"/customers/A375/orders\" } } }, ....... ], \"_links\": { \"self\": { \"href\": \"/customers/A375/orders\" }, \"item\": { \"href\": \"/orders/{id}\", \"templated\": true }, \"create-form\": { \"href\": \"/customers/A375/create-form\", } } } . | . ",
     "url": "/halchemy/deprecated/methods/get_from_rel#examples",
     
     "relUrl": "/deprecated/methods/get_from_rel#examples"
-  },"19": {
+  },"22": {
     "doc": "GET from rel with lookup",
     "title": "GET from rel with lookup",
     "content": "Deprecated . Identical to GET from rel, but uses an implicit URL template - if the API is so configured. This method is seldom used, and was only created here to take advantage of hypermea’s “additional lookup” field. It allows a resource in the API to designate one field that can be used to lookup an item. It requires the client know which field is so designated, and thus violates strict adherence to the “no out of band knowledge” constraint. NOTE: only GET can use the implicit template of a lookup field. If you need to send a different request, follow the self rel (e.g. patch_resource(the_resource, 'self'). ",
     "url": "/halchemy/deprecated/methods/get_from_rel_with_lookup",
     
     "relUrl": "/deprecated/methods/get_from_rel_with_lookup"
-  },"20": {
+  },"23": {
     "doc": "GET from rel with lookup",
     "title": "Signature",
     "content": "The method signature for GET from rel with lookup is: . | Python | JavaScript | . | get_from_rel_with_lookup(resource, rel: str, lookup: str, parameters: dict[str, Any] | None = None, template: dict[str, Any] | None = None, headers: dict[str, Any] | None = None ) -&gt; JSON . JSON: TypeAlias = dict[str, \"JSON\"] | list[\"JSON\"] | str | int | float | bool | None . | getFromRelWithLookup({resource, rel, parameters = {}, template = {}}: RelSpec, lookup: string, headers = {}): Promise&lt;HalResource | {}&gt; . With JavaScript, the first four paramters are actually members of one parameter of type RelSpec, with each being a member of that object. | . | parameter | description | . | resource | The body of a response from a previous request, in HAL format | . | rel | The name of the link relation this GET request will follow. If not supplied, the default is self | . | parameters | (optional) name/value pairs which will be used to create a query string. [learn more] | . | template | (optional) if the link is templated, name/value pairs to fill the template. [learn more] | . | lookup | The value of the “additional lookup” field to GET | . | headers | (optional) add to or override the default headers. [learn more] | . | -&gt; returns | the JSON from the payload of the response to this request | . ",
     "url": "/halchemy/deprecated/methods/get_from_rel_with_lookup#signature",
     
     "relUrl": "/deprecated/methods/get_from_rel_with_lookup#signature"
-  },"21": {
+  },"24": {
     "doc": "GET from rel with lookup",
     "title": "Examples",
-    "content": "Simple example: . | Python | JavaScript | . | from halchemy import Api api = Api('http://example.org/api') root = api.get() # get the root resource customer = api.get_from_rel_with_lookup(root, 'customers', 'A375') print(f\"{customer['givenName']} {customer['familyName']} is {'active' if customer['active'] else 'inactive'}\") . | const halchemy = require('halchemy') async function listMember(membershipId) { const api = new halchemy.Api('http://example.org/api') const root = await api.get() // get the root resource const customer = await api.getFromRelWithLookup({ resource: root, rel: 'customers' }, membershipId ) console.log(`${customer.givenName} ${customer.familyName} is ${customer.active? 'active' : 'inactive'}`) } listMember('A375') . | . The example is based on an API which serves the following: . | / . | /customers . | . | { \"_links\": { \"self: { \"href\": \"/\" }, \"customers\": { \"href\": \"/customers\" }, \"orders\": { \"href\": \"/orders\" } } } . | { \"_items\": [ { \"membershipId\": \"A375\", \"givenName\": \"Pat\", \"familyName\": \"Smith\", \"active\": true, \"_links\": { \"self\": { \"href\": \"/customers/A375\", }, \"edit-form\": { \"href\": \"/customers/A375/edit-form\", }, \"orders\": { \"href\": \"/customers/A375/orders\", }, \"deactivate\": { \"href\": \"/customers/A375/deactivate\", \"_note\": \"PUT to deactivate\" } } }, { \"membershipId\": \"R933\", \"givenName\": \"Darcy\", \"familyName\": \"Jones\", \"active\": false, \"_links\": { \"self\": { \"href\": \"/customers/R933\", }, \"edit-form\": { \"href\": \"/customers/R933/edit-form\", }, \"orders\": { \"href\": \"/customers/R933/orders\", }, \"activate\": { \"href\": \"/customers/R933/activate\", \"_note\": \"PUT to activate\" } } }, ....... ], \"_links\": { \"self\": { \"href\": \"/customers\" }, \"item\": { \"href\": \"/customers/{membershipId}\", \"templated\": true }, \"create-form\": { \"href\": \"/customers/create-form\", } } } . | . | /customers/A375 . | /customers/A375/orders . | . | { \"membershipId\": \"A375\", \"givenName\": \"Pat\", \"familyName\": \"Smith\", \"active\": true, \"_links\": { \"self\": { \"href\": \"/customers/A375\", }, \"edit-form\": { \"href\": \"/customers/A375/edit-form\", }, \"orders\": { \"href\": \"/customers/A375/orders\", }, \"deactivate\": { \"href\": \"/customers/A375/deactivate\", \"_note\": \"PUT to deactivate this member\" } } } . | { \"_items\": [ { \"orderNumber\": \"FK9384\", \"partNumber\": \"009343-12\", \"quantity\": 3, \"_customer_ref\": \"A375\", \"_links\": { \"self\": { \"href\": \"/orders/65fd80549561b2884948c312\", }, \"edit-form\": { \"href\": \"/orders/65fd80549561b2884948c312/edit-form\", }, \"parent\": { \"href\": \"/customers/A375\", }, \"collection\": { \"href\": \"/customers/A375/orders\" } } }, ....... ], \"_links\": { \"self\": { \"href\": \"/customers/A375/orders\" }, \"item\": { \"href\": \"/orders/{id}\", \"templated\": true }, \"create-form\": { \"href\": \"/customers/A375/create-form\", } } } . | . ",
+    "content": "Simple example: . | Python | JavaScript | . | from halchemy import Api api = Api('http://example.org/api') root = api.get() # get the root resource customer = api.get_from_rel_with_lookup(root, 'customers', 'A375') print(f\"{customer['givenName']} {customer['familyName']} is {'active' if customer['active'] else 'inactive'}\") . | const {Api} = require('halchemy') async function listMember(membershipId) { const api = new Api('http://example.org/api') const root = await api.get() // get the root resource const customer = await api.getFromRelWithLookup({ resource: root, rel: 'customers' }, membershipId ) console.log(`${customer.givenName} ${customer.familyName} is ${customer.active? 'active' : 'inactive'}`) } listMember('A375') . | . The example is based on an API which serves the following: . | / . | /customers . | . | { \"_links\": { \"self: { \"href\": \"/\" }, \"customers\": { \"href\": \"/customers\" }, \"orders\": { \"href\": \"/orders\" } } } . | { \"_items\": [ { \"membershipId\": \"A375\", \"givenName\": \"Pat\", \"familyName\": \"Smith\", \"active\": true, \"_links\": { \"self\": { \"href\": \"/customers/A375\", }, \"edit-form\": { \"href\": \"/customers/A375/edit-form\", }, \"orders\": { \"href\": \"/customers/A375/orders\", }, \"deactivate\": { \"href\": \"/customers/A375/deactivate\", \"_note\": \"PUT to deactivate\" } } }, { \"membershipId\": \"R933\", \"givenName\": \"Darcy\", \"familyName\": \"Jones\", \"active\": false, \"_links\": { \"self\": { \"href\": \"/customers/R933\", }, \"edit-form\": { \"href\": \"/customers/R933/edit-form\", }, \"orders\": { \"href\": \"/customers/R933/orders\", }, \"activate\": { \"href\": \"/customers/R933/activate\", \"_note\": \"PUT to activate\" } } }, ....... ], \"_links\": { \"self\": { \"href\": \"/customers\" }, \"item\": { \"href\": \"/customers/{membershipId}\", \"templated\": true }, \"create-form\": { \"href\": \"/customers/create-form\", } } } . | . | /customers/A375 . | /customers/A375/orders . | . | { \"membershipId\": \"A375\", \"givenName\": \"Pat\", \"familyName\": \"Smith\", \"active\": true, \"_links\": { \"self\": { \"href\": \"/customers/A375\", }, \"edit-form\": { \"href\": \"/customers/A375/edit-form\", }, \"orders\": { \"href\": \"/customers/A375/orders\", }, \"deactivate\": { \"href\": \"/customers/A375/deactivate\", \"_note\": \"PUT to deactivate this member\" } } } . | { \"_items\": [ { \"orderNumber\": \"FK9384\", \"partNumber\": \"009343-12\", \"quantity\": 3, \"_customer_ref\": \"A375\", \"_links\": { \"self\": { \"href\": \"/orders/65fd80549561b2884948c312\", }, \"edit-form\": { \"href\": \"/orders/65fd80549561b2884948c312/edit-form\", }, \"parent\": { \"href\": \"/customers/A375\", }, \"collection\": { \"href\": \"/customers/A375/orders\" } } }, ....... ], \"_links\": { \"self\": { \"href\": \"/customers/A375/orders\" }, \"item\": { \"href\": \"/orders/{id}\", \"templated\": true }, \"create-form\": { \"href\": \"/customers/A375/create-form\", } } } . | . ",
     "url": "/halchemy/deprecated/methods/get_from_rel_with_lookup#examples",
     
     "relUrl": "/deprecated/methods/get_from_rel_with_lookup#examples"
-  },"22": {
+  },"25": {
     "doc": "Request Headers",
     "title": "Request Headers",
     "content": "Deprecated . There are two ways to supply headers with your http requests: . | default headers | per request headers (overriding defaults) | . ",
     "url": "/halchemy/deprecated/headers",
     
     "relUrl": "/deprecated/headers"
-  },"23": {
+  },"26": {
     "doc": "Request Headers",
     "title": "Default Headers",
-    "content": "All requests sent by the Api object include default headers. Some are built-in and you can add/override these defaults. Built-in . There are two built-in default headers provided by halchemy: . Content-type': 'application/json' Authorization': 'Basic cm9vdDpwYXNzd29yZA== . The Authorization header’s token is the base-64 encoded string root:password, i.e. the client will attempt to access the resource using user name root and the password password using Basic Authentication (RFC7617). If your API does not require authorizaiton, this header will, of course, be ignored. Add/override default headers . When you create the Api object, you can supply additional headers, and/or override the built-in ones. | Python | JavaScript | . | from halchemy import Api api = Api('http://example.org/api', headers={ 'Cache-Control': 'no-cache', 'Accept': 'application/json', 'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c' }) . | const halchemy = require('halchemy') const api = new Api('http://example.org/api', headers={ 'Cache-Control': 'no-cache', 'Accept': 'application/json', 'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c' }) . | . ",
+    "content": "All requests sent by the Api object include default headers. Some are built-in and you can add/override these defaults. Built-in . There are two built-in default headers provided by halchemy: . Content-type': 'application/json' Authorization': 'Basic cm9vdDpwYXNzd29yZA== . The Authorization header’s token is the base-64 encoded string root:password, i.e. the client will attempt to access the resource using user name root and the password password using Basic Authentication (RFC7617). If your API does not require authorizaiton, this header will, of course, be ignored. Add/override default headers . When you create the Api object, you can supply additional headers, and/or override the built-in ones. | Python | JavaScript | . | from halchemy import Api api = Api('http://example.org/api', headers={ 'Cache-Control': 'no-cache', 'Accept': 'application/json', 'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c' }) . | const {Api} = require('halchemy') const api = new Api('http://example.org/api', headers={ 'Cache-Control': 'no-cache', 'Accept': 'application/json', 'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c' }) . | . ",
     "url": "/halchemy/deprecated/headers#default-headers",
     
     "relUrl": "/deprecated/headers#default-headers"
-  },"24": {
+  },"27": {
     "doc": "Request Headers",
     "title": "Per Request Headers",
-    "content": "Each request method accepts a headers object which, if supplied, will add to or override the default headers for this one call only. | Python | JavaScript | . | from halchemy import Api api = Api('http://example.org/api', headers={'Accept': 'application/json'}) root = api.get() xml_resource = api.get_from_rel(root, 'some-xml', headers={'Accept: application/xml'}) . | const halchemy = require('halchemy') const api = new Api('http://example.org/api', headers={'Accept': 'application/json'}) const root = api.get() const xmlResource = await api.getFromRel({resource: root, rel: 'some-xml'}, headers={'Accept': 'application/xml'}) . | . ",
+    "content": "Each request method accepts a headers object which, if supplied, will add to or override the default headers for this one call only. | Python | JavaScript | . | from halchemy import Api api = Api('http://example.org/api', headers={'Accept': 'application/json'}) root = api.get() xml_resource = api.get_from_rel(root, 'some-xml', headers={'Accept: application/xml'}) . | const {Api} = require('halchemy') const api = new Api('http://example.org/api', headers={'Accept': 'application/json'}) const root = api.get() const xmlResource = await api.getFromRel({resource: root, rel: 'some-xml'}, headers={'Accept': 'application/xml'}) . | . ",
     "url": "/halchemy/deprecated/headers#per-request-headers",
     
     "relUrl": "/deprecated/headers#per-request-headers"
-  },"25": {
+  },"28": {
     "doc": "The Basics",
     "title": "The Basics",
     "content": "Imagine a resource on the internet whose URL is https://example.com/people/alice. An HTTP GET request to that URL, with an Accept header of application/json, receives a response like this: . { \"name\": \"Alice Liddel\", \"age\": 7, \"address\": \"London, England\" } . A GET request to the same URL with an Accept header of image/jpeg receives a image representation of the same Person. When a representation of a resource contains links, we call the media type of that representation “hypermedia”. The type of hypermedia that halchemy works with is HAL - an enrichment of JSON to include links to other resources. halchemy is a library that makes it easy to work with HAL representations. ",
     "url": "/halchemy/basics/",
     
     "relUrl": "/basics/"
-  },"26": {
+  },"29": {
     "doc": "Optimistic Concurrency",
     "title": "Optimistic Concurrency",
-    "content": "Optimistic concurrency stuff goes here. ",
+    "content": "Between the time you GET a resource then make a request which would change it (PUT, PATCH, DELETE), the resource might have been changed by someone else. Without some mechanism in place, this means multiple concurrent users would step on each others toes, overwriting each other’s changes without knowing. A mechanism to protect against this, used by many APIs, is “optimistic concurrency”. This means optimistically assuming no one else has concurrently changed the resource since your GET request, - hence the term. If someone has changed the resource in the meantime, the server rejects the newer change with a 412 Precondition Failed response. | Python | JavaScript | . | customer = api.follow(customers).to('item').with_template_values({'membershipId': 'A375'}).get() customer = api.follow(customer).to('self').patch({'givenName': 'Leslie'}) if customer._halchemy.response.status_code == 412: print(f'Someone else has changed customer #{customer[\"membershipId\"]}.') print('Please refresh to see the changes, then try again if necessary.') . | let customer = await api.follow(customers) .to('item') .withTemplateValues({'membershipId': 'A375'}) .get() customer = await api.follow(customer).to('self').patch({'givenName': 'Leslie'}) if (customer._halchemy.response.status === 412) { console.log(`Someone else has changed customer #${customer[\"membershipId\"]}.`) console.log('Please refresh to see the changes, then try again if necessary.') } . | . ",
     "url": "/halchemy/concurrency/",
     
     "relUrl": "/concurrency/"
-  },"27": {
+  },"30": {
+    "doc": "Optimistic Concurrency",
+    "title": "How it works",
+    "content": ". | You GET a resource and receive its current state. | The resource will have an ETag which is a unique identifier for the resource’s current state. | When you make a request to change the resource, you include the header If-Match with the ETag value. | If the ETag matches, the server will apply the change and return a 200 OK response. | If the resource has been changed by someone else, the server will return a 412 Precondition Failed response. | . What happens in the event of a 412 Precondition Failed response is up to you. You could: . | Inform the user that the resource has been changed and ask them to refresh the page. | Automatically refresh the resource and apply the change again. | Merge the changes together. | Reject the change. | Ask the user to resolve the conflict. | etc. | . ",
+    "url": "/halchemy/concurrency/#how-it-works",
+    
+    "relUrl": "/concurrency/#how-it-works"
+  },"31": {
+    "doc": "Optimistic Concurrency",
+    "title": "How halchemy helps",
+    "content": "Halchemy automates steps 2. and 3. When you follow a resource to self to make a change request (PUT, PATCH, DELETE), halchemy automatically puts the ETag in the request’s If-Match header. Usually the Etag comes from the response’s ETag header, and halchemy looks there first. Some APIs include the ETag in one of the resource’s fields. If halchemy does not find the ETag header, it looks next for a field named _etag. You can change the name of the field halchemy looks for by setting the “etag field” in the Api object. See Configuration for more information on configuring halchemy. ",
+    "url": "/halchemy/concurrency/#how-halchemy-helps",
+    
+    "relUrl": "/concurrency/#how-halchemy-helps"
+  },"32": {
     "doc": "Configuration",
     "title": "Configuration",
-    "content": "Configuration stuff goes here . ",
+    "content": "Halchemy takes a batteries-included approach to configuration. It starts with sensible defaults, and allows you to configure everything the way you like. This page outlines the settings you can change, and the various ways you can change them. | Configuration Settings . | Default Headers | Default Error Handling | . | Changing Configuration Settings . | Configuration File | Configuration Properties | . | . ",
     "url": "/halchemy/configuration/",
     
     "relUrl": "/configuration/"
-  },"28": {
+  },"33": {
+    "doc": "Configuration",
+    "title": "Configuration Settings",
+    "content": "The Api object gives you the following settings: . | Setting | Description | Default | . | base_url baseUrl | The base URL to the API you are working with. This default matches the default URL for a hypermea API running locally | http://localhost:2112 | . | parameters_list_style parametersListStyle | When creating a query string, this setting determines how lists are serialzied. The options are:repeat_key, bracket, index, comma, pipeSee Query String Parameters for more details. | repeat_key | . | etag_field etagField | This is the field used to populate If-Match on a change request if ETag header is missing. This default is tuned for use with a hypermea API.See Optimistic Concurrency for more details. | _etag | . | headers | A set of default headers to include with each request. You can use this API property directly, and there are helper functions too.See Request Headers for more details. | (details below) | . | error_handling errorHandling | Determines when exceptions are thrown/raised. There are two properties: raise_for_network_errors raise_for_status_codes——raiseForNetworkErrors raiseForStatusCodes | (details below) | . Default Headers . These are the headers that by default are sent with every request: . Content-type: application/json Accept: application/hal+json, application/json;q=0.9, */*;q=0.8 Authorization: Basic cm9vdDpwYXNzd29yZA== . See the Request Headers page for more details. Default Error Handling . There are two settings for “error handling”. Here are their defaults: . | Python | JavaScript | . | from halchemy import Api api = Api('http://example.org/api') print(api.error_handling.raise_on_network_failure) # True print(api.error_handling.raise_on_status_codes) # None . | const {Api} = require('halchemy') const api = new Api('http://example.org/api') console.log(api.errorHandling.raiseOnNetworkFailure) // true console.log(api.errorHandling.raiseOnStatusCodes) // null . | . See the Handling Errors page for more details. ",
+    "url": "/halchemy/configuration/#configuration-settings",
+    
+    "relUrl": "/configuration/#configuration-settings"
+  },"34": {
+    "doc": "Configuration",
+    "title": "Changing Configuration Settings",
+    "content": "There are several ways to change the values of the settings listed above: . | Place a file named .halchemy in your home directory. | Place a file named .halchemy in your project’s root directory. | When creating an Api object, pass the “base URL” and “headers” as arguments. | After creating an Api object, use properties to change the settings. | When making a request, you can add headers to just that request. | . Each of these ways is overriden by the next. That is, a value in your home directory’s .halchemy file will be overriden if that value is in the .halchemy file in your project’s root directory, and so on down the list. Configuration File . The .halchemy file follows the format of any INI file as follows (each section and each value is optional): . [halchemy] base_url = http://example.org/api parameters_list_style = index etag_field = _etag [headers] Cache-control = no-cache Accept-Language = en-CA,en;q=0.9,fr-CA;q=0.5,fr;q=0.3 [error_handling] raise_on_network_failure = False raise_on_status_codes = 400-403, &gt;404 . NOTES: . | all section names and settings names are in snake_case, no matter what language you are using. | any headers you set this way are merged with the default headers. To remove a default header you must use the Api’s “remove headers” function (see Request Headers for more details). | . Configuration Properties . Here is how you can change a settings after creating an Api object, using the “base url” setting as an example: . | Python | JavaScript | . | from halchemy import Api api = Api() print(api.base_url) # http://localhost:2112 api.base_url = 'http://example.org/api' print(api.base_url) # http://example.org/api . | const {Api} = require('halchemy') api = new Api() console.log(api.baseUrl) // http://localhost:2112 api.baseUrl = 'http://example.org/api' console.log(api.baseUrl) // http://example.org/api . | . ",
+    "url": "/halchemy/configuration/#changing-configuration-settings",
+    
+    "relUrl": "/configuration/#changing-configuration-settings"
+  },"35": {
     "doc": "Methods",
     "title": "Methods",
     "content": "Deprecated . Here are the methods available from an Api object: . ",
     "url": "/halchemy/deprecated/methods/",
     
     "relUrl": "/deprecated/methods/"
-  },"29": {
+  },"36": {
     "doc": "Deprecated API",
     "title": "Deprecated API",
-    "content": "Deprecated . The early versions of halchemy used a more traditional API. However, as more flexibility and options were added, that API started to become unweildly. The preferred API now is the fluent approach. These deprecated methods will continue to live in halchemy for a while, but will not be modified. Please move your client code to the fluent API. ",
+    "content": "Deprecated . The early versions of halchemy used a more traditional API. However, as more flexibility and options were added, that API started to become unwieldy. The preferred API now is the fluent approach. The last version of halchemy that has the deprecated methods is 0.9.3. If you must use the deprecated API, you can install that version with: . | Python | JavaScript | . | pip install halchemy==0.9.3 . | npm install halchemy@0.9.3 . | . ",
     "url": "/halchemy/deprecated/",
     
     "relUrl": "/deprecated/"
-  },"30": {
+  },"37": {
+    "doc": "Handling Errors",
+    "title": "Handling Errors",
+    "content": "When you make a request to the API there is a possibility the it will not succeed. There are, generally speaking, two ways in which things could go wrong: . | The request did not receive a response (network error) | The request received a response, but the response was not what you were expecting (status code error) | . By default, halchemy will raise an exception in the event of network errors. When the API responses with a status code you were not expecting, halchemy assumes the request/response was successful and lets you decide how to handle a non 2xx status code. | Default configuration . | Network errors | Status Codes | . | Per call raise for status code | . ",
+    "url": "/halchemy/errors/",
+    
+    "relUrl": "/errors/"
+  },"38": {
+    "doc": "Handling Errors",
+    "title": "Default configuration",
+    "content": "You can change this default behaviour: There are two settings you can change to control how errors are handled. Network errors . When there is a network error, your request did not receive a response. By default, halchemy will raise an exception in this case. You change by setting “raise on network failure” to false. Now, when there is a network error, halchemy will not raise an exception. You can check for this by looking at resource._halchemy.error . | Python | JavaScript | . | from halchemy import Api api = Api('http://non-existent-server') api.error_handling.raise_on_network_failure = False resource = api.root.get() if resource._halchemy.error: print('a network error occurred') . | const {Api} = require('halchemy') const api = new Api('http://non-existent-server') api.errorHandling.raiseOnNetworkFailure = false const resource = api.root.get() if (resource._halchemy.error) { console.log('a network error occurred') } . | . Status Codes . By default, if the API successfully receives the request and successfully delivers a response, that is considered a success - even if the status code of the response is not what your code is expecting. Most HTTP libraries behave this way, but some (like Axios) will throw an exception if the status code is not 2xx. You can decide, however, which status codes you want halchemy to consider as errors and thus raise an exception. You do this by setting the “raise on status codes” to indicate which status codes are errors. To indicate a set of status codes, use a combination of ranges, individual status codes, and greater-than/less-than symbols. A common problem with those HTTP libraries which throw on non 2xx is if you are performing a search and you know there may be no results (i.e. a status code of 404) you may not want to have the request throw an exception - but you do want to for all other non-2xx codes. Here is how you can tell halchemy this is what you want: . | Python | JavaScript | . | from halchemy import Api api = Api('http://example.org/api') api.error_handling.raise_on_status_codes = '400-403, &gt;404' root = api.root.get() try: resource = api.follow(root).to('search').get() if resource._halchemy.response.status_code == 404: print('no results found') else: print('results found', resource) except Exception as e: print('an error occurred', e) . | const {Api} = require('halchemy') const api = new Api('http://example.org/api') api.errorHandling.raiseOnStatusCodes = '400-403, &gt;404' const root = api.root.get() try { resource = api.follow(root).to('search').get() if (resource._halchemy.response.status_code == 404) { console.log('no results found') } else { console.log('results found', resource) } } catch (e) { console.log('an error occurred', e) } . | . NOTE: the commas separating the parts of your status code set are optional. You can use them for readability, but they are not required. ",
+    "url": "/halchemy/errors/#default-configuration",
+    
+    "relUrl": "/errors/#default-configuration"
+  },"39": {
+    "doc": "Handling Errors",
+    "title": "Per call raise for status code",
+    "content": "In addition to setting the default status codes halchemy will raise exceptions for, you can also manually raise exceptions for specific status codes on a per-call basis. After your request, you can call “raise for status codes”, indicating which status codes should cause an exception. | Python | JavaScript | . | customer = api.follow(customers).to('item').with_template_values({'membershipId': 'A375'}).get() customer._halchemy.raise_for_status_codes('400-403, &gt;404') # if we make it here, we know the status code is not 400-403 or 405 or above, but might be 404 if customer._halchemy.response.status_code == 404: print('no results found') else: print('results found', customer) . | const customer = await api.follow(customers) .to('item') .withTemplateValues({'membershipId': 'A375'}) .get() customer._halchemy.raiseForStatusCodes('400-403, &gt;404') // if we make it here, we know the status code is not 400-403 or 405 or above, but might be 404 if (customer._halchemy.response.status === 404) { console.log('no results found') } else { console.log('results found', customer) } . | . ",
+    "url": "/halchemy/errors/#per-call-raise-for-status-code",
+    
+    "relUrl": "/errors/#per-call-raise-for-status-code"
+  },"40": {
     "doc": "Request Headers",
     "title": "Request Headers",
-    "content": "Headers stuff goes here . ",
+    "content": "Setting request headers is an important part of working with APIs. Halchemy makes it easy to set the right headers for each request to your API. The headers that are sent with your request come from: . | The default headers that come out-of-the-box with halchemy | Headers specified in the .halchemy in your home directory | Headers specified in the .halchemy in your project’s root directory | Headers passed to the constructor when creating an Api object | Headers set on the Api object after it is created | Headers set on the request itself | . The headers are merged in the order listed above. That is, if the same header is specified in more than one place, the value of the one lower down the list is used, otherwise it is added to the set of headers sent. Numbers 1-5 set default headers and number 6 sets per request headers. The names of all headers managed by halchemy are case-insensitive. That is, Content-Type is the same as content-type. This is handled by halchemy, so you don’t have to worry about the case of headers you specify. ",
     "url": "/halchemy/headers/",
     
     "relUrl": "/headers/"
-  },"31": {
+  },"41": {
     "doc": "Query String Parameters",
     "title": "Query String Parameters",
-    "content": "Parameters stuff goes here . ",
+    "content": "When you need to add a query string to the URL of a request, halchemy makes it easy. You use the “with parameters” method. This method takes a dictionary/object of parameters and their values. Here are some examples: . | Python | JavaScript | . | root = api.root.get() # get the first page of customers, 100 per page customers = api.follow(root).to('customers').with_parameters({'max_results':100,'page':1}).get() # adds ?max_results=100&amp;page=1 to the URL . | const root = await api.root.get() // get the first page of customers, 100 per page let customers = await api.follow(root) .to('customers') .withParameters({ max_results: 100, page: 1 }) .get() // adds ?max_results=100&amp;page=1 to the URL . | . ",
     "url": "/halchemy/parameters/",
     
     "relUrl": "/parameters/"
-  },"32": {
+  },"42": {
+    "doc": "Query String Parameters",
+    "title": "Table of Examples",
+    "content": "Here is a list of parameter examples: the dictionary/object you pass to “with parameters” and the query string that is added to the URL. | Parameters | Query String | Comments | . | {\"name\":\"John\"} . | name=John . | | . | {\"age\": 50} . | age=50 . | | . | {\"name\":\"John Doe\"} . | name=John+Doe . | HTML forms notation for spaces in simple strings (i.e. plus sign for spaces). | . | { \"name\":\"John\", \"address\":\"123 Main St\", \"age\":50 } . | name=John&amp;address=123+Main+St&amp;age=50 . | | . | {\"pretty\":null} . | pretty . | A name without a value. | . | {\"pretty\":true} . | pretty=true . | | . | {\"list\":[\"a\",\"b\",\"c\"]} . | list=a&amp;list=b&amp;list=c . | A value that is a list. See below for how to configure serializing such lists. | . | { \"name\":\"John\", \"address\": { \"street\":\"10 Main\", \"city\":\"York\" } } . | name=John&amp;address.street=10+Main &amp;address.city=York . | Nested objects (i.e. address in this case). Uses dot notation for each field. | . | {\"where\":\"{\\\"account\\\":\\\"1234\\\"}\"} . | where=%7B%22account%22%3A%221234%22%7D . | Sending an object as a string - i.e. wrap it in quotes. | . | {\"percent\":\"100%\"} . | percent=100%25 . | The reserved character is urlencoded to %25. | . | {\"special\":\"$&amp;+,/:;=?@\"} . | special=%24%26%2B%2C%2F%3A%3B%3D%3F%40 . | All special characters are urlencoded. | . | { \"emoji\":\"😀\", \"chinese\":\"中文\" } . | emoji=%F0%9F%98%80 &amp;chinese=%E4%B8%AD%E6%96%87 . | You can include Unicode in your parameters values. | . ",
+    "url": "/halchemy/parameters/#table-of-examples",
+    
+    "relUrl": "/parameters/#table-of-examples"
+  },"43": {
+    "doc": "Query String Parameters",
+    "title": "Parameters List Styles",
+    "content": "If you want to pass a list/array as a query string parameter, there is no universally accepted way to do this. By default, halchemy will serialize the list as multiple parameters with the same name. For example, {\"list\":[\"a\",\"b\",\"c\"]} will be serialized as list=a&amp;list=b&amp;list=c. You can change how lists are serialized by setting the parameters list style. | Python | JavaScript | . | api.parameters_list_style = 'comma' . | api.parameterslistStyle = 'comma' . | . Given this parameters object: {\"list\":[\"a\",\"b\",\"c\"]}, each parameters list style serializes it to the query string as follows: . | Style | Query String | . | repeat_key (default) | list=a&amp;list=b&amp;list=c | . | bracket | list[]=a&amp;list[]=b&amp;list[]=c | . | index | list[0]=a&amp;list[1]=b&amp;list[2]=c | . | comma | list=a,b,c | . | pipe | list=a\\|b\\|c | . ",
+    "url": "/halchemy/parameters/#parameters-list-styles",
+    
+    "relUrl": "/parameters/#parameters-list-styles"
+  },"44": {
     "doc": "Templated Links",
     "title": "Templated Links",
-    "content": "Templated links stuff goes here . ",
+    "content": "One of the features of HAL is the ability to use templated links. These are links whose href has one or more placeholders that you can fill in with values. For example, an orders collection resource may have the following links: . { \"_links\": { \"self\": { \"href\": \"/orders\" }, \"item\": { \"href\": \"/orders/{order_number}\", \"templated\": true } } } . With halchemy you supply values for the template placeholders using “with template values”: . | Python | JavaScript | . | order = api.follow('orders').to('item').with_template_values({'order_number': 'XH123'}).get() . | const order = await api.follow('orders') .to('item') .withTemplateValues({order_number: 'XH123'}) .get(); . | . If you do not supply a value for a template placeholder, the placeholder is simply removed. The syntax for templated links is specified in RFC 6570 and is very expressive. Here are some sample templates, and what the URL looks like when filled with these values: . | Templated URL | Values | Resulting URL | . | /path/{foo} . | {\"foo\":\"321\"} . | /path/321 . | . | /has/{foo}/multiples/{bar} . | { \"foo\":\"value\", \"bar\":\"value\" } . | /has/value/multiples/value . | . | /orders{?id} . | {\"id\":\"123\"} . | /orders?id=123 . | . | /search{?query,type} . | { \"query\":\"hal\", \"type\":\"specification\" } . | /search?query=hal&amp;type=specification . | . | /items/{itemId}{?lang,format} . | { \"itemId\":\"42\", \"lang\":\"en\", \"format\":\"json\" } . | /items/42?lang=en&amp;format=json . | . | /country/{countryCode}/cities{?page,limit} . | { \"countryCode\":\"US\", \"page\":\"1\", \"limit\":\"10\" } . | /country/US/cities?page=1&amp;limit=10 . | . | /profile/{userId}{?fields} . | { \"userId\":\"789\", \"fields\":\"name,age\" } . | /profile/789?fields=name%2Cage . | . | /search{?keys*} . | { \"keys\": { \"role\": \"admin\", \"status\": \"active\" } } . | /search?role=admin&amp;status=active . | . | /find{#section} . | {\"section\":\"results\"} . | /find#results . | . | /browse/{.format} . | {\"format\":\"json\"} . | /browse/.json . | . | /location/{country}/{city}/{?coords*} . | { \"country\":\"Canada\", \"city\":\"Toronto\", \"coords\": { \"lat\":43.7, \"long\":-79.42 } } . | /location/Canada/Toronto/?lat=43.7&amp;long=-79.42 . | . | /files{/year,month,day,filename} . | { \"year\":\"2023\", \"month\":\"04\", \"day\":\"01\", \"filename\":\"report.pdf\" } . | /files/2023/04/01/report.pdf . | . | /tags{?list*} . | { \"list\":[ \"api\", \"hal\", \"rfc6570\" ] } . | /tags?list=api&amp;list=hal&amp;list=rfc6570 . | . | /users/{userId}/posts{/postId}{?comments} . | { \"userId\":\"100\", \"postId\":\"200\", \"comments\":\"all\" } . | /users/100/posts/200?comments=all . | . | /path?fixedParam=value{&amp;foo} . | {\"foo\":\"bar\"} . | /path?fixedParam=value&amp;foo=bar . | . ",
     "url": "/halchemy/templates/",
     
     "relUrl": "/templates/"
-  },"33": {
+  },"45": {
     "doc": "Query String Parameters",
     "title": "Query String Parameters",
     "content": "Deprecated . Most of the time a client blindly follows links from one resource to another or to its affordances. Sometimes, though, the URL needs query string parameters - for example pagination. If halchemy manages the href values, how can the client provide query string parameters when needed? . Most of the methods has parameters in its signature. This is a name/value pair object which is used by the method to build the query string. Let’s want to send a GET request from the root resource to the link whose relation is customers - and you want to add to the href the following query string parameters: ...?max_results=50&amp;page=7 . Here is how you do that using parameters . | Python | JavaScript | . | customers = api.get_from_rel(root, 'customers', parameters={'max_results':50,'page':7}) . | const customers = await api.getFromRel({ resource: root, rel: 'customers', parameters: { max_results: 50, page: 1 } }) . | . ",
     "url": "/halchemy/deprecated/parameters",
     
     "relUrl": "/deprecated/parameters"
-  },"34": {
+  },"46": {
     "doc": "PATCH resource",
     "title": "PATCH resource",
     "content": "Deprecated . Sends a PATCH request with data to the resource’s self rel. Note, you should handle exceptions thrown by the request. See [Optimistic Concurrency] for more details. ",
     "url": "/halchemy/deprecated/methods/patch_resource",
     
     "relUrl": "/deprecated/methods/patch_resource"
-  },"35": {
+  },"47": {
     "doc": "PATCH resource",
     "title": "Signature",
     "content": "The method signature for PATCH resource is: . | Python | JavaScript | . | patch_resource(resource, data: JSON, headers: dict[str, Any] | None = None) -&gt; JSON . JSON: TypeAlias = dict[str, \"JSON\"] | list[\"JSON\"] | str | int | float | bool | None . | patchResource(resource:HalResource, data:{}, headers = {}): Promise&lt;any&gt; . | . | parameter | description | . | resource | The body of a response from a previous request, in HAL format | . | data | The payload to PATCH | . | headers | (optional) add to or override the default headers. [learn more] | . | -&gt; returns | the JSON from the payload of the response to this request | . ",
     "url": "/halchemy/deprecated/methods/patch_resource#signature",
     
     "relUrl": "/deprecated/methods/patch_resource#signature"
-  },"36": {
+  },"48": {
     "doc": "PATCH resource",
     "title": "Examples",
     "content": " ",
     "url": "/halchemy/deprecated/methods/patch_resource#examples",
     
     "relUrl": "/deprecated/methods/patch_resource#examples"
-  },"37": {
+  },"49": {
+    "doc": "Per Request Headers",
+    "title": "Per Request Headers",
+    "content": "Sometimes you want just this one request to have headers different from the default headers. Halchemy makes this easy. You use the “with headers” method. This method takes a dictionary/object of headers to set for this request. Here is an example: . | Python | JavaScript | . | from halchemy import Api api = Api() headers = { 'Cache-control': 'no-cache', 'Accept-language': 'en-CA, en;q=0.9, fr-CA;q=0.8, fr;q=0.7' } root = api.root.with_headers(headers).get() customers = api.follow(root).to('customers').with_headers({'Accept': 'application/xml'}).get() . | const {Api} = require('halchemy') async function useDifferentHeadersPerRequest() { const api = new Api() const headers = { 'Cache-control': 'no-cache', 'Accept-language': 'en-CA, en;q=0.9, fr-CA;q=0.8, fr;q=0.7' } const root = await api.root.withHeaders(headers).get() const customers = await api.follow(root) .to('customers') .withHeaders({Accept: 'application/xml'}) .get() } useDifferentHeadersPerRequest() . | . Headers added to a request this way are merged with the default headers. That is, all default headers continue to be included in the request, and the headers you specify are also included. If you add a header to the request that already exists in the default header, the value you specify will be used for this request only. ",
+    "url": "/halchemy/headers/per_request",
+    
+    "relUrl": "/headers/per_request"
+  },"50": {
     "doc": "POST to rel",
     "title": "POST to rel",
     "content": "Deprecated . Follows a resource’s link by way of its rel and sends a POST request with data. ",
     "url": "/halchemy/deprecated/methods/post_to_rel",
     
     "relUrl": "/deprecated/methods/post_to_rel"
-  },"38": {
+  },"51": {
     "doc": "POST to rel",
     "title": "Signature",
     "content": "The method signature for POST to rel is: . | Python | JavaScript | . | post_to_rel(resource, rel: string, data: JSON, parameters: dict[str, Any] | None = None, template: dict[str, Any] | None = None, headers: dict[str, Any] | None = None ) -&gt; JSON . JSON: TypeAlias = dict[str, \"JSON\"] | list[\"JSON\"] | str | int | float | bool | None . | postToRel({resource, rel, parameters = {}, template = {}}: RelSpec, data: {}, headers = {}): Promise&lt;any&gt; . With JavaScript, the first four paramters are actually members of one parameter of type RelSpec, with each being a member of that object. | . | parameter | description | . | resource | The body of a response from a previous request, in HAL format | . | rel | The name of the link relation this POST request will follow. If not supplied, the default is self | . | data | The payload to POST | . | parameters | (optional) name/value pairs which will be used to create a query string. [learn more] | . | template | (optional) if the link is templated, name/value pairs to fill the template. [learn more] | . | headers | (optional) add to or override the default headers. [learn more] | . | -&gt; returns | the JSON from the payload of the response to this request | . ",
     "url": "/halchemy/deprecated/methods/post_to_rel#signature",
     
     "relUrl": "/deprecated/methods/post_to_rel#signature"
-  },"39": {
+  },"52": {
     "doc": "POST to rel",
     "title": "Examples",
-    "content": ". | Python | JavaScript | . | from halchemy import Api api = Api('http://example.org/api') root = api.get() # get the root resource customer = { 'membershipId': '789', 'givenName': 'Kelly', 'familyName': 'Johnson' } order = { 'orderNumber': 'PO3984', 'partNumber': '0009-043', 'quantity': 3 } # create a new customer and post their first order: customer = api.post_to_rel(root, 'customers', customer) order = api.post_to_rel(customer, 'orders', order) . | const halchemy = require('halchemy') async function placeNewCustomerOrder(customer, order) { const api = new halchemy.Api('http://example.org/api') const root = await api.get() // get the root resource const newCustomer = await api.postToRel({ resource: root, rel: 'customers' }, customer) const newOrder = await api.postToRel({ resource: newCustomer, rel: 'orders' }, order) } const customer = { 'membershipId': '789', 'givenName': 'Kelly', 'familyName': 'Johnson' } const order = { 'orderNumber': 'PO3984', 'partNumber': '0009-043', 'quantity': 3 } placeNewCustomerOrder(customer, order) . | . ",
+    "content": ". | Python | JavaScript | . | from halchemy import Api api = Api('http://example.org/api') root = api.get() # get the root resource customer = { 'membershipId': '789', 'givenName': 'Kelly', 'familyName': 'Johnson' } order = { 'orderNumber': 'PO3984', 'partNumber': '0009-043', 'quantity': 3 } # create a new customer and post their first order: customer = api.post_to_rel(root, 'customers', customer) order = api.post_to_rel(customer, 'orders', order) . | const {Api} = require('halchemy') async function placeNewCustomerOrder(customer, order) { const api = new Api('http://example.org/api') const root = await api.get() // get the root resource const newCustomer = await api.postToRel({ resource: root, rel: 'customers' }, customer) const newOrder = await api.postToRel({ resource: newCustomer, rel: 'orders' }, order) } const customer = { 'membershipId': '789', 'givenName': 'Kelly', 'familyName': 'Johnson' } const order = { 'orderNumber': 'PO3984', 'partNumber': '0009-043', 'quantity': 3 } placeNewCustomerOrder(customer, order) . | . ",
     "url": "/halchemy/deprecated/methods/post_to_rel#examples",
     
     "relUrl": "/deprecated/methods/post_to_rel#examples"
-  },"40": {
+  },"53": {
     "doc": "POST to URL",
     "title": "POST to URL",
     "content": "Deprecated . This seldom used method is available if, for some reason, you need to POST data to a URL outside of the web of links provided by the API. ",
     "url": "/halchemy/deprecated/methods/post_to_url",
     
     "relUrl": "/deprecated/methods/post_to_url"
-  },"41": {
+  },"54": {
     "doc": "POST to URL",
     "title": "Signature",
     "content": "The method signature for POST to URL is: . | Python | JavaScript | . | post_to_url(url: str, data: JSON, headers: dict[str, Any] | None = None) -&gt; JSON . JSON: TypeAlias = dict[str, \"JSON\"] | list[\"JSON\"] | str | int | float | bool | None . | postToUrl(url:string, data: {}, headers = {}): Promise&lt;any&gt; . With JavaScript, the first four paramters are actually members of one parameter of type RelSpec, with each being a member of that object. | . | parameter | description | . | url | The URL to POST to. | . | data | The payload to POST | . | headers | (optional) add to or override the default headers. [learn more] | . | -&gt; returns | the JSON from the payload of the response to this request | . ",
     "url": "/halchemy/deprecated/methods/post_to_url#signature",
     
     "relUrl": "/deprecated/methods/post_to_url#signature"
-  },"42": {
+  },"55": {
     "doc": "POST to URL",
     "title": "Examples",
     "content": " ",
     "url": "/halchemy/deprecated/methods/post_to_url#examples",
     
     "relUrl": "/deprecated/methods/post_to_url#examples"
-  },"43": {
+  },"56": {
     "doc": "PUT to rel",
     "title": "PUT to rel",
     "content": "Deprecated . Follows a resource’s link by way of its rel and sends a POST request with data. Note, you should handle exceptions thrown by the request. See [Optimistic Concurrency] for more details. ",
     "url": "/halchemy/deprecated/methods/put_to_rel",
     
     "relUrl": "/deprecated/methods/put_to_rel"
-  },"44": {
+  },"57": {
     "doc": "PUT to rel",
     "title": "Signature",
     "content": "The method signature for PUT to rel is: . | Python | JavaScript | . | put_to_rel(resource, rel: str, data: JSON, parameters: dict[str, Any] | None = None, template: dict[str, Any] | None = None, headers: dict[str, Any] | None = None ) -&gt; JSON . JSON: TypeAlias = dict[str, \"JSON\"] | list[\"JSON\"] | str | int | float | bool | None . | putToRel({resource, rel, parameters = {}, template = {}}: RelSpec, data:{}, headers = {}): Promise&lt;HalResource | {}&gt; . With JavaScript, the first four paramters are actually members of one parameter of type RelSpec, with each being a member of that object. | . | parameter | description | . | resource | The body of a response from a previous request, in HAL format | . | rel | The name of the link relation this PUT request will follow. | . | parameters | (optional) name/value pairs which will be used to create a query string. [learn more] | . | template | (optional) if the link is templated, name/value pairs to fill the template. [learn more] | . | headers | (optional) add to or override the default headers. [learn more] | . | -&gt; returns | the JSON from the payload of the response to this request | . ",
     "url": "/halchemy/deprecated/methods/put_to_rel#signature",
     
     "relUrl": "/deprecated/methods/put_to_rel#signature"
-  },"45": {
+  },"58": {
     "doc": "PUT to rel",
     "title": "Examples",
     "content": " ",
     "url": "/halchemy/deprecated/methods/put_to_rel#examples",
     
     "relUrl": "/deprecated/methods/put_to_rel#examples"
-  },"46": {
+  },"59": {
     "doc": "Templated Links",
     "title": "Templated Links",
     "content": "Deprecated . When a resource’s _links object contains templated links, you provide the values to fill the template using the template parameter of the method. For example, if you have a collection resource for, say customers resource like this: . { \"_items\": [ ..... ], \"_links\": { \"self: { \"href\": \"/customers\" }, \"item\": { \"href\": \"/customers/{id}\", \"templated\": true } } . You can send a GET request to the item rel of the collection by providing an id to fill the template: . | Python | JavaScript | . | customer = api.get_from_rel(customers, 'item', template={'id':'12345'}) . | const customers = await api.getFromRel({ resource: customers, rel: 'item', template: { id: '1' } }) . | . NOTE: when this is a common pattern in hypermea’s collection resources. If you have an ID from a previous session and want to GET the collection without its _items populated, you can do this:   customers = api.get_from_rel(root, 'customers', parameters={'where':'{'1':-1}'}) In other words, search for all customers whose 1 field is equal to -1, returning an empty _items . ",
     "url": "/halchemy/deprecated/templates",
     
     "relUrl": "/deprecated/templates"
-  },"47": {
+  },"60": {
     "doc": "Key Terms",
     "title": "Key Terms",
     "content": " ",
     "url": "/halchemy/basics/terms",
     
     "relUrl": "/basics/terms"
-  },"48": {
+  },"61": {
     "doc": "Key Terms",
     "title": "URL",
-    "content": "A URL (universal resource locator) is a URI that identifies a resource how and where on the internet to obtain a representation of a resource. NOTE: a URN (universal resource name) uniquely identifies a resource, but without specifying its location. Collectively, both URNs and URLs are called URIs (universal resource identifiers) - that is resources are identified (URI) by name (URN) or location (URL). ",
+    "content": "A URL (universal resource locator) is a URI that identifies how and where on the internet to obtain a representation of a resource. NOTE: a URN (universal resource name) uniquely identifies a resource, but without specifying its location. Collectively, both URNs and URLs are called URIs (universal resource identifiers) - that is resources are identified (URI) by name (URN) or location (URL). ",
     "url": "/halchemy/basics/terms#url",
     
     "relUrl": "/basics/terms#url"
-  },"49": {
+  },"62": {
     "doc": "Key Terms",
     "title": "Resource",
     "content": "This is the R in a URL. A resource is an abstract concept. For example think of a Person. What goes through your head? There is a rich set of properties associated with any given person. You can imagine birth records, a picture of their face, a video of the person describing herself, a JSON that lists her name and address. This barely scratches the surface of everything meant by an individual Person. A resource, conceptually, includes all the features and properties that make up that thing. ",
     "url": "/halchemy/basics/terms#resource",
     
     "relUrl": "/basics/terms#resource"
-  },"50": {
+  },"63": {
     "doc": "Key Terms",
     "title": "Representation",
     "content": "A representation is a set of bytes that represent a resource. It takes the abstract resource and serializes some part of it into bytes that provide some of the resource’s features or properties. For example, a JSON representation of a Person resource might look like this: . { \"name\": \"Alice Liddel\", \"age\": 7, \"address\": \"London, England\" } . Another representation of the same resource (in XML) might look like this: . &lt;person&gt; &lt;first-name&gt;Alice&lt;/first-name&gt; &lt;last-name&gt;Liddel&lt;/last-name&gt; &lt;age&gt;7&lt;/age&gt; &lt;address&gt; &lt;city&gt;London&lt;/city&gt; &lt;country&gt;England&lt;/country&gt; &lt;/address&gt; &lt;/person&gt; . And as an image, it might look like this: . Each of these very different representations are of the same, singular Person resource. ",
     "url": "/halchemy/basics/terms#representation",
     
     "relUrl": "/basics/terms#representation"
-  },"51": {
+  },"64": {
     "doc": "Key Terms",
     "title": "Media Type",
-    "content": "A media type is a name we use to describe the format of a representation. For example, when we use JSON to represent a resource, we are using the media type application/json. The XML representation uses a media type of application/xml, and the image representation above uses a media type of image/jpeg. When you GET a resource, the response includes a header Content-Type which identifies the media type of the body. ",
+    "content": "A media type is a name we use to describe the format of a representation. For example, when we use JSON to represent a resource, we are using the media type whose name is application/json. The XML representation uses a media type of application/xml, and the image representation above uses a media type of image/jpeg. When you GET a resource, the response includes a header Content-Type which identifies the media type of the body. ",
     "url": "/halchemy/basics/terms#media-type",
     
     "relUrl": "/basics/terms#media-type"
-  },"52": {
+  },"65": {
     "doc": "Key Terms",
     "title": "Hypermedia / Hypertext",
     "content": "If a media type contains links to other resources, it is called hypermedia. The term “hypermedia” grew out of “hypertext” to include all media that contains links. Even though the HT in HTTP stands for Hypertext, this notion of linking is often overlooked in so-called RESTful applications. Links are what powers the HATEOAS (Hypermedia As The Engine Of Application State) part of REST. This is a powerful concept that allows for a great deal of flexibility in how clients interact with a server. It also decouples the client and server, as the client can navigate the service’s resources without needing to know the structure of the service ahead of time - allowing client and server to vary independently. ",
     "url": "/halchemy/basics/terms#hypermedia--hypertext",
     
     "relUrl": "/basics/terms#hypermedia--hypertext"
-  },"53": {
+  },"66": {
     "doc": "Key Terms",
     "title": "HAL",
     "content": "HAL (Hypertext Application Language) adds links to JSON (or XML). Its media type name is application/hal+json (or application/hal+xml). Here is an example of a HAL representation of a Person resource: . { \"name\": \"Alice Liddel\", \"age\": 7, \"address\": \"London, England\", \"_links\": { \"self\": { \"href\": \"/people/alice\" }, \"current-location\": { \"href\": \"/places/wonderland\" } } } . ",
     "url": "/halchemy/basics/terms#hal",
     
     "relUrl": "/basics/terms#hal"
-  },"54": {
+  },"67": {
+    "doc": "Key Terms",
+    "title": "Request",
+    "content": "An HTTP request is a structured stream of bytes sent from a client to a server. On the wire, a POST request could look like this: . POST http://example.org/api/people HTTP/1.1⏎Host: example.org⏎Content-Type: application/json⏎⏎{\"name\": \"Alice Liddel\", \"age\": 7, \"address\": \"London, England\"} . This stream of bytes is sent one at a time to the server. We often do not think of a request in this way. Sometimes we think of a request as a Python object, or a JavaScript object. But at its core, a request is just a stream of bytes. The same stream can be visualized by splitting on carriage return (⏎): . POST http://example.org/api/people HTTP/1.1 Host: example.org Content-Type: application/json {\"name\": \"Alice Liddel\", \"age\": 7, \"address\": \"London, England\"} . Now the structure of an HTTP request is clearer. There is a request line, a set of request headers, and (where applicable) the body of the request. The body is separated from the headers by a blank line. The request line starts with the method (POST), followed by the URL of the resource that is the subject of the request (http://example.org/api/people), and the protocol (HTTP/1.1). The headers are key-value pairs (: delimited), and the body is the payload of the request, described by the Content-type header. When you GET a resource with halchemy, you can look at the request that was sent by examining the resource._halchemy.request object. ",
+    "url": "/halchemy/basics/terms#request",
+    
+    "relUrl": "/basics/terms#request"
+  },"68": {
+    "doc": "Key Terms",
+    "title": "Response",
+    "content": "An HTTP response is a structured stream of bytes sent from a server to a client. On the wire, a response to a GET request could look like this: . HTTP/1.1 200 OK⏎Content-Type: application/hal+json⏎Content-Length: 64⏎⏎{⏎ \"name\": \"Alice Liddel\",⏎ \"age\": 7,⏎ \"address\": \"London, England\",⏎ \"_links\": {⏎ \"self\": {\"href\": \"/people/alice\"}⏎ }⏎} . This stream of bytes is received by the client one byte at a time. Splitting on carriage return (⏎) . HTTP/1.1 200 OK Content-Type: application/hal+json Content-Length: 64 { \"name\": \"Alice Liddel\", \"age\": 7, \"address\": \"London, England\", \"_links\": { \"self\": {\"href\": \"/people/alice\"} } } . Here we see a response begins with a line that contains the protocol (HTTP/1.1) the response status code (200) and the reason text (OK). This is followed by a series of response headers, and then the body of the response. The body is separated from the headers by a blank line. The headers are key-value pairs (: delimited), and the body is the payload of the response, described by the Content-type header. When you GET a resource with halchemy, you can look at the response that was received by examining the resource._halchemy.response object. All of these terms are easily confused - especially the ones that begin with “RE”. Try this on for size: . The body of the response to a request is a representation of a resource. The object returned to you by a request using halchemy is a blend of the resource representation, and the request and response. The object is optimized to be used as the resource representation, so is modeled as a Resource object. It contains the other data (request, response, error details) in a property named _halchemy to keep it out of the way while you are working with the data you really care about. The metadata is there when you need it. ",
+    "url": "/halchemy/basics/terms#response",
+    
+    "relUrl": "/basics/terms#response"
+  },"69": {
     "doc": "URL from rel",
     "title": "URL from rel",
     "content": "Deprecated . This method is used internally to resolve a resource’s rel, with parameters and templates, into a URL to follow. It is available as a public method in the unlikely event you need to build URLs in a similar fashion. ",
     "url": "/halchemy/deprecated/methods/url_from_rel",
     
     "relUrl": "/deprecated/methods/url_from_rel"
-  },"55": {
+  },"70": {
     "doc": "URL from rel",
     "title": "Signature",
     "content": "The method signature for URL from rel is: . | Python | JavaScript | . | @staticmethod url_from_rel(resource, rel, parameters={}, template={}) -&gt; str . | urlFromRel({resource, rel, parameters = {}, template = {}}: RelSpec): string . With JavaScript, the first four paramters are actually members of one parameter of type RelSpec, with each being a member of that object. | . | parameter | description | . | resource | The body of a response from a previous request, in HAL format | . | rel | The name of the link relation. | . | parameters | (optional) name/value pairs which will be used to create a query string. [learn more] | . | template | (optional) if the link is templated, name/value pairs to fill the template. [learn more] | . | -&gt; returns | the URL | . ",
     "url": "/halchemy/deprecated/methods/url_from_rel#signature",
     
     "relUrl": "/deprecated/methods/url_from_rel#signature"
-  },"56": {
+  },"71": {
     "doc": "URL from rel",
     "title": "Examples",
     "content": " ",
