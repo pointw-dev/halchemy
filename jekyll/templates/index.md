@@ -47,84 +47,86 @@ If you do not supply a value for a template placeholder, the placeholder is simp
 The syntax for templated links is specified in [RFC 6570](https://datatracker.ietf.org/doc/html/rfc6570) and is very expressive.  Here are some sample templates, and what the URL looks like when filled with these values:
 
 <style>
-table.templateTable tr td  {
-  font-size: 8pt !important;
+pre.tableSnippet {
+  font-size: 8pt;
+  margin: 0 !important;
+  padding: 0pt;
 }
 td.header {
   font-weight: bold;
 }
 </style>
-<table class="templateTable">
+<table>
 <tr>
   <td class="header">Templated URL</td>
   <td class="header">Values</td>
   <td class="header">Resulting URL</td>
 </tr>
 <tr>
-  <td><pre lang="json">/path/{foo}</pre></td>
-  <td><pre lang="json">{"foo":"321"}</pre></td>
-  <td><pre lang="json">/path/321</pre></td></tr>
+  <td><pre class="tableSnippet">/path/{foo}</pre></td>
+  <td><pre class="tableSnippet">{"foo":"321"}</pre></td>
+  <td><pre class="tableSnippet">/path/321</pre></td></tr>
 <tr>
-  <td><pre lang="json">/has/{foo}/multiples/{bar}</pre></td>
-  <td><pre lang="json">{
+  <td><pre class="tableSnippet">/has/{foo}/multiples/{bar}</pre></td>
+  <td><pre class="tableSnippet">{
   "foo":"value",
   "bar":"value"
 }</pre></td>
-  <td><pre lang="json">/has/value/multiples/value</pre></td></tr>
+  <td><pre class="tableSnippet">/has/value/multiples/value</pre></td></tr>
 <tr>
-  <td><pre lang="json">/orders{?id}</pre></td>
-  <td><pre lang="json">{"id":"123"}</pre></td>
-  <td><pre lang="json">/orders?id=123</pre></td></tr>
+  <td><pre class="tableSnippet">/orders{?id}</pre></td>
+  <td><pre class="tableSnippet">{"id":"123"}</pre></td>
+  <td><pre class="tableSnippet">/orders?id=123</pre></td></tr>
 <tr>
-  <td><pre lang="json">/search{?query,type}</pre></td>
-  <td><pre lang="json">{
+  <td><pre class="tableSnippet">/search{?query,type}</pre></td>
+  <td><pre class="tableSnippet">{
   "query":"hal",
   "type":"specification"
 }</pre></td>
-  <td><pre lang="json">/search?query=hal&type=specification</pre></td></tr>
+  <td><pre class="tableSnippet">/search?query=hal&type=specification</pre></td></tr>
 <tr>
-  <td><pre lang="json">/items/{itemId}{?lang,format}</pre></td>
-  <td><pre lang="json">{
+  <td><pre class="tableSnippet">/items/{itemId}{?lang,format}</pre></td>
+  <td><pre class="tableSnippet">{
   "itemId":"42",
   "lang":"en",
   "format":"json"
 }</pre></td>
-  <td><pre lang="json">/items/42?lang=en&format=json</pre></td></tr>
+  <td><pre class="tableSnippet">/items/42?lang=en&format=json</pre></td></tr>
 <tr>
-  <td><pre lang="json">/country/{countryCode}/cities{?page,limit}</pre></td>
-  <td><pre lang="json">{
+  <td><pre class="tableSnippet">/country/{countryCode}/cities{?page,limit}</pre></td>
+  <td><pre class="tableSnippet">{
   "countryCode":"US",
   "page":"1",
   "limit":"10"
 }</pre></td>
-  <td><pre lang="json">/country/US/cities?page=1&limit=10</pre></td></tr>
+  <td><pre class="tableSnippet">/country/US/cities?page=1&limit=10</pre></td></tr>
 <tr>
-  <td><pre lang="json">/profile/{userId}{?fields}</pre></td>
-  <td><pre lang="json">{
+  <td><pre class="tableSnippet">/profile/{userId}{?fields}</pre></td>
+  <td><pre class="tableSnippet">{
   "userId":"789",
   "fields":"name,age"
 }</pre></td>
-  <td><pre lang="json">/profile/789?fields=name%2Cage</pre></td></tr>
+  <td><pre class="tableSnippet">/profile/789?fields=name%2Cage</pre></td></tr>
 <tr>
-  <td><pre lang="json">/search{?keys*}</pre></td>
-  <td><pre lang="json">{
+  <td><pre class="tableSnippet">/search{?keys*}</pre></td>
+  <td><pre class="tableSnippet">{
   "keys": {
     "role": "admin", 
     "status": "active"
   }
 }</pre></td>
-  <td><pre lang="json">/search?role=admin&status=active</pre></td></tr>
+  <td><pre class="tableSnippet">/search?role=admin&status=active</pre></td></tr>
 <tr>
-  <td><pre lang="json">/find{#section}</pre></td>
-  <td><pre lang="json">{"section":"results"}</pre></td>
-  <td><pre lang="json">/find#results</pre></td></tr>
+  <td><pre class="tableSnippet">/find{#section}</pre></td>
+  <td><pre class="tableSnippet">{"section":"results"}</pre></td>
+  <td><pre class="tableSnippet">/find#results</pre></td></tr>
 <tr>
-  <td><pre lang="json">/browse/{.format}</pre></td>
-  <td><pre lang="json">{"format":"json"}</pre></td>
-  <td><pre lang="json">/browse/.json</pre></td></tr>
+  <td><pre class="tableSnippet">/browse/{.format}</pre></td>
+  <td><pre class="tableSnippet">{"format":"json"}</pre></td>
+  <td><pre class="tableSnippet">/browse/.json</pre></td></tr>
 <tr>
-  <td><pre lang="json">/location/{country}/{city}/{?coords*}</pre></td>
-  <td><pre lang="json">{
+  <td><pre class="tableSnippet">/location/{country}/{city}/{?coords*}</pre></td>
+  <td><pre class="tableSnippet">{
   "country":"Canada",
   "city":"Toronto",
   "coords": {
@@ -132,37 +134,37 @@ td.header {
     "long":-79.42
   }
 }</pre></td>
-  <td><pre lang="json">/location/Canada/Toronto/?lat=43.7&long=-79.42</pre></td></tr>
+  <td><pre class="tableSnippet">/location/Canada/Toronto/?lat=43.7&long=-79.42</pre></td></tr>
 <tr>
-  <td><pre lang="json">/files{/year,month,day,filename}</pre></td>
-  <td><pre lang="json">{
+  <td><pre class="tableSnippet">/files{/year,month,day,filename}</pre></td>
+  <td><pre class="tableSnippet">{
   "year":"2023",
   "month":"04",
   "day":"01",
   "filename":"report.pdf"
 }</pre></td>
-  <td><pre lang="json">/files/2023/04/01/report.pdf</pre></td></tr>
+  <td><pre class="tableSnippet">/files/2023/04/01/report.pdf</pre></td></tr>
 <tr>
-  <td><pre lang="json">/tags{?list*}</pre></td>
-  <td><pre lang="json">{
+  <td><pre class="tableSnippet">/tags{?list*}</pre></td>
+  <td><pre class="tableSnippet">{
   "list":[
     "api",
     "hal",
     "rfc6570"
   ]
 }</pre></td>
-  <td><pre lang="json">/tags?list=api&list=hal&list=rfc6570</pre></td></tr>
+  <td><pre class="tableSnippet">/tags?list=api&list=hal&list=rfc6570</pre></td></tr>
 <tr>
-  <td><pre lang="json">/users/{userId}/posts{/postId}{?comments}</pre></td>
-  <td><pre lang="json">{
+  <td><pre class="tableSnippet">/users/{userId}/posts{/postId}{?comments}</pre></td>
+  <td><pre class="tableSnippet">{
   "userId":"100",
   "postId":"200",
   "comments":"all"
 }</pre></td>
-  <td><pre lang="json">/users/100/posts/200?comments=all</pre></td></tr>
+  <td><pre class="tableSnippet">/users/100/posts/200?comments=all</pre></td></tr>
 <tr>
-  <td><pre lang="json">/path?fixedParam=value{&foo}</pre></td>
-  <td><pre lang="json">{"foo":"bar"}</pre></td>
-  <td><pre lang="json">/path?fixedParam=value&foo=bar</pre></td>
+  <td><pre class="tableSnippet">/path?fixedParam=value{&foo}</pre></td>
+  <td><pre class="tableSnippet">{"foo":"bar"}</pre></td>
+  <td><pre class="tableSnippet">/path?fixedParam=value&foo=bar</pre></td>
 </tr>
 </table>
