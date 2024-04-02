@@ -15,6 +15,7 @@
   "author": "Michael Ottoson",
   "license": "MIT",
   "devDependencies": {
+    "@types/node": "^20.12.2",
     "cucumber": "^6.0.7",
     "cucumber-tsflow": "^4.4.1",
     "msw": "^2.2.1",

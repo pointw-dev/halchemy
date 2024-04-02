@@ -1,6 +1,8 @@
 import {Api} from "./api";
 import {CaseInsensitiveHeaders} from "./case_insensitive_headers";
 import {HalLink, HalResource} from "hal-types";
+const  {parse} =  require('./rfc6570');
+
 
 function quotePlus(s: string): string {
     const safeChars: string = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_-.*";
@@ -57,6 +59,19 @@ export class BaseRequester {
         return this
     }
 
+    get url(): string {
+        let url = this._url;
+        if (this._isTemplated) {
+            const template = parse(this._url)
+            url = template.expand(this._templateValues || {})
+        }
+
+        if (this._parameters) {
+            url = this._addParametersToUrl(url);
+        }
+        return url;
+    }
+
     private _handleArray(key: string, array: any[]): string[] {
         switch (this._api.parametersListStyle) {
             case "repeat_key":
@@ -94,41 +109,30 @@ export class BaseRequester {
         return flattened;
     }
 
-    private _addQueryParamsToUrl(url: string, params: any): string {
-        const queryParts = this._flattenParams('', params);
+    //                 url = url.replace(/&$/, '');
+
+    private _addParametersToUrl(url: string): string {
+        if (!this._parameters || Object.keys(this._parameters).length === 0) {
+            return url;
+        }
+
+        const queryParts = this._flattenParams('', this._parameters);
+        if (queryParts.length === 0) {
+            return url;
+        }
+
         const queryString = queryParts.join('&');
-        return url.includes('?') ? `${url}&${queryString}` : `${url}?${queryString}`;
+        if (!url.includes('?')) {
+            return `${url}?${queryString}`;
+        } else {
+            const separator = url.endsWith('?') || url.endsWith('&') ? '' : '&';
+            return `${url}${separator}${queryString}`;
+        }
     }
 
 
     protected async _request(method: string) {
-        let url = this._url
-
-        if (this._isTemplated) {
-            const missingKeys: string[] = [];
-            url = url.replace(/\{([^}]+)}/g, (match, key) => {
-                if (key in this._templateValues) {
-                    return encodeURIComponent(this._templateValues[key]);
-                } else {
-                    missingKeys.push(key);
-                    return match;
-                }
-            })
-
-            if (Object.keys(this._templateValues).length == 0) {
-                throw new Error(`This link is templated, but no template values were provided. Missing template values for link: ${missingKeys.join(', ')}`)
-            }
-
-            if (missingKeys.length > 0) {
-                throw new Error(`Not enough template values were provided.  Missing template values for link: ${missingKeys.join(', ')}`);
-            }
-        }
-
-        if (Object.keys(this._parameters).length > 0) {
-            url = this._addQueryParamsToUrl(url, this._parameters)
-        }
-
-        return await this._api.request(method, url, this._data, this._headers.toObject())
+        return await this._api.request(method, this.url, this._data, this._headers.toObject())
     }
 
 }

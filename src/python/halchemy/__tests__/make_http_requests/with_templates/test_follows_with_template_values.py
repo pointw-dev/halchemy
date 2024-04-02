@@ -14,7 +14,7 @@ def test_follows_with_template_values():
     pass
 
 
-@given(parsers.parse('a resource with a HAL style {template_href}'), target_fixture='context')
+@given(parsers.parse('a HAL resource with a link that is an RFC 6570 compliant {template_href}'), target_fixture='context')
 def context(template_href):
     context.api = Api('http://example.org')
     add_root_to_context(context)
@@ -30,7 +30,7 @@ def context(template_href):
     return context
 
 
-@when(parsers.parse('I provide {template_values}'))
+@when(parsers.parse('I follow that link and provide {template_values}'))
 def fill_template_then_make_request(context, template_values):
     context.urls = {}
     template_values = json.loads(template_values)

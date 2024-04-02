@@ -25,7 +25,7 @@ def handle_parameters(context, parameters):
             context.qs[method] = m.last_request.url.split('?', 1)[1] if '?' in m.last_request.url else ''
 
 
-@then(parsers.parse('the parameters are added to the URL as a RFC3986 compliant {query_string}'))
+@then(parsers.parse('the parameters are added to the URL as a RFC 3986 compliant {query_string}'))
 def verify_requests(context, query_string):
     for method in ALL_METHODS:
         assert_that(are_query_strings_equal(context.qs[method], query_string)).is_true()

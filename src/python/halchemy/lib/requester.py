@@ -1,5 +1,7 @@
 from typing import Any, Tuple
 from urllib.parse import quote_plus
+
+import uritemplate
 from requests.structures import CaseInsensitiveDict
 from .resource import HalResource
 
@@ -25,25 +27,13 @@ class BaseRequester:
 
     @property
     def url(self):
-        url = self._url
-        # ASSERT: the href IS a URL
-
-        if self._is_templated:
-            missing_keys = [k.strip("{}") for k in url.split("/")
-                            if "{" in k and k.strip("{}") not in self._template_values]
-
-            if not self._template_values:
-                raise ValueError("This link is templated, but no template values were provided. "
-                                 f"Missing template values for link: {', '.join(missing_keys)}")
-
-            if missing_keys:
-                raise ValueError(f"Not enough template values were provided. "
-                                 f"Missing template values for link: {', '.join(missing_keys)}")
-
-            url = url.format(**self._template_values)
+        try:
+            url = uritemplate.expand(self._url, self._template_values or {})
+        except Exception as e:
+            raise ValueError(f"Error expanding template: {e}")
 
         if self._parameters:
-            url = self._add_parameters_to_url(url, self._parameters)
+            url = self._add_parameters_to_url(url)
 
         return url
 
@@ -91,8 +81,8 @@ class BaseRequester:
                 flattened.append((full_key, quote_plus(str(value))))
         return flattened
 
-    def _add_parameters_to_url(self, url: str, parameters: dict) -> str:
-        query_params = self._flatten_parameters('', parameters)
+    def _add_parameters_to_url(self, url: str) -> str:
+        query_params = self._flatten_parameters('', self._parameters)
 
         query_string_parts = []
         for key, value in query_params:
