@@ -26,7 +26,8 @@ setup(
     packages=['halchemy'],
     include_package_data=True,
     install_requires=[
-        'requests'
+        'requests',
+        'uritemplate'
     ],
     zip_safe=False
 )

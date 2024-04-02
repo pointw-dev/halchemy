@@ -9,7 +9,7 @@
   ],
   "scripts": {
     "test": "npx cucumber-js --tags \"not @wip and not @skip\"",
-    "build": "tsc && npm pack"
+    "build": "tsc && cp src/lib/rfc6570.js dist/rfc6570.js && npm pack"
   },
   "keywords": [],
   "author": "Michael Ottoson",
