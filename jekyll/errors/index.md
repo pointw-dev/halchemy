@@ -7,11 +7,20 @@ nav_order: 7
 layout: page
 ---
 # {{ page.title }}
-![work-in-progress.png](..%2Fassets%2Fimg%2Fwork-in-progress.png)
+When you make a request to the API there is a possibility the it will not succeed.  There are, generally speaking, two ways in which things could go wrong:
+1. The request did not receive a response (network error)
+2. The request received a response, but the response was not what you were expecting (status code error)
 
-There are two settings you can change to control how errors are handled.  
+By default, halchemy will raise an exception in the event of network errors.  When the API responses with a status code you were not expecting, halchemy assumes the request/response was successful and lets you decide how to handle a non 2xx status code.
 
-## Network errors
+* [Default configuration](#default-configuration)
+  * [Network errors](#network-errors)
+  * [Status Codes](#status-codes)
+* [Per call raise for status code](#per-call-raise-for-status-code)
+
+## Default configuration
+You can change this default behaviour:  There are two settings you can change to control how errors are handled.  
+### Network errors
 When there is a network error, your request did not receive a response.  By default, halchemy will raise an exception in this case.  You change by setting "raise on network failure" to false.  Now, when there is a network error, halchemy will not raise an exception.  You can check for this by looking at `resource._halchemy.error`
 
 {% tabs example1 %}
@@ -43,7 +52,7 @@ if (resource._halchemy.error) {
 {% endtab %}
 {% endtabs %}
 
-## Status Codes
+### Status Codes
 By default, if the API successfully receives the request and successfully delivers a response, that is considered a success - even if the status code of the response is not what your code is expecting.  Most HTTP libraries behave this way, but some (like Axios) will throw an exception if the status code is not 2xx.
 
 You can decide, however, which status codes you want halchemy to consider as errors and thus raise an exception.  You do this by setting the "raise on status codes" to indicate which status codes are errors.
@@ -95,3 +104,36 @@ try {
 {% endtab %}
 {% endtabs %}
 > NOTE: the commas separating the parts of your status code set are optional.  You can use them for readability, but they are not required.
+
+## Per call raise for status code
+In addition to setting the default status codes halchemy will raise exceptions for, you can also manually raise exceptions for specific status codes on a per-call basis.  After your request, you can call "raise for status codes", indicating which status codes should cause an exception.
+
+{% tabs example3 %}
+{% tab example3 Python %}
+```python
+customer = api.follow(customers).to('item').with_template_values({'membershipId': 'A375'}).get()
+customer._halchemy.raise_for_status_codes('400-403, >404')
+# if we make it here, we know the status code is not 400-403 or 405 or above, but might be 404
+if customer._halchemy.response.status_code == 404:    
+    print('no results found')
+else:
+    print('results found', customer)
+```
+{% endtab %}
+
+{% tab example3 JavaScript %}
+```javascript
+const customer = await api.follow(customers)
+    .to('item')
+    .withTemplateValues({'membershipId': 'A375'})
+    .get()
+customer._halchemy.raiseForStatusCodes('400-403, >404')
+// if we make it here, we know the status code is not 400-403 or 405 or above, but might be 404
+if (customer._halchemy.response.status === 404) {
+    console.log('no results found')
+} else {
+    console.log('results found', customer)
+}
+```
+{% endtab %}
+{% endtabs %}

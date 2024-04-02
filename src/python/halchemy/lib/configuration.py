@@ -1,9 +1,14 @@
+"""
+This module provides functions to load configuration from an .ini file.
+It is intended only for internal use by the library.
+"""
+
 import inspect
 import os
 import configparser
 
 
-def get_caller_file():
+def get_caller_file() -> str | None:
     # Get the current stack frame and go back one level to find the caller
     # The 0-index is the current function, 1-index is the caller
     caller_frame = inspect.stack()[4]
@@ -16,7 +21,7 @@ def get_caller_file():
         return None
 
 
-def find_project_root(current_dir=None):
+def find_project_root(current_dir: str =None) -> str | None:
     current_dir = current_dir or os.path.dirname(get_caller_file())
     root_indicators = [
         '.git', 'pyproject.toml', 'requirements.txt',
@@ -31,7 +36,7 @@ def find_project_root(current_dir=None):
     return None
 
 
-def ini_to_dict(config_filename, project_root):
+def ini_to_dict(config_filename: str, project_root: str) -> dict:
     config = {}
     config_path = os.path.join(project_root, config_filename)
     if os.path.exists(config_path):
@@ -42,7 +47,7 @@ def ini_to_dict(config_filename, project_root):
     return config
 
 
-def load_config():
+def load_config() -> dict:
     config_filename = '.halchemy'
     project_root = find_project_root()
     rtn = {

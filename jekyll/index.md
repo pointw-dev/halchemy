@@ -5,7 +5,7 @@
 layout: home
 ---
 
-# HAL-based Hypermedia API clients for humans.
+# HAL for humans.
 Do you have an API that serves data following the [HAL specification](https://stateless.group/hal_specification.html)?  The **halchemy** library makes it easy for your client to make the most of that API.
 
 ## Getting started
@@ -27,7 +27,7 @@ npm install halchemy
 {% endtabs %}
 
 
-In your code, instantiate an `Api` object with the URL of your API.
+In your code, create an `Api` object with the URL of your API.
 
 {% tabs quick %}
 {% tab quick Python %}

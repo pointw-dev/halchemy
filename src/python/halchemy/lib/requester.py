@@ -1,13 +1,20 @@
+"""
+This module defines the Requester set of classes, which can be used as the end of the fluent chain, or extended
+to provide more specific details.  Intended primarily to be used internally, but may be useful to manipulate
+outside a fluent chain.
+"""
+
 from typing import Any, Tuple
 from urllib.parse import quote_plus
 
 import uritemplate
 from requests.structures import CaseInsensitiveDict
-from .resource import HalResource
+from .resource import HalResource, Resource
+from .api import Api
 
 
 class BaseRequester:
-    def __init__(self, api, target: str | Tuple[HalResource, str]):
+    def __init__(self, api: Api, target: str | Tuple[HalResource, str]):
         self._api = api
         self._headers = CaseInsensitiveDict({})
         self._parameters = {}
@@ -26,7 +33,7 @@ class BaseRequester:
         self.resource = resource
 
     @property
-    def url(self):
+    def url(self) -> str:
         try:
             url = uritemplate.expand(self._url, self._template_values or {})
         except Exception as e:
@@ -37,15 +44,15 @@ class BaseRequester:
 
         return url
 
-    def with_headers(self, headers: dict[str, Any]):
+    def with_headers(self, headers: dict[str, Any]) -> 'BaseRequester':
         self._headers.update(headers)
         return self
 
-    def with_parameters(self, parameters: dict[str, Any]):
+    def with_parameters(self, parameters: dict[str, Any]) -> 'BaseRequester':
         self._parameters.update(parameters)
         return self
 
-    def with_template_values(self, template_values: dict[str, Any]):
+    def with_template_values(self, template_values: dict[str, Any]) -> 'BaseRequester':
         self._template_values.update(template_values)
         return self
 
@@ -95,43 +102,53 @@ class BaseRequester:
         else:
             return f"{url}{'' if url.endswith('?') else '?'}{query_string}"
 
-    def _request(self, method: str):
+    def _request(self, method: str) -> Resource:
         return self._api.request(method, self.url, data=self._data, headers=self._headers)
 
 
 class ReadOnlyRequester(BaseRequester):
-    def __init__(self, api, target: str | Tuple[HalResource, str]):
+    """
+    This class extends the ABC BaseRequester with the read-only HTTP methods: GET, HEAD, and OPTIONS.
+    """
+
+    def __init__(self, api: Api, target: str | Tuple[HalResource, str]):
         super().__init__(api, target)
 
-    def get(self):
+    def get(self) -> Resource:
         return self._request('GET')
 
-    def head(self):
+    def head(self) -> Resource:
         return self._request('HEAD')
 
-    def options(self):
+    def options(self) -> Resource:
         return self._request('OPTIONS')
 
 
 class Requester(ReadOnlyRequester):
-    def __init__(self, api, target: str | Tuple[HalResource, str]):
+    """
+    This class extends the ReadOnlyRequester adding the "writeable" methods: POST, PUT, PATCH, and DELETE.
+    Notice the slight differences between "Payload" methods: POST, PUT, PATCH,
+    and the "Optimistic Concurrency aware" methods: PUT, PATCH, DELETE.
+    """
+
+    def __init__(self, api: Api, target: str | Tuple[HalResource, str]):
         super().__init__(api, target)
 
-    def post(self, data=None, content_type=None):
+    def post(self, data=None, content_type=None) -> Resource:
         self._prepare_payload(data, content_type)
         return self._request('POST')
 
-    def put(self, data=None, content_type=None):
+    def put(self, data=None, content_type=None) -> Resource:
         self._prepare_payload(data, content_type)
         self._prepare_modify_header()
         return self._request('PUT')
 
-    def patch(self, data=None, content_type=None):
+    def patch(self, data=None, content_type=None) -> Resource:
         self._prepare_payload(data, content_type)
         self._prepare_modify_header()
         return self._request('PATCH')
 
-    def delete(self):
+    def delete(self) -> Resource:
         self._prepare_modify_header()
         return self._request('DELETE')
 

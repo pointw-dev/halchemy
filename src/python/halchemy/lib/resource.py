@@ -1,3 +1,11 @@
+"""
+The Resource class extends a plain dictionary to include a metadata object containing details
+about the HTTP request and response.  This lets the metadata stay "out of the way" allowing
+the client code to use the result of a request directly as a resource without losing access
+to the request details, response details, and any error details.  If the resource is a HAL
+representation, the HalResource class also provides extra functionality.
+"""
+
 from typing import Iterator
 
 from .http_model import Response, Request
@@ -6,7 +14,7 @@ from requests.exceptions import HTTPError
 
 
 class HalchemyMetadata:
-    def __init__(self, request, response, error):
+    def __init__(self, request: Request, response: Response, error: Exception | None = None):
         self.response: Response | None = response
         self.request: Request | None = request
         self.error = error

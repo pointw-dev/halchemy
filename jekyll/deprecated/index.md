@@ -10,7 +10,21 @@ layout: page
 Deprecated
 {: .label .label-yellow }
 
-The early versions of `halchemy` used a more traditional API.  However, as more flexibility and options were added, that API started to become unweildly.  The preferred API now is the fluent approach.
+The early versions of halchemy used a more traditional API.  However, as more flexibility and options were added, that API started to become unwieldy.  The preferred API now is the fluent approach.
 
-These deprecated methods will continue to live in `halchemy` for a while, but will not be modified.  Please move your client code to the fluent API.
+The last version of halchemy that has the deprecated methods is *0.9.3*.  If you must use the deprecated API, you can install that version with:
+
+{% tabs example1 %}
+{% tab example1 Python %}
+```python
+pip install halchemy==0.9.3
+```
+{% endtab %}
+
+{% tab example1 JavaScript %}
+```javascript
+npm install halchemy@0.9.3
+```
+{% endtab %}
+{% endtabs %}
 

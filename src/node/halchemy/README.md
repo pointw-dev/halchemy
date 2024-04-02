@@ -1,20 +1,35 @@
-# Halchemy for Node.js, JavaScript, TypeScript
-**HAL-based Hypermedia API clients for humans.**
+# halchemy for Javascript
+**HAL for humans**
 
 ![](https://github.com/pointw-dev/HALchemy/blob/main/img/halchemy-full-word.png?raw=True)
 
 ![](https://github.com/pointw-dev/HALchemy/blob/main/img/node.png?raw=True)
 
+Do you have an API that serves data following the HAL specification?  The **halchemy** library makes it easy for your client to make the most of that API.
 
-> This project has lofty goals, and is in its very early stages.  Please use with caution and beware of breaking changes until at least v0.7.0
-
-
-
-## Getting started
+## Getting Started
+Install halchemy using the package manager of your chosen language:
 
 ```bash
-node install halchemy
+npm install halchemy
 ```
 
+In your code, create an `Api` object with the URL of your API.
 
-(more docs coming)
+```javascript
+import { Api } from 'halchemy'
+
+const api = new Api('http://example.org/api')
+
+const root = api.root.get()                          // get the root resource
+const people = api.follow(root).to('people').get()  // follow the people rel to get the list of people
+
+// Issue a refund of $5 to everyone
+for (const person of people._items) {
+    const account = async api.follow(person).to('account').get()
+    async api.follow(account).to('deposit').post({amount:5.00})
+    console.log(`${person.name} has a new balance of ${account.balance}`)
+}
+```
+
+[Read the docs](https://pointw-dev.github.io/halchemy) to learn more!

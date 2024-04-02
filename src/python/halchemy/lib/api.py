@@ -1,3 +1,7 @@
+"""
+This module defines the Api class, which is the main class for interacting with HAL-based APIs.
+"""
+
 import json
 from typing import Any
 
@@ -46,7 +50,7 @@ class Api:
         self._api = RequestsWithDefaults(url_base=self._base_url, headers=self._headers)
 
     @property
-    def base_url(self):
+    def base_url(self) -> str:
         return self._base_url
 
     @base_url.setter
@@ -55,7 +59,7 @@ class Api:
         self._api = RequestsWithDefaults(url_base=self._base_url, headers=self._headers)
 
     @property
-    def headers(self):
+    def headers(self) -> CaseInsensitiveDict:
         return self._headers
 
     @headers.setter
@@ -73,13 +77,13 @@ class Api:
         self._api = RequestsWithDefaults(url_base=self._base_url, headers=self._headers)
 
     @property
-    def root(self):
+    def root(self) -> Requester:
         return self.using_endpoint('/', is_root=True)
 
-    def follow(self, resource: HalResource):
+    def follow(self, resource: HalResource) -> Follower:
         return Follower(self, resource)
 
-    def get_optimistic_concurrency_header(self, resource: HalResource):
+    def get_optimistic_concurrency_header(self, resource: HalResource) -> CaseInsensitiveDict:
         etag = None
         try:
             etag = resource._halchemy.response.headers.get('Etag')
@@ -88,9 +92,9 @@ class Api:
         if etag is None:
             etag = resource.get(self.etag_field)
 
-        return {'If-Match': etag} if etag else {}
+        return CaseInsensitiveDict({'If-Match': etag}) if etag else {}
 
-    def using_endpoint(self, url, is_root=False):
+    def using_endpoint(self, url: str, is_root: bool=False) -> Requester | ReadOnlyRequester:
         if is_root:
             return ReadOnlyRequester(self, url)
         return Requester(self, url)

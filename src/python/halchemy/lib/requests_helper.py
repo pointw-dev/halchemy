@@ -1,4 +1,4 @@
-"""Extends requests.Session to add url_base and default headers to requests
+"""Extends requests.Session to add url_base (to resolve relative paths) and default headers to requests
 
 Usage:
     Pass url_base and/or headers to constructor
