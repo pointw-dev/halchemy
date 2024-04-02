@@ -4,11 +4,10 @@ This module provides the Follower class, which is used to follow links from a Ha
 
 from .resource import HalResource
 from .requester import Requester
-from .api import Api
 
 
 class Follower:
-    def __init__(self, api: Api, resource: HalResource):
+    def __init__(self, api, resource: HalResource):
         self.api = api
         self.resource = resource
 

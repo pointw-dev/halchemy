@@ -10,11 +10,10 @@ from urllib.parse import quote_plus
 import uritemplate
 from requests.structures import CaseInsensitiveDict
 from .resource import HalResource, Resource
-from .api import Api
 
 
 class BaseRequester:
-    def __init__(self, api: Api, target: str | Tuple[HalResource, str]):
+    def __init__(self, api, target: str | Tuple[HalResource, str]):
         self._api = api
         self._headers = CaseInsensitiveDict({})
         self._parameters = {}
@@ -111,7 +110,7 @@ class ReadOnlyRequester(BaseRequester):
     This class extends the ABC BaseRequester with the read-only HTTP methods: GET, HEAD, and OPTIONS.
     """
 
-    def __init__(self, api: Api, target: str | Tuple[HalResource, str]):
+    def __init__(self, api, target: str | Tuple[HalResource, str]):
         super().__init__(api, target)
 
     def get(self) -> Resource:
@@ -131,7 +130,7 @@ class Requester(ReadOnlyRequester):
     and the "Optimistic Concurrency aware" methods: PUT, PATCH, DELETE.
     """
 
-    def __init__(self, api: Api, target: str | Tuple[HalResource, str]):
+    def __init__(self, api, target: str | Tuple[HalResource, str]):
         super().__init__(api, target)
 
     def post(self, data=None, content_type=None) -> Resource:
