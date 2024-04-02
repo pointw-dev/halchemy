@@ -2,7 +2,6 @@ Feature: Easily populate templated URLs with a template object
 
     You can provide template values which are used to populate templated link relations.
 
-    @only
     Scenario Outline: Make requests to templated URLs
         Given a HAL resource with a link that is an RFC 6570 compliant <templated_href>
         When I follow that link and provide <template_values>
