@@ -1,0 +1,18 @@
+{
+  "name": "vitepress-pointw-template",
+  "version": "0.0.1",
+  "description": "Template for creating pointw docs",
+  "scripts": {
+    "docs:dev": "vitepress dev --host",
+    "docs:build": "vitepress build",
+    "docs:preview": "vitepress preview"
+  },
+  "dependencies": {
+    "vitepress-carbon": "^1.0.1"
+  },
+  "devDependencies": {
+    "@red-asuka/vitepress-plugin-tabs": "^0.0.4",
+    "vitepress-plugin-tabs": "^0.5.0",
+    "vue3-tabs-component": "^1.3.7"
+  }
+}

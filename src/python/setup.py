@@ -5,7 +5,7 @@ from version import VERSION
 setup(
     name='halchemy',
     version=VERSION,
-    description='Toolkit for creating clients of HAL based Hypermedia APIs.',
+    description='HAL for humans',
     long_description=open('./README.md').read(),
     long_description_content_type='text/markdown',
     license='MIT',

@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   width="163pt"
+   height="147pt"
+   viewBox="0 0 163 147"
+   version="1.1"
+   id="svg244"
+   sodipodi:docname="halchemy-logo.svg"
+   inkscape:version="1.2.2 (732a01da63, 2022-12-09)"
+   inkscape:export-filename="halchemy-logo.png"
+   inkscape:export-xdpi="66.257668"
+   inkscape:export-ydpi="66.257668"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <defs
+     id="defs248" />
+  <sodipodi:namedview
+     id="namedview246"
+     pagecolor="#ffffff"
+     bordercolor="#000000"
+     borderopacity="0.25"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:document-units="pt"
+     showgrid="false"
+     inkscape:zoom="2.0888418"
+     inkscape:cx="139.07228"
+     inkscape:cy="134.04557"
+     inkscape:window-width="2048"
+     inkscape:window-height="1009"
+     inkscape:window-x="4472"
+     inkscape:window-y="-8"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="svg244" />
+  <g
+     id="g4427">
+    <path
+       fill="#feffff"
+       opacity="1"
+       d="M 28.92424,108.09436 C 47.340493,77.098845 66.052636,46.263093 84.445215,15.244747 96.813456,35.946469 109.20536,56.63678 121.52627,77.361327 90.682596,87.677951 59.827089,97.960338 28.92424,108.09436 Z"
+       id="path238"
+       style="fill:#0fffff;fill-opacity:1;stroke-width:1.1622" />
+    <g
+       id="#070707ff"
+       transform="translate(1.7952532,5.026709)">
+      <path
+         fill="#070707"
+         opacity="1"
+         d="m 81.19,0.63 c 1.18,1.29 2.1,2.77 2.92,4.31 24.6,43.07 49.47,85.99 74.1,129.04 -51.36,0.03 -102.72,0.04 -154.08,0 C 29.87,89.56 55.5,45.08 81.19,0.63 M 34.31,98.4 C 60.42,89.52 86.49,80.51 112.55,71.47 102.14,53.31 91.67,35.18 81.22,17.04 65.68,44.22 49.87,71.24 34.31,98.4 Z"
+         id="path241"
+         style="fill:#055555;fill-opacity:1" />
+    </g>
+  </g>
+</svg>
