@@ -5,11 +5,6 @@ When you make a request to the API there is a possibility the it will not succee
 
 By default, halchemy will raise an exception in the event of network errors.  When the API responses with a status code you were not expecting, halchemy assumes the request/response was successful and lets you decide how to handle a non 2xx status code.
 
-* [Default configuration](#default-configuration)
-  * [Network errors](#network-errors)
-  * [Status Codes](#status-codes)
-* [Per call raise for status code](#per-call-raise-for-status-code)
-
 ## Default configuration
 You can change this default behaviour:  There are two settings you can change to control how errors are handled.
 ### Network errors

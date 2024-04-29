@@ -1,3 +1,6 @@
+---
+aside: false
+---
 # Templated Links
 One of the features of HAL is the ability to use templated links.  These are links whose href has one or more placeholders that you can fill in with values.  For example, an `orders` collection resource may have the following links:
 

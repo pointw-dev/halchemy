@@ -96,4 +96,4 @@ listMember('A375')
 
 The example is based on an API which serves the following:
 
-<!-- json_example -->
+<json-example />

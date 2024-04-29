@@ -11,6 +11,7 @@ export default defineConfigWithTheme<ThemeConfig>({
   srcDir: 'src',
 
   themeConfig: {
+    outline: 'deep',
     siteTitle: 'halchemy',
     stackOverflowTags: ['halchemy', 'HAL', 'http'],
 

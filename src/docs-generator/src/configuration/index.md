@@ -1,33 +1,46 @@
----
-outline: deep
----
 # Configuration
 Halchemy takes a batteries-included approach to configuration.  It starts with sensible defaults, and allows you to configure everything the way you like.  This page outlines the settings you can change, and the various ways you can change them.
 
-[[toc]]
-
-## Configuration Settings
+## Settings
 The `Api` object gives you the following settings:
 
 <style>
 table th:first-of-type {
-  width: 25%
+  width: 5%;
 }
 table th:nth-of-type(2) {
-  width: 52%
+  width: 52%;
 }
 table th:nth-of-type(3) {
-  width: 23%
+  width: 43%;
 }
 </style>
 
+<tabs>
+<tab name="Python">
+
 | Setting                                                                                                                                                            | Description                                                                                                                                                                                                                                                                                                                      | Default                                    |
-|--------------------------------------------------------------------------------------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|--------------------------------------------|
-| ![python-16.png](/img/python-16.png) `base_url`<br/>![javascript-16.png](/img/javascript-16.png)  `baseUrl`                                         | The base URL to the API you are working with.  This default matches the default URL for a hypermea API running locally                                                                                                                                                                                                           | `http://localhost:2112`                    |
-| ![python-16.png](/img/python-16.png) `parameters_list_style`<br/>![javascript-16.png](/img/javascript-16.png)  `parametersListStyle` | When creating a query string, this setting determines how lists are serialzied.  The options are:<br/>`repeat_key`, `bracket`, `index`, `comma`, `pipe`<br/>See [Query String Parameters](/parameters) for more details.                                                                                                         | `repeat_key`                               |
-| ![python-16.png](/img/python-16.png) `etag_field`<br/>![javascript-16.png](/img/javascript-16.png)  `etagField`                      | This is the field used to populate `If-Match` on a change request if ETag header is missing.  This default is tuned for use with a hypermea API.<br/>See [Optimistic Concurrency](/concurrency) for more details.                                                                                                                | `_etag`                                    |
-| ![python-16.png](/img/python-16.png) ![javascript-16.png](/img/javascript-16.png) `headers`                                          | A set of default headers to include with each request.  You can use this API property directly, and there are helper functions too.<br/>See [Request Headers](/headers) for more details.                                                                                                                                        | ([details below](#default-header))         |
-| ![python-16.png](/img/python-16.png) `error_handling`<br/>![javascript-16.png](/img/javascript-16.png)  `errorHandling`              | Determines when exceptions are thrown/raised.  There are two properties: <br/>![python-16.png](/img/python-16.png)<br/>`raise_for_network_errors` <br/>`raise_for_status_codes`<br/>------<br/>![javascript-16.png](/img/javascript-16.png)<br/>`raiseForNetworkErrors`<br/> `raiseForStatusCodes` | ([details below](#default-error-handling)) |
+|-------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|--------------------------------------------|
+| `base_url`              | The base URL to the API you are working with.  This default matches the default URL for a hypermea API running locally                                                                                                   | `http://localhost:2112`                    |
+| `parameters_list_style` | When creating a query string, this setting determines how lists are serialzied.  The options are:<br/>`repeat_key`, `bracket`, `index`, `comma`, `pipe`<br/>See [Query String Parameters](/parameters) for more details. | `repeat_key`                               |
+| `etag_field`            | This is the field used to populate `If-Match` on a change request if ETag header is missing.  This default is tuned for use with a hypermea API.<br/>See [Optimistic Concurrency](/concurrency) for more details.        | `_etag`                                    |
+| `headers`               | A set of default headers to include with each request.  You can use this API property directly, and there are helper functions too.<br/>See [Request Headers](/headers) for more details.                                | ([details below](#default-headers))        |
+| `error_handling`        | Determines when exceptions are thrown/raised.  There are two properties: <br/>`raise_for_network_errors`<br/>`raise_for_status_codes` | ([details below](#default-error-handling)) |
+</tab>
+<tab name="JavaScript">
+
+| Setting                                                                                                                                                            | Description                                                                                                                                                                                                                                                                                                                      | Default                                    |
+|-----------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|--------------------------------------------|
+| `baseUrl`             | The base URL to the API you are working with.  This default matches the default URL for a hypermea API running locally                                                                                                   | `http://localhost:2112`                    |
+| `parametersListStyle` | When creating a query string, this setting determines how lists are serialzied.  The options are:<br/>`repeat_key`, `bracket`, `index`, `comma`, `pipe`<br/>See [Query String Parameters](/parameters) for more details. | `repeat_key`                               |
+| `etagField`           | This is the field used to populate `If-Match` on a change request if ETag header is missing.  This default is tuned for use with a hypermea API.<br/>See [Optimistic Concurrency](/concurrency) for more details.        | `_etag`                                    |
+| `headers`             | A set of default headers to include with each request.  You can use this API property directly, and there are helper functions too.<br/>See [Request Headers](/headers) for more details.                                | ([details below](#default-headers))        |
+| `errorHandling`       | Determines when exceptions are thrown/raised.  There are two properties: <br/>`raiseForNetworkErrors`<br/>`raiseForStatusCodes` | ([details below](#default-error-handling)) |
+</tab>
+
+<future-languages />
+</tabs>
+
 
 ### Default Headers
 These are the headers that by default are sent with every request:
@@ -70,7 +83,7 @@ console.log(api.errorHandling.raiseOnStatusCodes)     // null
 
 See the [Handling Errors](/errors) page for more details.
 
-## Changing Configuration Settings
+## Changing Settings
 There are several ways to change the values of the settings listed above:
 1. Place a file named `.halchemy` in your home directory.
 1. Place a file named `.halchemy` in your project's root directory.

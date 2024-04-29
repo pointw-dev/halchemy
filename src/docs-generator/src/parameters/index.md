@@ -127,6 +127,7 @@ td.header {
 </tr>
 
 </table>
+
 ## Parameters List Styles
 If you want to pass a list/array as a query string parameter, there is no universally accepted way to do this.  By default, halchemy will serialize the list as multiple parameters with the same name.  For example, `{"list":["a","b","c"]}` will be serialized as `list=a&list=b&list=c`.  You can change how lists are serialized by setting the `parameters list style`.
 

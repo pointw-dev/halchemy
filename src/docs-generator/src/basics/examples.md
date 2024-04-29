@@ -1,7 +1,12 @@
+---
+aside: false
+---
 # Examples
 These examples are based on an imaginary API.  [Jump here](#sample-api) to see the resources it serves.
 
-## Example 1
+[[toc]]
+
+## Activate customers
 Activate all customers who are deactivated.
 <tabs>
 <tab name="Python">
@@ -67,7 +72,7 @@ This example demonstrates:
   * contrast this with setting the active property directly
   * by using the affordance, the API can enforce business rules, and it can change how activation occur without changing the client code
 
-## Example 2
+## Print orders
 Print the orders for a given customer.
 <tabs>
 <tab name="Python">
@@ -172,7 +177,7 @@ This example demonstrates:
 * following a link from one resource to its child resource collection
 * mixing direct access to `_items` with managed iteration using the `collection()` method
 
-## Example 3
+## Pagination
 Pagination using query string parameters.
 
 <tabs>
@@ -264,4 +269,4 @@ This example demonstrates:
 -----
 ## Sample API
 The examples above are based on an imaginary API that serves the following resources:
-<!-- json_example -->
+<json-example />

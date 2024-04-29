@@ -1,9 +1,11 @@
 <script setup lang="ts">
 const futureLanguages = [
+    "Java",
     "C#",
     "PHP",
     "Ruby",
-    "Go"
+    "Go",
+    "R"
 ]
 </script>
 

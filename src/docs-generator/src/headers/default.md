@@ -1,13 +1,10 @@
+---
+outline: [2,3]
+---
 # Default Headers
 Each Api object carries a set of default headers.  These are the headers that are sent with every request (unless overridden for any given request).
 
 > Note: the underlying http library used by halchemy has its default headers too.  You can override them, but you cannot directly access or remove them using halchemy.
-
-* [The default headers](#the-default-headers)
-* [Setting the default headers](#setting-the-default-headers)
-  * [Using a configuration file](#using-a-configuration-file)
-  * [Using the `Api` constructor](#using-the-api-constructor)
-  * [Using the `Api` object](#using-the-api-object)
 
 ## The default headers
 Out of the box, the set of default headers is:
@@ -40,7 +37,7 @@ There are four ways to set or change the default headers:
 1. Pass default headers to the `Api` constructor
 1. Use Api object's properties and methods to change the headers
 
-These are listed in order of priority.  That is, the headers in the home directory's `.halchemy` file will be overridden by the headers in the project's root directory's `.halchemy` file, and so on down the list.
+These are listed in order of precedence, lowest to highest.  That is, the headers in the home directory's `.halchemy` file will be overridden by the headers in the project's root directory's `.halchemy` file, and so on down the list.
 
 ### Using a configuration file
 The `.halchemy` file goes either in your home directory, or in your project root directory.  If in both, the one in your project root takes precedence and the one in your home directory is ignored.

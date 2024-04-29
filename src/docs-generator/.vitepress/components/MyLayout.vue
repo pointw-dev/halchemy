@@ -1,3 +1,5 @@
+// https://vitepress.dev/guide/extending-default-theme#layout-slots
+
 <script setup>
 import DefaultTheme from 'vitepress/theme'
 
