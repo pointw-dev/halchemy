@@ -32,9 +32,9 @@ try:
     api.patch_resource(customer, {'givenName': 'Leslie'})
 except RuntimeError as ex:
     if api.last_error['status_code'] == 412:
-        print(f'Someone else has changed customer #{customer["membershipId"]}. Please refresh to see the changes, then try again if necessary.')
+        print(f'Someone else has changed customer #{customer["customerId"]}. Please refresh to see the changes, then try again if necessary.')
     else:
-        raise RuntimeError(f'Could not patch customer #{customer["membershipId"]}', ex)
+        raise RuntimeError(f'Could not patch customer #{customer["customerId"]}', ex)
 ```
 </tab>
 
@@ -63,9 +63,9 @@ async function patchExample() {
     } catch(error) {
         if (api.lastError && api.lastError.statusCode == 412) {
             console.log(api.lastError.statusCode)
-            console.log(`Someone else has changed customer #${customer.membershipId}. Please refresh to see the changes, then try again if necessary.`)
+            console.log(`Someone else has changed customer #${customer.customerId}. Please refresh to see the changes, then try again if necessary.`)
         } else {
-            throw new Error(`Could not patch customer #${customer.membershipId}`, error)
+            throw new Error(`Could not patch customer #${customer.customerId}`, error)
         }
     }
 }

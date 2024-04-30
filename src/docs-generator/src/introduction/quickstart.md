@@ -1,3 +1,6 @@
+---
+aside: false
+---
 # Getting Started
 
 Install halchemy using the package manager of your chosen language:

@@ -7,11 +7,11 @@ A mechanism to protect against this, used by many APIs, is "optimistic concurren
 <tab name="Python">
 
 ```python
-customer = api.follow(customers).to('item').with_template_values({'membershipId': 'A375'}).get()
+customer = api.follow(customers).to('item').with_template_values({'customerId': 'A375'}).get()
 
 customer = api.follow(customer).to('self').patch({'givenName': 'Leslie'})
 if customer._halchemy.response.status_code == 412:
-    print(f'Someone else has changed customer #{customer["membershipId"]}.')
+    print(f'Someone else has changed customer #{customer["customerId"]}.')
     print('Please refresh to see the changes, then try again if necessary.')
 ```
 </tab>
@@ -21,12 +21,12 @@ if customer._halchemy.response.status_code == 412:
 ```javascript
 let customer = await api.follow(customers)
     .to('item')
-    .withTemplateValues({'membershipId': 'A375'})
+    .withTemplateValues({'customerId': 'A375'})
     .get()
 
 customer = await api.follow(customer).to('self').patch({'givenName': 'Leslie'})
 if (customer._halchemy.response.status === 412) {
-    console.log(`Someone else has changed customer #${customer["membershipId"]}.`)
+    console.log(`Someone else has changed customer #${customer["customerId"]}.`)
     console.log('Please refresh to see the changes, then try again if necessary.')
 }
 ```

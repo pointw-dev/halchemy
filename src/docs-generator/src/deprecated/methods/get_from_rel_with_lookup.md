@@ -72,7 +72,7 @@ print(f"{customer['givenName']} {customer['familyName']} is {'active' if custome
 ```javascript
 const {Api} = require('halchemy')
 
-async function listMember(membershipId) {
+async function listMember(customerId) {
     const api = new Api('http://example.org/api')
 
     const root = await api.get()  // get the root resource
@@ -81,7 +81,7 @@ async function listMember(membershipId) {
             resource: root,
             rel: 'customers'
         },
-        membershipId
+        customerId
     )
 
     console.log(`${customer.givenName} ${customer.familyName} is ${customer.active? 'active' : 'inactive'}`)

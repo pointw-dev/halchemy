@@ -56,7 +56,7 @@ api = Api('http://example.org/api')
 root = api.get()  # get the root resource
 
 customer = {
-    'membershipId': '789',
+    'customerId': '789',
     'givenName': 'Kelly',
     'familyName': 'Johnson'
 }
@@ -97,7 +97,7 @@ async function placeNewCustomerOrder(customer, order) {
 
 
 const customer = {
-    'membershipId': '789',
+    'customerId': '789',
     'givenName': 'Kelly',
     'familyName': 'Johnson'
 }

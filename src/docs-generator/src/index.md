@@ -12,17 +12,19 @@ hero:
 
   actions:
     - theme: brand
-      text: Quickstart
-      link: /quickstart
+      text: What is halchemy?
+      link: /introduction/what-is-halchemy
     - theme: alt
-      text: API Examples
-      link: /api-examples
+      text: Quickstart
+      link: /introduction/quickstart
 
 features:
   - title: Feature A
     details: Lorem ipsum dolor sit amet, consectetur adipiscing elit
   - title: Feature B
     details: Lorem ipsum dolor sit amet, consectetur adipiscing elit
-  - title: Feature C
-    details: Lorem ipsum dolor sit amet, consectetur adipiscing elit
+  - title: New to hypermedia?
+    details: Hypermedia is a simple idea with powerful consequences.  If you are new to hypermedia, start here.
+    linkText: Learn more
+    link: /introduction/quickstart
 ---

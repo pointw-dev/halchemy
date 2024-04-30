@@ -107,7 +107,7 @@ In addition to setting the default status codes halchemy will raise exceptions f
 <tab name="Python">
 
 ```python
-customer = api.follow(customers).to('item').with_template_values({'membershipId': 'A375'}).get()
+customer = api.follow(customers).to('item').with_template_values({'customerId': 'A375'}).get()
 customer._halchemy.raise_for_status_codes('400-403, >404')
 # if we make it here, we know the status code is not 400-403 or 405 or above, but might be 404
 if customer._halchemy.response.status_code == 404:
@@ -122,7 +122,7 @@ else:
 ```javascript
 const customer = await api.follow(customers)
     .to('item')
-    .withTemplateValues({'membershipId': 'A375'})
+    .withTemplateValues({'customerId': 'A375'})
     .get()
 customer._halchemy.raiseForStatusCodes('400-403, >404')
 // if we make it here, we know the status code is not 400-403 or 405 or above, but might be 404

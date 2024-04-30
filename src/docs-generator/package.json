@@ -1,6 +1,6 @@
 {
   "name": "vitepress-pointw-template",
-  "version": "0.0.1",
+  "version": "1.0.1",
   "description": "Template for creating pointw docs",
   "scripts": {
     "docs:dev": "vitepress dev --host",

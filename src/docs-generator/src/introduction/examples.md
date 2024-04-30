@@ -89,16 +89,16 @@ print('Show orders')
 print('-----------')
 
 while True:
-    membership_id = input('\nEnter the membership ID: ').upper()
-    if not membership_id:
+    customer_id = input('\nEnter the customer ID: ').upper()
+    if not customer_id:
         break
 
-    customer = api.follow(customers).to('item').with_template_values({'membershipId': membership_id}).get()
+    customer = api.follow(customers).to('item').with_template_values({'customerId': customer_id}).get()
     status_code = customer._halchemy.response.status_code
 
     if not status_code == 200:
         if status_code == 404:
-            print(f'Customer #{membership_id} was not found')
+            print(f'Customer #{customer_id} was not found')
             continue
         else:
             print(f'Something went wrong: {status_code} {customer._halchemy.response.reason}')
@@ -106,7 +106,7 @@ while True:
 
     orders = api.follow(customer).to('orders').get()
     if len(orders['_items']) == 0:
-        print(f'Customer #{membership_id} has no orders')
+        print(f'Customer #{customer_id} has no orders')
     else:
         for order in orders.collection('_items'):
             print(order['orderNumber'])
@@ -135,18 +135,18 @@ async function displayOrders() {
     console.log('-----------')
 
     while (true) {
-        let membershipId = await prompt('\nEnter the membership ID: ')
-        if (!membershipId) {
+        let customerId = await prompt('\nEnter the customer ID: ')
+        if (!customerId) {
             break
         }
-        membershipId = membershipId.toUpperCase()
+        customerId = customerId.toUpperCase()
 
-        const customer = await api.follow(customers).to('item').withTemplateValues({'membershipId': membershipId}).get()
+        const customer = await api.follow(customers).to('item').withTemplateValues({'customerId': customerId}).get()
         const statusCode = customer._halchemy.response.statusCode
 
         if (statusCode !== 200) {
             if (statusCode === 404) {
-                console.log(`Customer #${membershipId} was not found`)
+                console.log(`Customer #${customerId} was not found`)
                 continue
             } else {
                 console.log(`Something went wrong: ${statusCode} ${customer._halchemy.response.reason}`)
@@ -156,7 +156,7 @@ async function displayOrders() {
 
         const orders = await api.follow(customer).to('orders').get()
         if (orders._items.length == 0) {
-            console.log(`Customer #${membershipId} has no orders`)
+            console.log(`Customer #${customerId} has no orders`)
         } else {
             for (const order of orders.collection('_items')) {
                 console.log(order['orderNumber'])
@@ -198,7 +198,7 @@ while True:
     }
     customers = api.follow(root).to('customers').with_parameters(pagination).get()
     for customer in customers.collection('_items'):
-        print(f'{customer["membershipId"]} - {customer["givenName"]} {customer["familyName"]}')
+        print(f'{customer["customerId"]} - {customer["givenName"]} {customer["familyName"]}')
 
     prompt = '[N]ext page'
     if page > 1:
@@ -240,7 +240,7 @@ async function displayCustomers() {
         }
         const customers = await api.follow(root).to('customers').withParameters(pagination).get()
         for (const customer of customers.collection('_items')) {
-            console.log(`${customer.membershipId} - ${customer.givenName} ${customer.familyName}`)
+            console.log(`${customer.customerId} - ${customer.givenName} ${customer.familyName}`)
         }
 
         let prompt_message = '[N]ext page'

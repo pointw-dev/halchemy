@@ -2,6 +2,7 @@ import { defineConfigWithTheme } from 'vitepress'
 import type { ThemeConfig } from 'vitepress-carbon'
 import tabsPlugin from '@red-asuka/vitepress-plugin-tabs'
 import baseConfig from 'vitepress-carbon/config'
+const pkg = require('../../version_stamp.json')
 
 export default defineConfigWithTheme<ThemeConfig>({
   title: "halchemy",
@@ -19,28 +20,35 @@ export default defineConfigWithTheme<ThemeConfig>({
     
     nav: [
       { text: 'Home', link: '/' },
-      { text: 'Quickstart', link: '/quickstart' }
+      { text: 'Quickstart', link: '/introduction/quickstart' },
+      { text: pkg.version, link: null }
     ],
 
     sidebar: [
       {
-        "text": "The Basics",
+        "text": "Introduction",
         "collapsible": true,
         "items": [
           {
-            "text": "index",
-            "link": "/basics/index"
+            "text": "What is halchemy?",
+            "link": "/introduction/what-is-halchemy"
+          },
+          {
+            "text": "Getting started",
+            "link": "/introduction/quickstart"
           },
           {
             "text": "Examples",
-            "link": "/basics/examples"
+            "link": "/introduction/examples"
           },
           {
             "text": "Key Terms",
-            "link": "/basics/terms"
+            "link": "/concepts/terms"
           }
         ]
       },
+
+
       {
         "text": "Configuration",
         "collapsible": true,
@@ -109,6 +117,18 @@ export default defineConfigWithTheme<ThemeConfig>({
           }
         ]
       },
+
+
+      {
+        "text": "Concepts",
+        "collapsible": true,
+        "items": [
+          {
+            "text": "index",
+            "link": "/deprecated/index"
+          },
+        ]
+      } ,
 
 
       {
