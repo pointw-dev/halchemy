@@ -1,6 +1,7 @@
 # PUT to rel
-Deprecated
-{: .label .label-yellow }
+::: warning
+This API is frozen and deprecated.  Please use the fluent API from 0.9.4 on
+:::
 
 Follows a resource's link by way of its rel and sends a POST request with data.
 
@@ -34,14 +35,13 @@ putToRel({resource, rel, parameters = {}, template = {}}: RelSpec, data:{}, head
 <future-languages />
 </tabs>
 
-{: style="text-align: left" }
 | parameter         | description                                                                                            |
 | ----------------- | ------------------------------------------------------------------------------------------------------ |
 | `resource`        | The body of a response from a previous request, in HAL format                                          |
 | `rel`             | The name of the link relation this PUT request will follow.                                            |
-| `parameters`      | (optional) name/value pairs which will be used to create a query string. [[learn more]](/parameters)   |
-| `template`        | (optional) if the link is templated, name/value pairs to fill the template. [[learn more]](/templates) |
-| `headers`         | (optional) add to or override the default headers. [[learn more]](/headers)                            |
+| `parameters`      | (optional) name/value pairs which will be used to create a query string.<br/>[learn more](/deprecated/parameters)   |
+| `template`        | (optional) if the link is templated, name/value pairs to fill the template.<br/>[learn more](/deprecated/templates) |
+| `headers`         | (optional) add to or override the default headers.<br/>[learn more](/deprecated/headers)                            |
 | -> *returns*      | the JSON from the payload of the response to this request                                              |
 
 

@@ -1,6 +1,7 @@
 # URL from rel
-Deprecated
-{: .label .label-yellow }
+::: warning
+This API is frozen and deprecated.  Please use the fluent API from 0.9.4 on
+:::
 
 This method is used internally to resolve a resource's rel, with parameters and templates, into a URL to follow.  It is available as a public method in the unlikely event you need to build URLs in a similar fashion.
 
@@ -26,13 +27,12 @@ urlFromRel({resource, rel, parameters = {}, template = {}}: RelSpec): string
 <future-languages />
 </tabs>
 
-{: style="text-align: left" }
 | parameter         | description                                                                                            |
 | ----------------- | ------------------------------------------------------------------------------------------------------ |
 | `resource`        | The body of a response from a previous request, in HAL format                                          |
 | `rel`             | The name of the link relation.                                                                         |
-| `parameters`      | (optional) name/value pairs which will be used to create a query string. [[learn more]](/parameters)   |
-| `template`        | (optional) if the link is templated, name/value pairs to fill the template. [[learn more]](/templates) |
+| `parameters`      | (optional) name/value pairs which will be used to create a query string.<br/>[[learn more]](/deprecated/parameters)   |
+| `template`        | (optional) if the link is templated, name/value pairs to fill the template.<br/>[[learn more]](/deprecated/templates) |
 | -> *returns*      | the URL                                                                                                |
 
 

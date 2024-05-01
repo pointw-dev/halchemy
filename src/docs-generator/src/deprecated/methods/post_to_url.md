@@ -1,6 +1,7 @@
 # POST to URL
-Deprecated
-{: .label .label-yellow }
+::: warning
+This API is frozen and deprecated.  Please use the fluent API from 0.9.4 on
+:::
 
 This seldom used method is available if, for some reason, you need to POST data to a URL outside of the web of links provided by the API.
 
@@ -26,12 +27,11 @@ postToUrl(url:string, data: {}, headers = {}): Promise<any>
 <future-languages />
 </tabs>
 
-{: style="text-align: left" }
 | parameter         | description                                                                 |
 | ----------------- | --------------------------------------------------------------------------- |
 | `url`             | The URL to POST to.                                                         |
 | `data`            | The payload to POST                                                         |
-| `headers`         | (optional) add to or override the default headers. [[learn more]](/headers) |
+| `headers`         | (optional) add to or override the default headers.<br/>[learn more](/deprecated/headers) |
 | -> *returns*      | the JSON from the payload of the response to this request                   |
 
 

@@ -1,7 +1,7 @@
-
 # Query String Parameters
-Deprecated
-{: .label .label-yellow }
+::: warning
+This API is frozen and deprecated.  Please use the fluent API from 0.9.4 on
+:::
 
 Most of the time a client blindly follows links from one resource to another or to its affordances.  Sometimes, though, the URL needs query string parameters - for example pagination.  If `halchemy` manages the `href` values, how can the client provide query string parameters when needed?
 

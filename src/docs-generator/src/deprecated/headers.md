@@ -1,7 +1,7 @@
-
 # Request Headers
-Deprecated
-{: .label .label-yellow }
+::: warning
+This API is frozen and deprecated.  Please use the fluent API from 0.9.4 on
+:::
 
 There are two ways to supply headers with your http requests:
 * default headers

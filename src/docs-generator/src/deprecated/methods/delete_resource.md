@@ -1,7 +1,7 @@
-
 # DELETE resource
-Deprecated
-{: .label .label-yellow }
+::: warning
+This API is frozen and deprecated.  Please use the fluent API from 0.9.4 on
+:::
 
 Sends a DELETE request to the resource's `self` rel.
 
@@ -30,11 +30,10 @@ deleteResource(resource:HalResource, headers = {}): Promise<any>
 <future-languages />
 </tabs>
 
-{: style="text-align: left" }
 | parameter         | description                                                                 |
 | ----------------- | --------------------------------------------------------------------------- |
 | `resource`        | The resource, from a previous request, that you wish to delete              |
-| `headers`         | (optional) add to or override the default headers. [[learn more]](/headers) |
+| `headers`         | (optional) add to or override the default headers.<br/>[learn more](/deprecated/headers) |
 | -> *returns*      | the JSON from the payload of the response to this request                   |
 
 

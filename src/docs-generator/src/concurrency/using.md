@@ -1,7 +1,8 @@
 # Optimistic Concurrency
+## Requesting changes
 Between the time you `GET` a resource then make a request which would change it (`PUT`, `PATCH`, `DELETE`), the resource might have been changed by someone else.  Without some mechanism in place, this means multiple concurrent users would step on each others toes, overwriting each other's changes without knowing.
 
-A mechanism to protect against this, used by many APIs, is "optimistic concurrency".  This means optimistically assuming no one else has concurrently changed the resource since your `GET` request, - hence the term.  If someone has changed the resource in the meantime, the server rejects the newer change with a `412 Precondition Failed` response.
+A mechanism to protect against this used by many APIs is called "optimistic concurrency".  This means optimistically assuming no one else has concurrently changed the resource since your `GET` request, - hence the term.  If someone *has* changed the resource in the meantime, the server rejects the newer change with a `412 Precondition Failed` response.
 
 <tabs>
 <tab name="Python">
@@ -42,7 +43,7 @@ if (customer._halchemy.response.status === 412) {
 4. If the ETag matches, the server will apply the change and return a `200 OK` response.
 5. If the resource has been changed by someone else, the server will return a `412 Precondition Failed` response.
 
-What happens in the event of a `412 Precondition Failed` response is up to you.  You could:
+What your application does with a  `412 Precondition Failed` is up to you.  You could:
 - Inform the user that the resource has been changed and ask them to refresh the page.
 - Automatically refresh the resource and apply the change again.
 - Merge the changes together.
@@ -55,4 +56,4 @@ Halchemy automates steps 2. and 3.   When you follow a resource to `self` to mak
 
 Usually the Etag comes from the response's `ETag` header, and halchemy looks there first.  Some APIs include the ETag in one of the resource's fields.  If halchemy does not find the `ETag` header, it looks next for a field named `_etag`.  You can change the name of the field halchemy looks for by setting the "etag field" in the `Api` object.
 
-See [Configuration](/configuration) for more information on configuring halchemy.
+See [Configuration](../configuration/properties) for more information on configuring halchemy.

@@ -1,5 +1,5 @@
 # Per Request Headers
-Sometimes you want just this one request to have headers different from the default headers.  Halchemy makes this easy.  You use the "with headers" method.  This method takes a dictionary/object of headers to set for this request.  Here is an example:
+Sometimes you want just this one request to have headers different from the default headers.  Halchemy makes this easy.  You use the `with headers` method.  This method takes a dictionary/object of headers to set for this request.  Here is an example:
 
 <tabs>
 <tab name="Python">

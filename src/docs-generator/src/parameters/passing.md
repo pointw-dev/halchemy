@@ -1,5 +1,8 @@
+---
+aside: false
+---
 # Query String Parameters
-When you need to add a query string to the URL of a request, halchemy makes it easy.  You use the "with parameters" method.  This method takes a dictionary/object of parameters and their values.  Here are some examples:
+When you need to add query string parameters to the URL of a request, halchemy makes it easy.  You use the `with parameters` method.  This method takes a dictionary/object of parameters and their values.  Here are some examples:
 
 <tabs>
 <tab name="Python">
@@ -30,8 +33,14 @@ let customers = await api.follow(root)
 <future-languages />
 </tabs>
 
+::: tip NOTE
+`with parameters` does not simply append the query string the URL.  That would not work if the URL already had query string parameters.  Instead, halchemy ensures all query string parameters are properly merged.
+:::
+
 ## Table of Examples
-Here is a list of parameter examples: the dictionary/object you pass to "with parameters" and the query string that is added to the URL.
+Typically a query string contains one or more name value pairs, e.g. `?name=John&age=50`.  Halchemy provides a sophisticated way to pass simple or complex parameters in the query string.
+
+Here is a list of parameter examples: the dictionary/object you pass to `with parameters` and the query string that is added to the URL.
 
 <style>
 pre.tableSnippet {
@@ -87,7 +96,7 @@ td.header {
 <tr>
   <td><pre class="tableSnippet">{"list":["a","b","c"]}</pre></td>
   <td><pre class="tableSnippet">list=a&list=b&list=c</pre></td>
-  <td>A value that is a list.  See <a href="#parameters-list-styles">below</a> for how to configure serializing such lists.</td>
+  <td>A value that is a list.  See <a href="/parameters/list-style.html">below</a> for how to configure serializing such lists.</td>
 </tr>
 <tr>
   <td><pre class="tableSnippet">{
@@ -127,35 +136,3 @@ td.header {
 </tr>
 
 </table>
-
-## Parameters List Styles
-If you want to pass a list/array as a query string parameter, there is no universally accepted way to do this.  By default, halchemy will serialize the list as multiple parameters with the same name.  For example, `{"list":["a","b","c"]}` will be serialized as `list=a&list=b&list=c`.  You can change how lists are serialized by setting the `parameters list style`.
-
-<tabs>
-<tab name="Python">
-
-```python
-api.parameters_list_style = 'comma'
-```
-</tab>
-
-<tab name="JavaScript">
-
-```javascript
-api.parameterslistStyle = 'comma'
-```
-</tab>
-
-<future-languages />
-</tabs>
-
-Given this parameters object: `{"list":["a","b","c"]}`, each parameters list style serializes it to the query string as follows:
-
-| Style                  | Query String                    |
-|------------------------|---------------------------------|
-| `repeat_key` (default) | `list=a&list=b&list=c`          |
-| `bracket`              | `list[]=a&list[]=b&list[]=c`    |
-| `index`                | `list[0]=a&list[1]=b&list[2]=c` |
-| `comma`                | `list=a,b,c`                    |
-| `pipe`                 | `list=a\|b\|c`                  |
-

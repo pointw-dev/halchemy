@@ -1,12 +1,12 @@
-
 # Handling Errors
-Deprecated
-{: .label .label-yellow }
+::: warning
+This API is frozen and deprecated.  Please use the fluent API from 0.9.4 on
+:::
 
 All requests are made over the network, and as the first [fallacy of distributed computing](https://en.wikipedia.org/wiki/Fallacies_of_distributed_computing) tells us the network is not reliable.  More often than network failures are other server-side issues that may prevent your requests from being handled as you expect.  For simplicity, most of the examples in this doc do not include exception handling, but of course your client code should always.
 
 When halchemy encounteres an issue when submitting your request it does two things:
-* records the details in a public member called "last error"
+* records the details in a public member called `last error`
 * throws an exception
 
 Here is an example of how to handle the exception:
@@ -30,8 +30,9 @@ except RuntimeError as ex:
 
 ```
 
-{: style="text-align: left" }
-| `last_error` key | Description |
+>Details for `last_error`:
+
+| key | Description |
 | ---------------- | ----------- |
 | `method`         | The method of the request sent to the server, e.g. `GET`, `POST`, etc.            |
 | `url`            | The URL the request was sent to.                                                  |
@@ -65,8 +66,9 @@ async function errorHandlingExample() {
 errorHandlingExample()
 ```
 
-{: style="text-align: left" }
-| `lastError` member | Description |
+>Details for `lastError`
+
+| member | Description |
 | ------------------ | ----------- |
 | `method`           | The method of the request sent to the server, e.g. `GET`, `POST`, etc.            |
 | `url`              | The URL the request was sent to.                                                  |

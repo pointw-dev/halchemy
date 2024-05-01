@@ -1,7 +1,8 @@
 
 # GET
-Deprecated
-{: .label .label-yellow }
+::: warning
+This API is frozen and deprecated.  Please use the fluent API from 0.9.4 on
+:::
 
 Sends a GET request to a URL.
 
@@ -28,11 +29,10 @@ get(url:string = '/', headers = {}): Promise<HalResource | {}>
 <future-languages />
 </tabs>
 
-{: style="text-align: left" }
 | parameter       | description                                                                 |
 | --------------- | ----------------------------------------------------------------------------|
 | `url`           | the URL or path to the resource you want to GET, defaults to `'/'`          |
-| `headers`       | (optional) add to or override the default headers. [[learn more]](/headers) |
+| `headers`       | (optional) add to or override the default headers.<br/>[learn more](/deprecated/headers) |
 | -> *returns*    | the JSON from the payload of the response to this request                   |
 
 ## Examples

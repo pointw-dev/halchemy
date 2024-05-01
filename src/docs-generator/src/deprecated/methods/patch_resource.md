@@ -1,6 +1,7 @@
 # PATCH resource
-Deprecated
-{: .label .label-yellow }
+::: warning
+This API is frozen and deprecated.  Please use the fluent API from 0.9.4 on
+:::
 
 Sends a PATCH request with data to the resource's `self` rel.
 
@@ -27,12 +28,11 @@ patchResource(resource:HalResource, data:{}, headers = {}): Promise<any>
 <future-languages />
 </tabs>
 
-{: style="text-align: left" }
 | parameter         | description                                                                 |
 | ----------------- | --------------------------------------------------------------------------- |
 | `resource`        | The body of a response from a previous request, in HAL format               |
 | `data`            | The payload to PATCH                                                        |
-| `headers`         | (optional) add to or override the default headers. [[learn more]](/headers) |
+| `headers`         | (optional) add to or override the default headers.<br/>[learn more](/deprecated/headers) |
 | -> *returns*      | the JSON from the payload of the response to this request                   |
 
 

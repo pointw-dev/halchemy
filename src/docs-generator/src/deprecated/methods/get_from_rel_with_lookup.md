@@ -1,8 +1,9 @@
 # GET from rel with lookup
-Deprecated
-{: .label .label-yellow }
+::: warning
+This API is frozen and deprecated.  Please use the fluent API from 0.9.4 on
+:::
 
-Identical to [GET from rel](/methods/get_from_rel), but uses an implicit URL template - if the API is so configured.
+Identical to [GET from rel](/deprecated/methods/get_from_rel), but uses an implicit URL template - if the API is so configured.
 
 This method is seldom used, and was only created here to take advantage of hypermea's "additional lookup" field.  It allows a resource in the API to designate one field that can be used to lookup an item.  It requires the client know which field is so designated, and thus violates strict adherence to the "no out of band knowledge" constraint.
 
@@ -36,15 +37,14 @@ getFromRelWithLookup({resource, rel, parameters = {}, template = {}}: RelSpec, l
 <future-languages />
 </tabs>
 
-{: style="text-align: left" }
 | parameter         | description                                                                                            |
 | ----------------- | ------------------------------------------------------------------------------------------------------ |
 | `resource`        | The body of a response from a previous request, in HAL format                                          |
 | `rel`             | The name of the link relation this GET request will follow.  If not supplied, the default is `self`    |
-| `parameters`      | (optional) name/value pairs which will be used to create a query string. [[learn more]](/parameters)   |
-| `template`        | (optional) if the link is templated, name/value pairs to fill the template. [[learn more]](/templates) |
+| `parameters`      | (optional) name/value pairs which will be used to create a query string.<br/>[learn more](/deprecated/parameters)   |
+| `template`        | (optional) if the link is templated, name/value pairs to fill the template.<br/>[learn more](/deprecated/templates) |
 | `lookup`          | The value of the "additional lookup" field to GET                                                      |
-| `headers`         | (optional) add to or override the default headers. [[learn more]](/headers)                            |
+| `headers`         | (optional) add to or override the default headers.<br/>[learn more](/deprecated/headers)                            |
 | -> *returns*      | the JSON from the payload of the response to this request                                              |
 
 

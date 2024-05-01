@@ -289,6 +289,9 @@ console.log(`Hello ${customer.givenName}`)
 
 These are only a few examples of how halchemy lets your client application more easily make full use of your HAL-based API.
 
+## Further reading
+* The HAL media type: [http://stateless.co/hal_specification.html](http://stateless.co/hal_specification.html)
+* The HAL specification: [https://tools.ietf.org/html/draft-kelly-json-hal-08](https://tools.ietf.org/html/draft-kelly-json-hal-08)
 
 -----
 <a id="fn1" href="#fnref1" class="footnote-backref">[1]</a> HAL adds links to JSON (`application/hal+json`) and to XML (`application/hal+xml`).  Halchmey only works with the JSON flavour of HAL.

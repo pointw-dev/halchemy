@@ -3,12 +3,12 @@ When you make a request to the API there is a possibility the it will not succee
 1. The request did not receive a response (network error)
 2. The request received a response, but the response was not what you were expecting (status code error)
 
-By default, halchemy will raise an exception in the event of network errors.  When the API responses with a status code you were not expecting, halchemy assumes the request/response was successful and lets you decide how to handle a non 2xx status code.
+By default, halchemy will raise an exception in the event of network errors.  When the API responses with a status code, halchemy assumes the request/response was successful and lets you decide how to handle a non 2xx status code.
 
 ## Default configuration
 You can change this default behaviour:  There are two settings you can change to control how errors are handled.
 ### Network errors
-When there is a network error, your request did not receive a response.  By default, halchemy will raise an exception in this case.  You change by setting "raise on network failure" to false.  Now, when there is a network error, halchemy will not raise an exception.  You can check for this by looking at `resource._halchemy.error`
+When there is a network error, your request did not receive a response.  By default, halchemy will raise an exception in this case.  You change by setting `raise on network failure` to false.  Now, when there is a network error, halchemy will not raise an exception.  You can check for this by looking at `resource._halchemy.error`
 
 <tabs>
 <tab name="Python">
@@ -46,11 +46,11 @@ if (resource._halchemy.error) {
 ### Status Codes
 By default, if the API successfully receives the request and successfully delivers a response, that is considered a success - even if the status code of the response is not what your code is expecting.  Most HTTP libraries behave this way, but some (like Axios) will throw an exception if the status code is not 2xx.
 
-You can decide, however, which status codes you want halchemy to consider as errors and thus raise an exception.  You do this by setting the "raise on status codes" to indicate which status codes are errors.
+You can decide, however, which status codes you want halchemy to consider as errors and thus raise an exception.  You do this by setting the `raise on status codes` to indicate which status codes are errors.
 
 To indicate a set of status codes, use a combination of ranges, individual status codes, and greater-than/less-than symbols.
 
-A common problem with those HTTP libraries which throw on non 2xx is if you are performing a search and you know there may be no results (i.e. a status code of 404) you may not want to have the request throw an exception - but you do want to for all other non-2xx codes.  Here is how you can tell halchemy this is what you want:
+A common problem this helps you solve is: If you are performing a search and you know there may be no results (i.e. a status code of 404) you may not want to have the request throw an exception - but you do want to for all other codes 400 and above.  Here is how you can tell halchemy this is what you want:
 
 <tabs>
 <tab name="Python">
@@ -98,10 +98,13 @@ try {
 
 <future-languages />
 </tabs>
-> NOTE: the commas separating the parts of your status code set are optional.  You can use them for readability, but they are not required.
+
+::: tip
+The commas separating the parts of your status code set are optional.  You can use them for readability, but they are not required.
+:::
 
 ## Per call raise for status code
-In addition to setting the default status codes halchemy will raise exceptions for, you can also manually raise exceptions for specific status codes on a per-call basis.  After your request, you can call "raise for status codes", indicating which status codes should cause an exception.
+In addition to setting the default status codes halchemy will raise exceptions for, you can also manually raise exceptions for specific status codes on a per-call basis.  After your request, you can call `raise for status codes`, indicating which status codes should cause an exception.
 
 <tabs>
 <tab name="Python">

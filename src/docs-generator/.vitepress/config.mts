@@ -47,7 +47,6 @@ function getSidebar() {
   return [
     {
       "text": "Introduction",
-      "collapsible": true,
       "items": [
         {
           "text": "What is halchemy?",
@@ -60,10 +59,6 @@ function getSidebar() {
         {
           "text": "Examples",
           "link": "/introduction/examples"
-        },
-        {
-          "text": "Key Terms",
-          "link": "/concepts/terms"
         }
       ]
     },
@@ -71,24 +66,26 @@ function getSidebar() {
 
     {
       "text": "Configuration",
-      "collapsible": true,
       "items": [
         {
-          "text": "index",
-          "link": "/configuration/index"
+          "text": "Configuration Properties",
+          "link": "/configuration/properties"
+        },
+        {
+          "text": "Changing the Configuration",
+          "link": "/configuration/changing"
         }
       ]
     },
     {
       "text": "Request Headers",
-      "collapsible": true,
       "items": [
         {
-          "text": "index",
-          "link": "/headers/index"
+          "text": "Request Headers",
+          "link": "/headers/request"
         },
         {
-          "text": "Default Headers",
+          "text": "Default Request Headers",
           "link": "/headers/default"
         },
         {
@@ -98,42 +95,42 @@ function getSidebar() {
       ]
     },
     {
-      "text": "Query String Parameters",
-      "collapsible": true,
+      "text": "Query Strings",
       "items": [
         {
-          "text": "index",
-          "link": "/parameters/index"
+          "text": "Passing parameters",
+          "link": "/parameters/passing"
+        },
+        {
+          "text": "Parameters list style",
+          "link": "/parameters/list-style"
         }
       ]
     },
     {
       "text": "Templated Links",
-      "collapsible": true,
       "items": [
         {
-          "text": "index",
-          "link": "/templates/index"
+          "text": "Using templated links",
+          "link": "/templates/using"
         }
       ]
     },
     {
       "text": "Optimistic Concurrency",
-      "collapsible": true,
       "items": [
         {
-          "text": "index",
-          "link": "/concurrency/index"
+          "text": "Requesting changes",
+          "link": "/concurrency/using"
         }
       ]
     },
     {
-      "text": "Handling Errors",
-      "collapsible": true,
+      "text": "Errors and Exceptions",
       "items": [
         {
-          "text": "index",
-          "link": "/errors/index"
+          "text": "Handling Errors",
+          "link": "/errors/handling"
         }
       ]
     },
@@ -141,23 +138,70 @@ function getSidebar() {
 
     {
       "text": "Concepts",
-      "collapsible": true,
       "items": [
         {
-          "text": "index",
-          "link": "/deprecated/index"
+          "text": "Key terms",
+          "link": "/concepts/terms"
         },
+        {
+          "text": "Hypermedia",
+          "link": "/concepts/hypermedia"
+        }
       ]
     } ,
 
 
     {
       "text": "Deprecated API",
-      "collapsible": true,
       "items": [
         {
-          "text": "index",
-          "link": "/deprecated/index"
+          "text": "v0.9.3",
+          "link": "/deprecated/"
+        },
+        {
+          "text": "Methods",
+          "items": [
+            {
+              "text": "GET",
+              "link": "/deprecated/methods/get"
+            },
+            {
+              "text": "GET from rel",
+              "link": "/deprecated/methods/get_from_rel"
+            },
+            {
+              "text": "POST to rel",
+              "link": "/deprecated/methods/post_to_rel"
+            },
+            {
+              "text": "DELETE resource",
+              "link": "/deprecated/methods/delete_resource"
+            },
+            {
+              "text": "PATCH resource",
+              "link": "/deprecated/methods/patch_resource"
+            },
+            {
+              "text": "PUT to rel",
+              "link": "/deprecated/methods/put_to_rel"
+            },
+            {
+              "text": "GET from rel with lookup",
+              "link": "/deprecated/methods/get_from_rel_with_lookup"
+            },
+            {
+              "text": "POST to URL",
+              "link": "/deprecated/methods/post_to_url"
+            },
+            {
+              "text": "DELETE URL",
+              "link": "/deprecated/methods/delete_url"
+            },
+            {
+              "text": "URL from rel",
+              "link": "/deprecated/methods/url_from_rel"
+            }
+          ]
         },
         {
           "text": "Handling Errors",

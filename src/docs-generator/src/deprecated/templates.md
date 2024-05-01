@@ -1,7 +1,7 @@
-
 # Templated Links
-Deprecated
-{: .label .label-yellow }
+::: warning
+This API is frozen and deprecated.  Please use the fluent API from 0.9.4 on
+:::
 
 When a resource's `_links` object contains templated links, you provide the values to fill the template using the `template` parameter of the method.
 

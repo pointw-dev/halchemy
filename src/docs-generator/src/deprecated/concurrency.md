@@ -1,7 +1,7 @@
-
 # Optimistic Concurrency
-Deprecated
-{: .label .label-yellow }
+::: warning
+This API is frozen and deprecated.  Please use the fluent API from 0.9.4 on
+:::
 
 When sending requests that are intended to change an existing resource (`PUT`, `PATCH`, `DELETE`) there is a chance someone else has made a change between your `GET` request the request with your intended changes.  Halchemy relies on **optimistic concurrency** to handle this possibility.  That is, it assumes no one else has made a change, but populates the `If-Match` header with the resource's ETag so the server can reject the request if a change to the resource has taken place - that is if the ETag of the resource on the server doesn't match the requested change.
 

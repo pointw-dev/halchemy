@@ -266,7 +266,6 @@ displayCustomers()
 This example demonstrates:
 * using query string parameters to do pagination
 
------
 ## Sample API
 The examples above are based on an imaginary API that serves the following resources:
 <json-example />

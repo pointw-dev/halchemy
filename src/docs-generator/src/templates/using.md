@@ -18,7 +18,7 @@ One of the features of HAL is the ability to use templated links.  These are lin
 }
 ```
 
-With halchemy you supply values for the template placeholders using "with template values":
+With halchemy you supply values for the template placeholders using `with template values`:
 
 <tabs>
 <tab name="Python">
