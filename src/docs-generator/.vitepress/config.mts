@@ -10,6 +10,7 @@ export default defineConfigWithTheme<ThemeConfig>({
 
   extends: baseConfig,
   srcDir: 'src',
+  base: '',
 
   themeConfig: {
     siteTitle: 'halchemy',
