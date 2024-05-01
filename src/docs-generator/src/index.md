@@ -13,10 +13,10 @@ hero:
   actions:
     - theme: brand
       text: What is halchemy?
-      link: /introduction/what-is-halchemy
+      link: /guide/introduction/what-is-halchemy
     - theme: alt
       text: Quickstart
-      link: /introduction/quickstart
+      link: /guide/introduction/quickstart
 
 features:
   - title: Smart
@@ -32,5 +32,5 @@ features:
     icon: 🔗
     details: Hypermedia is a simple idea with powerful consequences.  If you are new to hypermedia, start here.
     linkText: Learn more
-    link: /concepts/hypermedia
+    link: /guide/concepts/hypermedia
 ---
