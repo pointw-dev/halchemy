@@ -1,1 +1,0 @@
-import{_ as s,a as i,o as a,aa as n}from"./chunks/framework.Bu-ijBxq.js";const g=JSON.parse('{"title":"","description":"","frontmatter":{},"headers":[],"relativePath":"collection.md","filePath":"collection.md"}'),t={name:"collection.md"},h=n("",1),l=[h];function k(p,e,r,E,d,F){return a(),i("div",null,l)}const y=s(t,[["render",k]]);export{g as __pageData,y as default};
