@@ -2,7 +2,7 @@
 layout: home
 
 hero:
-  name: <img src="/img/banner.png">
+  name: <img src="/halchemy/img/banner.png">
   text: HAL for Humans
   tagline: Create clients for HAL-based APIs with ease and without compromise.
 

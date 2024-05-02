@@ -7,10 +7,13 @@ const pkg = require('../../version_stamp.json')
 export default defineConfigWithTheme<ThemeConfig>({
   title: "halchemy",
   description: "HAL for Humans",
+  head: [
+    ['link', { rel: 'icon', href: '/halchemy/favicon.ico' }]
+  ],
 
   extends: baseConfig,
   srcDir: 'src',
-  base: '',
+  base: '/halchemy/',
 
   themeConfig: {
     siteTitle: 'halchemy',
