@@ -33,6 +33,7 @@ export default defineConfig({
     }
   },
 
+  appearance: 'dark',
   base: `/${basePath}/`,
   head: [
     ['link', { rel: 'icon', href: `/${basePath}/favicon.ico` }]
