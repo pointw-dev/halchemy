@@ -8,6 +8,7 @@ const basePath = 'halchemy'
 // https://vitepress.dev/reference/site-config
 export default defineConfig({
   title: 'halchemy',
+  description: 'HAL for Humans',
 
   themeConfig: {
     siteTitle: 'halchemy',
