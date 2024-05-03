@@ -3,6 +3,7 @@ import { fileURLToPath, URL } from 'node:url'
 const pkg = require('../../version_stamp.json')
 
 
+const hostname = 'https://pointw-dev.github.io'
 const basePath = 'halchemy'
 const seoLogo = 'https://pointw-dev.github.io/halchemy/img/logo.png'
 
@@ -48,6 +49,9 @@ export default defineConfig({
     ['meta', {name: 'twitter:card', value: 'summary'}]
   ],
   srcDir: 'src',
+//  sitemap: {
+//    hostname: hostname
+//  },
   vite: {
     resolve: {
       alias: [
@@ -57,6 +61,18 @@ export default defineConfig({
         }
       ]
     }
+  },
+  
+  transformPageData(pageData) {
+    const canonicalUrl = hostname + (basePath? `/${basePath}` : '') + `/${pageData.relativePath}`
+      .replace(/index\.md$/, '')
+      .replace(/\.md$/, '.html')
+
+    pageData.frontmatter.head ??= []
+    pageData.frontmatter.head.push([
+      'link',
+      { rel: 'canonical', href: canonicalUrl }
+    ])
   }
 })
 

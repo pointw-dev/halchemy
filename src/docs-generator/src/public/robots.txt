@@ -1,0 +1,4 @@
+User-agent: *
+Disallow: 
+
+Sitemap: https://pointw-dev.github.io/halchemy/sitemap.xml
