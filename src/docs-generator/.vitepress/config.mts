@@ -1,6 +1,6 @@
 import { defineConfig, withBase } from 'vitepress'
 import { fileURLToPath, URL } from 'node:url'
-// const pkg = require('../../version_stamp.json')
+const pkg = require('../../version_stamp.json')
 
 
 const basePath = 'halchemy'
@@ -19,8 +19,8 @@ export default defineConfig({
 
     nav: [
       { text: 'Home', link: '/' },
-      { text: 'Quickstart', link: '/introduction/getting-started' },
-      // { text: pkg.version, link: null }
+      { text: 'Quickstart', link: '/guide/introduction/quickstart' },
+      { text: pkg.version, link: null }
     ],
 
     outline: 'deep',
