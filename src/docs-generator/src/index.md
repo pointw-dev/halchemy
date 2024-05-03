@@ -33,4 +33,9 @@ features:
     details: Hypermedia is a simple idea with powerful consequences.  If you are new to hypermedia, start here.
     linkText: Learn more
     link: /guide/concepts/hypermedia
+
+head:
+- - meta
+  - property: 'og:image'
+    content: 'https://pointw-dev.github.io/halchemy/img/hero.svg'
 ---
