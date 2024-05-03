@@ -4,6 +4,7 @@ const pkg = require('../../version_stamp.json')
 
 
 const basePath = 'halchemy'
+const seoLogo = 'https://pointw-dev.github.io/halchemy/img/logo.png'
 
 // https://vitepress.dev/reference/site-config
 export default defineConfig({
@@ -40,35 +41,9 @@ export default defineConfig({
     ['link', { rel: 'icon', href: `/${basePath}/favicon.ico` }],
     
     // test with https://www.opengraph.xyz/url/
-// head:
-// - - meta
-//   - property: 'og:image'
-//     content: 'https://pointw-dev.github.io/halchemy/img/logo.png'
     
-/*
-<!-- HTML Meta Tags -->
-<title>Getting Started | halchemy</title>
-<meta name="description" content="HAL for Humans">
-
-<!-- Facebook Meta Tags -->
-<meta property="og:url" content="https://maintenance.pointw.com/meta-test.html">
-<meta property="og:type" content="website">
-<meta property="og:title" content="pointw.com">
-<meta property="og:description" content="a place for stuff">
-<meta property="og:image" content="https://pointw.com/wp-content/uploads/2021/02/pointw-logo150.png">
-
-<!-- Twitter Meta Tags -->
-<meta name="twitter:card" value="summary">
-<meta name="twitter:domain" value="maintenance.pointw.com">
-<meta name="twitter:url" content="https://maintenance.pointw.com/meta-test.html">
-<meta name="twitter:title" content="pointw.com">
-<meta name="twitter:description" content="a place for stuff">
-<meta name="twitter:image" content="https://pointw.com/wp-content/uploads/2021/02/pointw-logo150.png">
-
-*/    
-    
-    ['meta', {property: 'og:image', content: 'https://pointw-dev.github.io/halchemy/img/logo.png'}],
-    ['meta', {property: 'og:type', content: 'website'}],
+    ['meta', {property: 'og:image', content: seoLogo}],
+    ['meta', {property: 'og:type', content: seoLogo}],
 
     ['meta', {name: 'twitter:image', value: 'https://pointw-dev.github.io/halchemy/img/logo.png'}],
     ['meta', {name: 'twitter:card', value: 'summary'}]
