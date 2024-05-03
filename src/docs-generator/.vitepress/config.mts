@@ -43,7 +43,7 @@ export default defineConfig({
 // head:
 // - - meta
 //   - property: 'og:image'
-//     content: 'https://pointw-dev.github.io/halchemy/img/hero.svg'
+//     content: 'https://pointw-dev.github.io/halchemy/img/logo.png'
     
 /*
 <!-- HTML Meta Tags -->
@@ -68,7 +68,7 @@ export default defineConfig({
 <!-- Meta Tags Generated via https://www.opengraph.xyz -->
 */    
     
-    ['meta', {property: 'og:image', content: 'https://pointw-dev.github.io/halchemy/img/hero.svg'}],
+    ['meta', {property: 'og:image', content: 'https://pointw-dev.github.io/halchemy/img/logo.png'}],
     ['meta', {property: 'og:type', content: 'website'}]
     
   ],
