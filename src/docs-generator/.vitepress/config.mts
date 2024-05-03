@@ -37,7 +37,40 @@ export default defineConfig({
   appearance: 'dark',
   base: `/${basePath}/`,
   head: [
-    ['link', { rel: 'icon', href: `/${basePath}/favicon.ico` }]
+    ['link', { rel: 'icon', href: `/${basePath}/favicon.ico` }],
+    
+    // test with https://www.opengraph.xyz/url/
+// head:
+// - - meta
+//   - property: 'og:image'
+//     content: 'https://pointw-dev.github.io/halchemy/img/hero.svg'
+    
+/*
+<!-- HTML Meta Tags -->
+<title>Getting Started | halchemy</title>
+<meta name="description" content="HAL for Humans">
+
+<!-- Facebook Meta Tags -->
+<meta property="og:url" content="https://pointw-dev.github.io/halchemy/guide/introduction/quickstart.html">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Getting Started | halchemy">
+<meta property="og:description" content="HAL for Humans">
+<meta property="og:image" content="">
+
+<!-- Twitter Meta Tags -->
+<meta name="twitter:card" content="summary_large_image">
+<meta property="twitter:domain" content="pointw-dev.github.io">
+<meta property="twitter:url" content="https://pointw-dev.github.io/halchemy/guide/introduction/quickstart.html">
+<meta name="twitter:title" content="Getting Started | halchemy">
+<meta name="twitter:description" content="HAL for Humans">
+<meta name="twitter:image" content="">
+
+<!-- Meta Tags Generated via https://www.opengraph.xyz -->
+*/    
+    
+    ['meta', {property: 'og:image', content: 'https://pointw-dev.github.io/halchemy/img/hero.svg'}],
+    ['meta', {property: 'og:type', content: 'website'}]
+    
   ],
   srcDir: 'src',
   vite: {

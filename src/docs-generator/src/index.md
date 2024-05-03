@@ -34,10 +34,4 @@ features:
     linkText: Learn more
     link: /guide/concepts/hypermedia
 
-# test with https://www.opengraph.xyz/url/
-head:
-- - meta
-  - property: 'og:image'
-    content: 'https://pointw-dev.github.io/halchemy/img/hero.svg'
-
 ---
