@@ -8,7 +8,7 @@ const basePath = 'halchemy'
 // https://vitepress.dev/reference/site-config
 export default defineConfig({
   title: 'halchemy',
-  
+
   themeConfig: {
     siteTitle: 'halchemy',
     stackOverflowTags: ['halchemy', 'HAL', 'http', 'rest', 'hypermedia'],
@@ -16,7 +16,7 @@ export default defineConfig({
       { icon: 'github', link: 'https://github.com/pointw-dev/halchemy' }
     ],
     logo: '/img/hero.svg',
-  
+
     nav: [
       { text: 'Home', link: '/' },
       { text: 'Quickstart', link: '/introduction/getting-started' },
@@ -26,10 +26,13 @@ export default defineConfig({
     outline: 'deep',
     sidebar: getSidebar(),
     search: {
-        provider: 'local'
+        provider: 'local',
+        options: {
+            detailedView: true
+        }
     }
   },
-  
+
   base: `/${basePath}/`,
   head: [
     ['link', { rel: 'icon', href: `/${basePath}/favicon.ico` }]
@@ -44,7 +47,7 @@ export default defineConfig({
         }
       ]
     }
-  }  
+  }
 })
 
 
