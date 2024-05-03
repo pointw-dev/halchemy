@@ -6,6 +6,8 @@ import DefaultTheme from 'vitepress/theme'
 import { Tab, Tabs } from 'vue3-tabs-component'
 import TitleImage from '../components/TitleImage.vue'
 import AskStackOverflow from '../components/AskStackOverflow.vue'
+import FutureLanguages from '../components/FutureLanguages.vue'
+import JsonExample from '../components/JsonExample.vue'
 
 import './tabs.css'
 import './style.css'
@@ -25,5 +27,7 @@ export default {
     app.component('Tabs', Tabs)
     app.component('AskStackOverflow', AskStackOverflow)
     app.component('TitleImage', TitleImage)
+    app.component('FutureLanguages', FutureLanguages)
+    app.component('JsonExample', JsonExample)
   }
 } satisfies Theme
