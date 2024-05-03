@@ -162,7 +162,7 @@ console.log(orders._halchemy.response.status)
 <tabs>
 <tab name="Python">
 
-```python{20-22}
+```python{21-23}
 ###############
 # Without halchemy (using requests)
 

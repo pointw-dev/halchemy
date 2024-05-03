@@ -4,9 +4,9 @@
  */
  
 :root {
-  --vp-pointw-background: #0AAAAA;
-  --vp-pointw-primary: #055555;
-  --vp-pointw-accent: #0FFFFF;
+  --vp-pointw-background: #033838;
+  --vp-pointw-primary:  #067171;
+  --vp-pointw-accent: #0AAAAA;
   
   --vp-c-indigo-1: #3451b2;
   --vp-c-indigo-2: #3a5ccc;
@@ -23,9 +23,9 @@
 }
 
 .dark {
-  --vp-pointw-background: #055555;
-  --vp-pointw-primary: #0FFFFF;
-  --vp-pointw-accent: #0AAAAA;
+  --vp-pointw-background: #067171;
+  --vp-pointw-primary: #0AAAAA;
+  --vp-pointw-accent: #033838;
 
 
   --vp-c-indigo-1: #a8b1ff;
