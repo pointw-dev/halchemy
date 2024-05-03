@@ -51,26 +51,27 @@ export default defineConfig({
 <meta name="description" content="HAL for Humans">
 
 <!-- Facebook Meta Tags -->
-<meta property="og:url" content="https://pointw-dev.github.io/halchemy/guide/introduction/quickstart.html">
+<meta property="og:url" content="https://maintenance.pointw.com/meta-test.html">
 <meta property="og:type" content="website">
-<meta property="og:title" content="Getting Started | halchemy">
-<meta property="og:description" content="HAL for Humans">
-<meta property="og:image" content="">
+<meta property="og:title" content="pointw.com">
+<meta property="og:description" content="a place for stuff">
+<meta property="og:image" content="https://pointw.com/wp-content/uploads/2021/02/pointw-logo150.png">
 
 <!-- Twitter Meta Tags -->
-<meta name="twitter:card" content="summary_large_image">
-<meta property="twitter:domain" content="pointw-dev.github.io">
-<meta property="twitter:url" content="https://pointw-dev.github.io/halchemy/guide/introduction/quickstart.html">
-<meta name="twitter:title" content="Getting Started | halchemy">
-<meta name="twitter:description" content="HAL for Humans">
-<meta name="twitter:image" content="">
+<meta name="twitter:card" value="summary">
+<meta name="twitter:domain" value="maintenance.pointw.com">
+<meta name="twitter:url" content="https://maintenance.pointw.com/meta-test.html">
+<meta name="twitter:title" content="pointw.com">
+<meta name="twitter:description" content="a place for stuff">
+<meta name="twitter:image" content="https://pointw.com/wp-content/uploads/2021/02/pointw-logo150.png">
 
-<!-- Meta Tags Generated via https://www.opengraph.xyz -->
 */    
     
     ['meta', {property: 'og:image', content: 'https://pointw-dev.github.io/halchemy/img/logo.png'}],
-    ['meta', {property: 'og:type', content: 'website'}]
-    
+    ['meta', {property: 'og:type', content: 'website'}],
+
+    ['meta', {name: 'twitter:image', value: 'https://pointw-dev.github.io/halchemy/img/logo.png'}],
+    ['meta', {name: 'twitter:card', value: 'summary'}]
   ],
   srcDir: 'src',
   vite: {
