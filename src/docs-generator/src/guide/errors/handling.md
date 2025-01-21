@@ -8,7 +8,7 @@ By default, halchemy will raise an exception in the event of network errors.  Wh
 ## Default configuration
 You can change this default behaviour:  There are two settings you can change to control how errors are handled.
 ### Network errors
-When there is a network error, your request did not receive a response.  By default, halchemy will raise an exception in this case.  You change by setting `raise on network failure` to false.  Now, when there is a network error, halchemy will not raise an exception.  You can check for this by looking at `resource._halchemy.error`
+When there is a network error, your request did not receive a response.  By default, halchemy will raise an exception in this case.  You change by setting `raise on network error` to false.  Now, when there is a network error, halchemy will not raise an exception.  You can check for this by looking at `resource._halchemy.error`
 
 <tabs>
 <tab name="Python">
@@ -17,7 +17,7 @@ When there is a network error, your request did not receive a response.  By defa
 from halchemy import Api
 
 api = Api('http://non-existent-server')
-api.error_handling.raise_on_network_failure = False
+api.error_handling.raise_on_network_error = False
 
 resource = api.root.get()
 if resource._halchemy.error:
@@ -31,7 +31,7 @@ if resource._halchemy.error:
 const {Api} = require('halchemy')
 
 const api = new Api('http://non-existent-server')
-api.errorHandling.raiseOnNetworkFailure = false
+api.errorHandling.raiseOnNetworkError = false
 
 const resource = api.root.get()
 if (resource._halchemy.error) {

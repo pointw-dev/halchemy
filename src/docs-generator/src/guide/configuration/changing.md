@@ -22,7 +22,7 @@ Cache-control = no-cache
 Accept-Language = en-CA,en;q=0.9,fr-CA;q=0.5,fr;q=0.3
 
 [error_handling]
-raise_on_network_failure = False
+raise_on_network_error = False
 raise_on_status_codes = 400-403, >404
 ```
 

@@ -3,5 +3,5 @@
   <component name="Black">
     <option name="sdkName" value="halchemy" />
   </component>
-  <component name="ProjectRootManager" version="2" project-jdk-name="Python 3.11 (halchemy) (3)" project-jdk-type="Python SDK" />
+  <component name="ProjectRootManager" version="2" project-jdk-name="Python 3.12 (halchemy)" project-jdk-type="Python SDK" />
 </project>

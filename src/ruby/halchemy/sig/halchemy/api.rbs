@@ -1,0 +1,15 @@
+module Halchemy
+  class Api
+    @error_handling: ErrorHandling
+
+    attr_accessor base_url: string
+    attr_accessor error_handling: ErrorHandling
+    attr_accessor headers: hash[string, string]
+
+    def request: -> untyped
+
+    def root: -> BaseRequester
+
+    def using_endpoint: -> BaseRequester
+  end
+end

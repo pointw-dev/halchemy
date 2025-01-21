@@ -14,8 +14,8 @@
             "pattern": "VERSION = '{version}'"
         },
         {
-            "path": "../jekyll/_includes/nav_footer_custom.html",
-            "pattern": "<p class=\"version-number\">Version {version}</p>"
+            "path": "./ruby/halchemy/lib/halchemy/version.rb",
+            "pattern": "VERSION = \"{version}\""
         }
     ]
 }

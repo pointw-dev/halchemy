@@ -1,0 +1,6 @@
+module Halchemy
+  class ErrorHandling
+    @raise_for_network_errors: bool
+    @raise_for_status_codes: string | nil
+  end
+end

@@ -66,7 +66,7 @@ class Api:
         self._api = RequestsWithDefaults(url_base=self._base_url, headers=self._headers)
 
     @property
-    def root(self) -> Requester:
+    def root(self) -> ReadOnlyRequester:
         return self.using_endpoint('/', is_root=True)
 
     def follow(self, resource: HalResource) -> Follower:

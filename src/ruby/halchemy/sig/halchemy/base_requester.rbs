@@ -1,0 +1,6 @@
+module Halchemy
+  class BaseRequester
+    @api: Api
+    @url: string
+  end
+end

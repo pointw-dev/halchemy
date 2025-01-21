@@ -3,7 +3,7 @@
 This API is frozen and deprecated.  Please use the fluent API from 0.9.4 on
 :::
 
-All requests are made over the network, and as the first [fallacy of distributed computing](https://en.wikipedia.org/wiki/Fallacies_of_distributed_computing) tells us the network is not reliable.  More often than network failures are other server-side issues that may prevent your requests from being handled as you expect.  For simplicity, most of the examples in this doc do not include exception handling, but of course your client code should always.
+All requests are made over the network.  As the first [fallacy of distributed computing](https://en.wikipedia.org/wiki/Fallacies_of_distributed_computing) reminds us, the network is not reliable.  More often than network failures are other server-side issues that may prevent your requests from being handled as you expect.  For simplicity, most of the examples in this doc do not include exception handling, but of course your client code should always.
 
 When halchemy encounteres an issue when submitting your request it does two things:
 * records the details in a public member called `last error`

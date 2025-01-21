@@ -74,7 +74,7 @@ Feature: Configuring the base URL influences requests to relative urls but not a
         Then the request is made to that <absolute_url>
 
         Examples:
-        | base_url            | absolute_url                           |
+        | base_url            | absolute_url                            |
         | http://example.org  | http://api-base.com                     |
         | https://example.org | https://other-domain.net                |
         | http://example.org  | https://api-base.com/some/path          |

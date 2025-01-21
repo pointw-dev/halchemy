@@ -64,7 +64,7 @@ There are two settings for `error handling`.  Here are their defaults:
 from halchemy import Api
 
 api = Api('http://example.org/api')
-print(api.error_handling.raise_on_network_failure)  # True
+print(api.error_handling.raise_on_network_error)  # True
 print(api.error_handling.raise_on_status_codes)     # None
 ```
 </tab>
@@ -75,7 +75,7 @@ print(api.error_handling.raise_on_status_codes)     # None
 const {Api} = require('halchemy')
 
 const api = new Api('http://example.org/api')
-console.log(api.errorHandling.raiseOnNetworkFailure)  // true
+console.log(api.errorHandling.raiseOnNetworkError)  // true
 console.log(api.errorHandling.raiseOnStatusCodes)     // null
 ```
 </tab>
