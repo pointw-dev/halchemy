@@ -1,0 +1,7 @@
+module Halchemy
+  class HalResource
+    def self.hal?: -> bool
+
+    def links: -> Array[String]
+  end
+end

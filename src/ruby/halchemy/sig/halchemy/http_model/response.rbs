@@ -1,0 +1,11 @@
+module Halchemy
+  module HttpModel
+    class Response
+      @headers: CICPHash
+      @reason: String
+      @status_code: int
+
+      attr_accessor reason: String
+    end
+  end
+end

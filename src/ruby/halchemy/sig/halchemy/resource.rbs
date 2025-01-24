@@ -1,0 +1,5 @@
+module Halchemy
+  class Resource
+    attr_accessor _halchemy: Metadata | nil
+  end
+end

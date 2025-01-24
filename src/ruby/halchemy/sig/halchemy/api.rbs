@@ -2,14 +2,32 @@ module Halchemy
   class Api
     @error_handling: ErrorHandling
 
-    attr_accessor base_url: string
-    attr_accessor error_handling: ErrorHandling
-    attr_accessor headers: hash[string, string]
+    def self.build_response: -> HttpModel::Response
 
-    def request: -> untyped
+    attr_accessor base_url: String
+    attr_accessor error_handling: ErrorHandling
+    attr_accessor headers: hash[String, String]
+
+    def follow: -> Follower
+
+    def request: -> (Resource | HalResource)
 
     def root: -> BaseRequester
 
     def using_endpoint: -> BaseRequester
+
+    private
+
+    def self.build_resource: -> (Resource | HalResource)
+
+    def build_url: -> String
+
+    def do_settings_include_status_code: -> bool
+
+    def match_condition?: -> bool
+
+    def parse_status_code_setting: -> Array[String]
+
+    def raise_for_errors: -> void
   end
 end

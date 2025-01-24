@@ -2,9 +2,13 @@
 
 require "httpx"
 require "cicphash"
-require_relative "read_only_requester"
 require_relative "requester"
+require_relative "follower"
 require_relative "error_handling"
+require_relative "status_codes"
+require_relative "resource"
+require_relative "http_model"
+require_relative "metadata"
 
 module Halchemy
   # This is the Halchemy::Api class, that is the main class for interacting with HAL-based APIs
@@ -46,21 +50,95 @@ module Halchemy
     end
 
     def request(method, target, data = nil, headers = nil)
+      url = build_url(target)
+
+      request = HttpModel::Request.new(method, url, data, headers)
+
+      http = HTTPX.with(headers: @headers)
+      result = http.send(method, url)
+
+      raise_for_errors(result)
+      build_resource(request, result)
+    end
+
+    def follow(resource)
+      Follower.new(self, resource)
+    end
+
+
+    private
+
+    def build_url(target)
       if target.start_with?("http")
-        url = target
+        target
       else
         url = URI(@base_url)
         url.path = [url.path.chomp("/"), target.sub(%r{^/}, "")].join("/")
+        url.to_s
       end
-      http = HTTPX.with(headers: @headers)
-      result = http.send(method, url.to_s)
+    end
 
-      p @error_handling
+    def raise_for_errors(result)
       if @error_handling.raise_for_network_errors && result.error.instance_of?(StandardError)
         raise StandardError, result.error.message
       end
 
-      result
+      if result.respond_to?("status") && do_settings_include_status_code(@error_handling.raise_for_status_codes, result.status)
+        raise StandardError, "status code matches #{@error_handling.raise_for_status_codes}"
+      end
     end
+
+    # @param [HttpModel::Request] request
+    # @param [Object] result
+    # @return [Halchemy::Resource | Halchemy::HalResource]
+    def build_resource(request, result)
+      # result.request.url, result.request.headers, result.request.body
+      response = build_response(result)
+      json = parse_body(result)
+
+      resource = if json.nil?
+                   Resource.new
+                 elsif HalResource.hal?(json)
+                   HalResource.new.merge! json
+                 else
+                   Resource.new.merge! json
+                 end
+
+      resource._halchemy = Metadata.new(request, response, nil)
+
+      resource
+    end
+
+    def parse_body(result)
+      body = extract_body(result)
+      return body if body.is_a?(Hash)
+
+      begin
+        json = JSON.parse(body) unless body.is_a?(Hash) || body.nil?
+      rescue JSON::ParserError
+        json = nil
+      end
+      json
+    end
+
+    def extract_body(result)
+      begin
+        body = result.json if result.respond_to?("json")
+      rescue HTTPX::Error
+        body = result.to_s # Return raw text if it fails
+      end
+      body
+    end
+
+    def build_response(result)
+      response = HttpModel::Response.new(nil, nil, nil, nil)
+      if result.error.nil? && !result.status.nil?
+        response = HttpModel::Response.new(result.status, "", result.headers, result.body)
+      end
+      response
+    end
+
   end
 end
+
+

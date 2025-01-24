@@ -90,7 +90,7 @@ Feature: You can configure how halchemy responds to errors.
             | timeout         | is           |
 
 
-    Scenario Outline: Can override error handling configuration
+    Scenario Outline: Can override error handling configuration per request
         Given an Api with default error handling configuration
         When a request results in a status code of 401
         And the code asks to throw an exception for non-successful status codes

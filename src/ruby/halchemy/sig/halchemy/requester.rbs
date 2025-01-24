@@ -1,6 +1,7 @@
 module Halchemy
   class BaseRequester
+    @_url: String
     @api: Api
-    @url: string
+    @resource: Resource | HalResource
   end
 end

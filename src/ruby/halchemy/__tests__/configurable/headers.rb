@@ -8,7 +8,7 @@ REMOVE_HEADERS = %w[Cache-control Authorization].freeze
 
 
 Given(/^the Api is created with no headers$/) do
-  @api = Halchemy::Api.new("http://example.org")
+  @api = Halchemy::Api.new BASE_URL
 end
 
 And(/^later is given new a new (.*) with its (.*)$/) do |header, value|
@@ -17,18 +17,18 @@ And(/^later is given new a new (.*) with its (.*)$/) do |header, value|
 end
 
 When(/^a request is sent$/) do
-  @api.using_endpoint("/path").get
+  @api.using_endpoint("/").get
 end
 
 Then(/^the request contains each (.*) with its (.*) for all sensible ones for the (.*)$/) do |header, value, method_type|
   # TODO: handle different method types having different headers - for now all headers are in
-  expect(a_request(:get, "http://example.org/path").with(headers: { header => value })).to have_been_made.at_least_once
+  expect(a_request(:get, BASE_URL).with(headers: { header => value })).to have_been_made.at_least_once
 end
 
 
 
 Given(/^the Api is created with headers$/) do
-  @api = Halchemy::Api.new("http://example.org", headers: HEADERS)
+  @api = Halchemy::Api.new(BASE_URL, headers: HEADERS)
 end
 
 And(/^later some headers are removed$/) do
@@ -49,20 +49,20 @@ end
 
 
 Then(/^the request contains the headers and their values$/) do
-  expect(a_request(:get, "http://example.org/path").with(headers: HEADERS)).to have_been_made.at_least_once
+  expect(a_request(:get, BASE_URL).with(headers: HEADERS)).to have_been_made.at_least_once
 end
 
 Given(/^an Api is created with a different (.*) for an out\-of\-the\-box (.*)$/) do |value, header|
   headers = { header => value }
-  @api = Halchemy::Api.new("http://example.org", headers: headers)
+  @api = Halchemy::Api.new(BASE_URL, headers: headers)
 end
 
 Then(/^the request contains the (.*) with the new (.*)$/) do |header, value|
-  expect(a_request(:get, "http://example.org/path").with(headers: { header => value })).to have_been_made.at_least_once
+  expect(a_request(:get, BASE_URL).with(headers: { header => value })).to have_been_made.at_least_once
 end
 
 Then(/^the request contains each new (.*) with its (.*)$/) do |header, value|
-  expect(a_request(:get, "http://example.org/path").with(headers: { header => value })).to have_been_made.at_least_once
+  expect(a_request(:get, BASE_URL).with(headers: { header => value })).to have_been_made.at_least_once
 end
 
 When(/^I set a new value to a previously added header but with a different case$/) do

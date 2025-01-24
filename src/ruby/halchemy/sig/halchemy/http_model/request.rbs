@@ -1,0 +1,9 @@
+module Halchemy
+  module HttpModel
+    class Request
+      @headers: CICPHash
+      @method: String
+      @url: String
+    end
+  end
+end
