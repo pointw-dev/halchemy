@@ -13,6 +13,10 @@ module Halchemy
         @headers = headers
         @body = body
       end
+
+      def to_s
+        "#{@method.to_s.upcase} #{@url}"
+      end
     end
 
     class Response
@@ -24,6 +28,10 @@ module Halchemy
         @headers = headers
         @body = body
         @error = nil
+      end
+
+      def to_s
+        "#{@status_code} #{@reason}"
       end
     end
 

@@ -36,11 +36,6 @@ And(/^later some headers are removed$/) do
 end
 
 Then(/^the request does not contain the removed headers$/) do
-  executed_requests = WebMock::RequestRegistry.instance.requested_signatures.hash
-
-  raise "No requests have been made" if executed_requests.empty?
-
-  last_request = executed_requests.keys.last
   headers = last_request.headers
 
   headers_remain = REMOVE_HEADERS.reduce(false) { |result, header| result ||= headers.has_key?(header) }
@@ -81,11 +76,6 @@ When(/^I set a new value to a previously added header but with a different case$
 end
 
 Then(/^the header is changed not added$/) do
-  executed_requests = WebMock::RequestRegistry.instance.requested_signatures.hash
-
-  raise "No requests have been made" if executed_requests.empty?
-
-  last_request = executed_requests.keys.last
   headers = last_request.headers
 
   api_has_duplicate_headers = @api.headers.keys.map(&:downcase).uniq.size != @api.headers.keys.size

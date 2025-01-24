@@ -1,0 +1,11 @@
+module Halchemy
+  class BaseRequester
+    @_data: Object | nil
+    @_headers: CICPHash
+    @_url: String
+    @api: Api
+    @resource: Resource | HalResource
+
+    def request: -> (Resource | HalResource)
+  end
+end

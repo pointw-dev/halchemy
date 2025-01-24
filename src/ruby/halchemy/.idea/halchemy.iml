@@ -33,6 +33,7 @@
     <orderEntry type="library" scope="PROVIDED" name="ffi (v1.17.1, RVM: ruby-3.4.1) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="hashdiff (v1.1.2, RVM: ruby-3.4.1) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="http-2 (v1.0.2, RVM: ruby-3.4.1) [gem]" level="application" />
+    <orderEntry type="library" scope="PROVIDED" name="http_status_codes (v0.1.0, RVM: ruby-3.4.1) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="httpx (v1.4.0, RVM: ruby-3.4.1) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="json (v2.9.1, RVM: ruby-3.4.1) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="language_server-protocol (v3.17.0.3, RVM: ruby-3.4.1) [gem]" level="application" />
@@ -55,6 +56,7 @@
     <orderEntry type="library" scope="PROVIDED" name="rubocop (v1.70.0, RVM: ruby-3.4.1) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="rubocop-ast (v1.37.0, RVM: ruby-3.4.1) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="ruby-progressbar (v1.13.0, RVM: ruby-3.4.1) [gem]" level="application" />
+    <orderEntry type="library" scope="PROVIDED" name="sorbet-runtime (v0.5.11780, RVM: ruby-3.4.1) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="sys-uname (v1.3.1, RVM: ruby-3.4.1) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="unicode-display_width (v3.1.4, RVM: ruby-3.4.1) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="unicode-emoji (v4.0.4, RVM: ruby-3.4.1) [gem]" level="application" />

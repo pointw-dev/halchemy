@@ -1,7 +1,9 @@
 # frozen_string_literal: true
 
-require "httpx"
 require "cicphash"
+require "httpx"
+require "http_status_codes"
+
 require_relative "requester"
 require_relative "follower"
 require_relative "error_handling"
@@ -49,12 +51,14 @@ module Halchemy
       header_keys.map { |key| @headers.delete(key) }
     end
 
-    def request(method, target, data = nil, headers = nil)
+    def request(method, target, headers = nil, data = nil)
       url = build_url(target)
 
-      request = HttpModel::Request.new(method, url, data, headers)
+      request_headers = headers.nil? ? @headers : @headers.merge(headers)
+      request = HttpModel::Request.new(method, url, data, request_headers)
 
-      http = HTTPX.with(headers: @headers)
+
+      http = HTTPX.with(headers: request_headers)
       result = http.send(method, url, body: data)
 
       raise_for_errors(result)
@@ -132,7 +136,7 @@ module Halchemy
 
     def build_response(result)
       status = result.status if result.respond_to?(:status)
-      reason = nil
+      reason = HTTPStatusCodes::MAP[status] if status.is_a?(Integer)
       headers = result.headers if result.respond_to?(:headers)
       body = result.body if result.respond_to?(:body)
 

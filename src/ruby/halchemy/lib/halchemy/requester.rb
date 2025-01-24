@@ -23,7 +23,7 @@ module Halchemy
 
     def request(method)
       data = @_data.is_a?(Hash) ? @_data.to_json : @_data
-      @api.request(method, url, data)
+      @api.request(method, url, @_headers, data)
     end
   end
 
@@ -45,6 +45,7 @@ module Halchemy
   class Requester < ReadOnlyRequester
     def post(data = nil, content_type = nil)
       @_data = data
+      @_headers["Content-Type"] = content_type if content_type
       request :post
     end
 

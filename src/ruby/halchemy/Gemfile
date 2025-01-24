@@ -6,6 +6,7 @@ source "https://rubygems.org"
 gemspec
 
 gem "cicphash", "~> 2.0"
+gem "http_status_codes", "~> 0.1.0"
 gem "httpx", "~> 1.4"
 gem "json", "~> 2.9.1"
 

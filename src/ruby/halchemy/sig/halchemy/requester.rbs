@@ -1,11 +1,6 @@
 module Halchemy
-  class BaseRequester
-    @_data: Object | nil
-    @_headers: CICPHash
-    @_url: String
-    @api: Api
-    @resource: Resource | HalResource
+  class Requester < ReadOnlyRequester
 
-    def request: -> (Resource | HalResource)
+    def post: -> (Resource | HalResource)
   end
 end
