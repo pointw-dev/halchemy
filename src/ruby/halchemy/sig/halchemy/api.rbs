@@ -20,6 +20,8 @@ module Halchemy
 
     def self.build_resource: -> (Resource | HalResource)
 
+    def build_response: -> HttpModel::Response
+
     def build_url: -> String
 
     def do_settings_include_status_code: -> bool

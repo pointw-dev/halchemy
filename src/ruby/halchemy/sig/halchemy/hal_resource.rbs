@@ -3,5 +3,7 @@ module Halchemy
     def self.hal?: -> bool
 
     def links: -> Array[String]
+
+    def rel?: -> bool
   end
 end

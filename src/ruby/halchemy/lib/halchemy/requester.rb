@@ -4,6 +4,9 @@ module Halchemy
   class BaseRequester
     def initialize(api, target)
       @api = api
+      @_data = nil
+      @_headers = CICPHash.new
+
       if target.instance_of?(String)
         @_url = target
         return
@@ -19,7 +22,8 @@ module Halchemy
     end
 
     def request(method)
-      @api.request(method, url)
+      data = @_data.is_a?(Hash) ? @_data.to_json : @_data
+      @api.request(method, url, data)
     end
   end
 
@@ -39,5 +43,10 @@ module Halchemy
 
 
   class Requester < ReadOnlyRequester
+    def post(data = nil, content_type = nil)
+      @_data = data
+      request :post
+    end
+
   end
 end

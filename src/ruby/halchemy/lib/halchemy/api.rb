@@ -55,7 +55,7 @@ module Halchemy
       request = HttpModel::Request.new(method, url, data, headers)
 
       http = HTTPX.with(headers: @headers)
-      result = http.send(method, url)
+      result = http.send(method, url, body: data)
 
       raise_for_errors(result)
       build_resource(request, result)
@@ -83,7 +83,7 @@ module Halchemy
         raise StandardError, result.error.message
       end
 
-      if result.respond_to?("status") && do_settings_include_status_code(@error_handling.raise_for_status_codes, result.status)
+      if result.respond_to?(:status) && do_settings_include_status_code(@error_handling.raise_for_status_codes, result.status)
         raise StandardError, "status code matches #{@error_handling.raise_for_status_codes}"
       end
     end
@@ -131,11 +131,12 @@ module Halchemy
     end
 
     def build_response(result)
-      response = HttpModel::Response.new(nil, nil, nil, nil)
-      if result.error.nil? && !result.status.nil?
-        response = HttpModel::Response.new(result.status, "", result.headers, result.body)
-      end
-      response
+      status = result.status if result.respond_to?(:status)
+      reason = nil
+      headers = result.headers if result.respond_to?(:headers)
+      body = result.body if result.respond_to?(:body)
+
+      HttpModel::Response.new(status, reason, headers, body).tap { |r| r.error = result.error unless result.error.nil? }
     end
 
   end

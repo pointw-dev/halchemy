@@ -16,7 +16,7 @@ module Halchemy
     end
 
     class Response
-      attr_accessor :status, :reason, :headers, :body, :error
+      attr_accessor :status_code, :reason, :headers, :body, :error
 
       def initialize(status_code, reason, headers, body = nil)
         @status_code = status_code

@@ -1,5 +1,4 @@
 # frozen_string_literal: true
-
 module Halchemy
   class Follower
     def initialize(api, resource)

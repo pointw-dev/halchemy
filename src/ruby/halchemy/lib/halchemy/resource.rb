@@ -36,6 +36,10 @@ module Halchemy
       true
     end
 
+    def rel?(rel_name)
+      self["_links"].key?(rel_name)
+    end
+
     def links
       self["_links"].keys ||= []
     end

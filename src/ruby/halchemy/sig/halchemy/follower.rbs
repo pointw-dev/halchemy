@@ -4,6 +4,6 @@ module Halchemy
 
     @resource: Resource
 
-    def to: -> BaseRequester
+    def to: -> Requester
   end
 end
