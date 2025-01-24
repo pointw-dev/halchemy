@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-Given(/^a HAL resource$/) do
+def stub_for_hal_resource_scenarios
   root_json = {
     _links: {
       self: { href: "/" },
@@ -21,7 +21,10 @@ Given(/^a HAL resource$/) do
   stub_request(:get, BASE_URL).to_return(body: root_json, headers: headers)
   stub_request(:get, %r{\A#{BASE_URL}/path(/.*)?\z}).to_return(status: 201, body: resource_json, headers: headers)
   # stub_request(:get, "#{BASE_URL}/resource2/is/the/path").to_return(body: resource_json, headers: headers)
+end
 
+Given(/^a HAL resource$/) do
+  stub_for_hal_resource_scenarios
   @api = Halchemy::Api.new BASE_URL
   @root_resource = @api.root.get
 end

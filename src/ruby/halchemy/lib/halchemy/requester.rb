@@ -21,6 +21,11 @@ module Halchemy
       @_url
     end
 
+    def with_headers(headers)
+      @_headers.merge!(headers)
+      self
+    end
+
     def request(method)
       data = @_data.is_a?(Hash) ? @_data.to_json : @_data
       @api.request(method, url, @_headers, data)
@@ -40,7 +45,6 @@ module Halchemy
       request :options
     end
   end
-
 
   class Requester < ReadOnlyRequester
     def post(data = nil, content_type = nil)
