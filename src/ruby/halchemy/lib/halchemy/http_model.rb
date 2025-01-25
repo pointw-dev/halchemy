@@ -27,7 +27,6 @@ module Halchemy
         @reason = reason
         @headers = headers
         @body = body
-        @error = nil
       end
 
       def to_s

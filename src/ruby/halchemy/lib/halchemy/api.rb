@@ -106,7 +106,7 @@ module Halchemy
                    Resource.new.merge! json
                  end
 
-      resource._halchemy = Metadata.new(request, response, nil)
+      resource._halchemy = Metadata.new(request, response, result.error)
 
       resource
     end
@@ -133,12 +133,12 @@ module Halchemy
     end
 
     def build_response(result)
-      status = result.status if result.respond_to?(:status)
-      reason = HTTPStatusCodes::MAP[status] if status.is_a?(Integer)
+      status = result.respond_to?(:status) ? result.status : 0
+      reason = status.positive? ? HTTPStatusCodes::MAP[status] : "Did not receive a response from the server"
       headers = result.headers if result.respond_to?(:headers)
       body = result.body if result.respond_to?(:body)
 
-      HttpModel::Response.new(status, reason, headers, body).tap { |r| r.error = result.error unless result.error.nil? }
+      HttpModel::Response.new(status, reason, headers, body)
     end
 
   end

@@ -384,7 +384,7 @@ When('I make a request',
         }
     })
 
-Then('the HTTP response details are available to me',
+Then('the HTTP request and response details are available to me',
     function () {
         AllMethods.forEach((method) => {
             const response = this.resources[method]._halchemy.response

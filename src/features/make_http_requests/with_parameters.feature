@@ -25,7 +25,7 @@ Feature: Easily add complex query strings by way of a parameter object
             | {"where":"{\"account\":\"1234\"}"}                                   | where=%7B%22account%22%3A%221234%22%7D                     |
             | {"percent":"100%"}                                                   | percent=100%25                                             |
             | {"special":"$&+,/:;=?@"}                                             | special=%24%26%2B%2C%2F%3A%3B%3D%3F%40                     |
-            | {"emoji":"😀", "chinese":"中文"}                                       | emoji=%F0%9F%98%80&chinese=%E4%B8%AD%E6%96%87              |
+            | {"emoji":"😀", "chinese":"中文"}                                      | emoji=%F0%9F%98%80&chinese=%E4%B8%AD%E6%96%87              |
 
 
    Scenario Outline:  Adding parameters to URL forms correct URLs in all cases

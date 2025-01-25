@@ -33,7 +33,7 @@ def stub_for_hal_resource_scenarios
   headers = { "Content-Type" => %w[application/json charset=UTF-8] }
 
   stub_request(:get, BASE_URL).to_return(body: ROOT_JSON, headers: headers)
-  stub_request(:get, %r{\A#{BASE_URL}/path(/.*)?\z}).to_return(status: 201, body: RESOURCE_JSON, headers: headers)
+  stub_request(:get, %r{\A#{BASE_URL}/path(/.*)?\z}).to_return(status: 200, body: RESOURCE_JSON, headers: headers)
 end
 
 def last_request
