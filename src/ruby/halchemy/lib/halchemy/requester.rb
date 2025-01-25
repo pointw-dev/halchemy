@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+require "uri_template"
 
 module Halchemy
   class BaseRequester
@@ -6,6 +7,7 @@ module Halchemy
       @api = api
       @_data = nil
       @_headers = CICPHash.new
+      @_template_values = {}
 
       if target.instance_of?(String)
         @_url = target
@@ -18,11 +20,17 @@ module Halchemy
     end
 
     def url
-      @_url
+      tpl = URITemplate.new(@_url)
+      tpl.expand(@_template_values)
     end
 
     def with_headers(headers)
-      @_headers.merge!(headers)
+      @_headers.merge! headers
+      self
+    end
+
+    def with_template_values(values)
+      @_template_values.merge! values
       self
     end
 

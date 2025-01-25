@@ -60,6 +60,7 @@
     <orderEntry type="library" scope="PROVIDED" name="sys-uname (v1.3.1, RVM: ruby-3.4.1) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="unicode-display_width (v3.1.4, RVM: ruby-3.4.1) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="unicode-emoji (v4.0.4, RVM: ruby-3.4.1) [gem]" level="application" />
+    <orderEntry type="library" scope="PROVIDED" name="uri_template (v0.7.0, RVM: ruby-3.4.1) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="webmock (v3.24.0, RVM: ruby-3.4.1) [gem]" level="application" />
   </component>
   <component name="RakeTasksCache-v2" failedReloadsCounter="2">

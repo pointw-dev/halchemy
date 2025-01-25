@@ -76,9 +76,7 @@ module Halchemy
       if target.start_with?("http")
         target
       else
-        url = URI(@base_url)
-        url.path = [url.path.chomp("/"), target.sub(%r{^/}, "")].join("/")
-        url.to_s
+        [@base_url.chomp("/"), target.sub(%r{\A/+}, "")].join("/")
       end
     end
 

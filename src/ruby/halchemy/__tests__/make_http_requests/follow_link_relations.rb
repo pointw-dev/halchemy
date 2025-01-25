@@ -1,28 +1,5 @@
 # frozen_string_literal: true
 
-def stub_for_hal_resource_scenarios
-  root_json = {
-    _links: {
-      self: { href: "/" },
-      resource1: { href: "/path/to/resource1" },
-      resource2: { href: "/path/to/resource2" },
-    }
-  }.to_json
-
-  resource_json = {
-    data: "some resource"
-  }.to_json
-
-  headers = { "Content-Type" => %w[application/json charset=UTF-8] }
-
-  # stub_request(:get, /#{BASE_URL}.*/).to_return(body: { _links: { self: { href: "/" }, resource1: { href: "/path/to/resource1" }, resource2: { href: "/resource2/is/the/path" } } })
-  # stub_request(:get, %r{#{BASE_URL}/.*}).to_return(body: resource_json, headers: headers)
-
-  stub_request(:get, BASE_URL).to_return(body: root_json, headers: headers)
-  stub_request(:get, %r{\A#{BASE_URL}/path(/.*)?\z}).to_return(status: 201, body: resource_json, headers: headers)
-  # stub_request(:get, "#{BASE_URL}/resource2/is/the/path").to_return(body: resource_json, headers: headers)
-end
-
 Given(/^a HAL resource$/) do
   stub_for_hal_resource_scenarios
   @api = Halchemy::Api.new BASE_URL

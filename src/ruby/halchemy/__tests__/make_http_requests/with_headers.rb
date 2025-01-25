@@ -8,6 +8,7 @@ Then(/^the request is made with those headers$/) do
   expect(headers["X-Customheader"]).to eq("custom value") # this case sensitivity is a product of WebMock, not halchemy
 end
 
+
 Given(/^I have made a request with additional headers$/) do
   stub_for_hal_resource_scenarios
   @api = Halchemy::Api.new BASE_URL
