@@ -5,7 +5,7 @@ Feature: Makes using optimistic concurrency easier.
     one else has pushed a change into the API.  If your assumption is correct, your
     change is made.  If not, the API responds with an error - letting you re-fetch the
     resource, merge your changes, override the other changes, put the choice to the 
-    user, or whatever handle the situation however makes sense in your application.
+    user, or do whatever makes sense in your application.
     
     Halchemy makes handling optimistic concurrency easy by inferring, out of the box,
     which headers are necessary in a request to change a resource, and letting you 

@@ -20,6 +20,12 @@ npm install halchemy
 ```
 </tab>
 
+<tab name="Ruby">
+
+```bash
+gem install halchemy
+```
+</tab>
 <future-languages />
 </tabs>
 
@@ -40,7 +46,6 @@ people = api.follow(root).to('people').get()   # follow the people rel to get th
 for person in people['_items']:
     account = api.follow(person).to('account').get()
     api.follow(account).to('deposit').post({'amount':5.00})
-    print(f"{person['name']} has a new balance of ${account['balance']}")
 ```
 </tab>
 
@@ -58,10 +63,26 @@ const people = api.follow(root).to('people').get()  // follow the people rel to 
 for (const person of people._items) {
     const account = async api.follow(person).to('account').get()
     async api.follow(account).to('deposit').post({amount:5.00})
-    console.log(`${person.name} has a new balance of ${account.balance}`)
 }
 ```
 </tab>
 
+<tab name="Ruby">
+
+```ruby
+require "halchemy"
+
+api = Halchemy::Api.new "http://example.org/api"
+
+root = api.root.get                          # get the root resource
+people = api.follow(root).to('people').get   # follow the people rel to get the list of people
+
+# Issue a refund of $5 to everyone
+people['_items'].each do |person|:
+  account = api.follow(person).to("account").get
+  api.follow(account).to('deposit').post({"amount":5.00})
+end
+```
+</tab>
 <future-languages />
 </tabs>

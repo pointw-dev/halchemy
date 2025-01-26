@@ -134,7 +134,7 @@ Given('an Api configured to throw on status codes >399, except 404',
 
 
 /*
-Scenario: Can override error handling configuration
+Scenario: Can override error handling configuration per request
     Given an Api with default error handling configuration
     When a request results in a non-successful status code
     And the code asks to throw an exception for non-successful status codes

@@ -3,7 +3,6 @@ const futureLanguages = [
     "Java",
     "C#",
     "PHP",
-    "Ruby",
     "Go",
     "R"
 ]

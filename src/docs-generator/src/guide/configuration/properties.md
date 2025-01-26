@@ -40,6 +40,14 @@ table th:nth-of-type(3) {
 | `errorHandling`       | Determines when exceptions are thrown/raised.  There are two properties: <br/>`raiseForNetworkErrors`<br/>`raiseForStatusCodes` | ([details below](#default-error-handling)) |
 </tab>
 
+<tab name="Ruby">
+
+> Ruby docs coming soon
+>
+> Functionality is available - while waiting for this code sample you can review the other languagaes. Ruby will apply similar patterns.
+
+</tab>
+
 <future-languages />
 </tabs>
 

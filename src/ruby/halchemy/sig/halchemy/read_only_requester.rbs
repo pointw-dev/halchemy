@@ -1,0 +1,9 @@
+module Halchemy
+  class ReadOnlyRequester < BaseRequester
+    def get: -> (Resource | HalResource)
+
+    def head: -> (Resource | HalResource)
+
+    def options: -> (Resource | HalResource)
+  end
+end

@@ -1,0 +1,9 @@
+module Halchemy
+  class Follower
+    @api: Api
+
+    @resource: Resource
+
+    def to: -> Requester
+  end
+end

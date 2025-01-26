@@ -54,6 +54,28 @@ activateCustomers()
 ```
 </tab>
 
+<tab name="Ruby">
+
+```ruby
+require "halchemy"
+
+auth_header = {
+    "Authorization": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJpYXQiOjB9.49jV8bS3WGLP20VBpCDane-kjxfGmO8L6LHgE7mLO9I"
+}
+
+api = Halchemy::Api.new("http://example.org/api", headers: auth_header)
+
+root = api.root.get
+customers = api.follow(root).to("customers").get
+
+customers.collection('_items').each do |customer|
+  if !customer['active'] and customer.rel?("activate"):
+    puts "Activating #{customer["givenName"]} #{customer["familyName"]}"
+    api.follow(customer).to('activate').put
+end
+```
+</tab>
+
 <future-languages />
 </tabs>
 
@@ -168,6 +190,51 @@ displayOrders()
 ```
 </tab>
 
+<tab name="Ruby">
+
+```ruby
+require "halchemy"
+
+api = Halchemy::Api.new "http://example.org/api"
+
+root = api.root.get
+customers = api.follow(root).to('customers').get
+
+puts "Show orders"
+puts "-----------"
+
+loop do
+  print "\nEnter the customer ID: "
+  customer_id = gets.chomp.upcase
+  break if customer_id.empty?
+
+  customer = api.follow(customers)
+                .to("item")
+                .with_template_values("customerId" => customer_id)
+                .get
+
+  status_code = customer._halchemy.response.status_code
+
+  case status_code
+  when 200
+    orders = api.follow(customer).to("orders").get
+    if orders["_items"].empty?
+      puts "Customer ##{customer_id} has no orders"
+    else
+      orders["_items"].each do |order|
+        puts order["orderNumber"]
+      end
+    end
+  when 404
+    puts "Customer ##{customer_id} was not found"
+  else
+    puts "Something went wrong: #{status_code} #{customer._halchemy.response.reason}"
+    break
+  end
+end
+```
+</tab>
+
 <future-languages />
 </tabs>
 
@@ -260,6 +327,43 @@ displayCustomers()
 ```
 </tab>
 
+<tab name="Ruby">
+
+```ruby
+require "halchemy"
+
+api = Halchemy::Api.new("http://example.org/api")
+
+root = api.root.get
+page = 1
+
+loop do
+  pagination = {
+    "max_results" => 10,
+    "page" => page
+  }
+  customers = api.follow(root).to("customers").with_parameters(pagination).get
+
+  customers.collection("_items").each do |customer|
+    puts "#{customer['customerId']} - #{customer['givenName']} #{customer['familyName']}"
+  end
+
+  prompt = "[N]ext page"
+  prompt += ", [P]revious page" if page > 1
+  print "#{prompt}: "
+  choice = gets.chomp.upcase
+
+  case choice
+  when "N"
+    page += 1
+  when "P"
+    page -= 1
+  else
+    break
+  end
+end
+```
+</tab>
 <future-languages />
 </tabs>
 

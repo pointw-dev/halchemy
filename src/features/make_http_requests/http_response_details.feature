@@ -10,7 +10,7 @@ Feature: HTTP details are available, but separate from resource representation.
     Scenario: HTTP response details available after a successful request
         Given a HAL resource
         When I make a request
-        Then the HTTP response details are available to me
+        Then the HTTP request and response details are available to me
 
 
     Scenario Outline: Error details available after a failed request

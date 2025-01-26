@@ -4,5 +4,5 @@ require_relative "halchemy/version"
 require_relative "halchemy/api"
 
 module Halchemy
-  class Error < StandardError; end
+  class HttpError < StandardError; end
 end

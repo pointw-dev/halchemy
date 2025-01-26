@@ -1,0 +1,13 @@
+module Halchemy
+  class HalResource
+    def self.hal?: -> bool
+
+    def collection: -> Enumerator[HalResource]
+
+    def links: -> Array[String]
+
+    def raise_for_syntax_error: -> void
+
+    def rel?: -> bool
+  end
+end

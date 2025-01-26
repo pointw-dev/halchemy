@@ -17,7 +17,7 @@ def call_with_each_method():
     make_requests(context, '/some/path')
 
 
-@then('the HTTP response details are available to me')
+@then('the HTTP request and response details are available to me')
 def verify_requests():
     for method in ALL_METHODS:
         resource = context.resources[method]

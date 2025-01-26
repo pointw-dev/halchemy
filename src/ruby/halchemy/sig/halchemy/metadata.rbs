@@ -1,0 +1,9 @@
+module Halchemy
+  class Metadata
+    attr_reader error: Object
+    attr_reader request: HttpModel::Request
+    attr_reader response: HttpModel::Response
+
+    def raise_for_status_codes: -> void
+  end
+end

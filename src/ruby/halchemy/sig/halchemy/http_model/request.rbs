@@ -1,0 +1,14 @@
+module Halchemy
+  module HttpModel
+    class Request
+      @headers: CICPHash
+      @method: String
+      @url: String
+
+      attr_accessor body: Object | nil
+      attr_accessor headers: CICPHash
+      attr_accessor method: Symbol
+      attr_accessor url: String
+    end
+  end
+end

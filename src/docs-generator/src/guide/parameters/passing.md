@@ -30,6 +30,17 @@ let customers = await api.follow(root)
 ```
 </tab>
 
+<tab name="Ruby">
+
+```ruby
+root = api.root.get
+
+# get the first page of customers, 100 per page
+customers = api.follow(root).to("customers").with_parameters({ "max_results" =>100, "page" => 1 }).get
+# adds ?max_results=100&page=1 to the URL
+```
+</tab>
+
 <future-languages />
 </tabs>
 

@@ -5,8 +5,14 @@ source "https://rubygems.org"
 # Specify your gem's dependencies in halchemy.gemspec
 gemspec
 
-gem "httpx", "~> 1.4"
 gem "cicphash", "~> 2.0"
+gem "http_status_codes", "~> 0.1.0"
+gem "httpx", "~> 1.4"
+gem "json", "~> 2.9.1"
+
+gem "uri_template", "~> 0.7.0"
+
+gem "logger", "~> 1.6.0"
 
 group :dev do
   gem "rake", "~> 13.0"
@@ -18,4 +24,3 @@ group :test do
   gem "rspec", "~> 3.13.0"
   gem "webmock", "~> 3.24.0"
 end
-
