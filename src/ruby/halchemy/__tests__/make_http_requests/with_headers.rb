@@ -1,13 +1,17 @@
+# frozen_string_literal: true
+
 When(/^I specify additional headers for a request$/) do
-  @api.follow(@root_resource).to("resource1").with_headers({ "X-CustomHeader" => "custom value" }).get
+  requester = @api.follow(@root_resource).to("resource1").with_headers({ "X-CustomHeader" => "custom value" })
+  @requests = make_requests(ALL_METHODS, requester)
 end
 
 Then(/^the request is made with those headers$/) do
-  headers = last_request.headers
-  expect(headers.keys.map(&:downcase)).to include("x-customheader")
-  expect(headers["X-Customheader"]).to eq("custom value") # this case sensitivity is a product of WebMock, not halchemy
+  ALL_METHODS.each do |method|
+    headers = @requests[method].headers
+    expect(headers.keys.map(&:downcase)).to include("x-customheader")
+    expect(headers["X-Customheader"]).to eq("custom value") # this case sensitivity is from WebMock, not halchemy
+  end
 end
-
 
 Given(/^I have made a request with additional headers$/) do
   stub_for_hal_resource_scenarios
@@ -17,10 +21,12 @@ Given(/^I have made a request with additional headers$/) do
 end
 
 When(/^I make a new request without headers$/) do
-  @api.follow(@root_resource).to("resource1").get
+  @requests = make_requests(ALL_METHODS, @api.follow(@root_resource).to("resource1"))
 end
 
 Then(/^the previous request's headers are not included$/) do
-  headers = last_request.headers
-  expect(headers.keys.map(&:downcase)).not_to include("x-customheader")
+  ALL_METHODS.each do |method|
+    headers = @requests[method].headers
+    expect(headers.keys.map(&:downcase)).not_to include("x-customheader")
+  end
 end

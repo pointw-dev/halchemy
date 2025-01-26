@@ -27,39 +27,49 @@ When(/^a request has this result (.*)$/) do |result|
     server.to_raise(result)
   end
 
-  begin
-    @exception_thrown = false
-    @api.using_endpoint("/").get
+  @exception_thrown = {}
+  ALL_METHODS.each do |method|
+    @exception_thrown[method] = false
+    @api.using_endpoint("/").public_send(method)
   rescue StandardError
-    @exception_thrown = true
+    @exception_thrown[method] = true
   end
-
 end
 
 Then(/^an exception (.*) thrown$/) do |is_or_is_not|
-  expect(@exception_thrown).to be(is_or_is_not == "is")
+  ALL_METHODS.each do |method|
+    expect(@exception_thrown[method]).to be(is_or_is_not == "is")
+  end
 end
 
 When(/^a request results in a status code of 401$/) do
   stub_request(:any, BASE_URL).to_return(status: 401)
-  @resource = @api.using_endpoint("/").get
+  @resource = {}
+  ALL_METHODS.each do |method|
+    @resource[method] = @api.using_endpoint("/").public_send(method)
+  end
 end
 
-And(/^the code asks to throw an exception for non\-successful status codes$/) do
-  @raise_method = @resource._halchemy.method(:raise_for_status_codes)
+And(/^the code asks to throw an exception for non-successful status codes$/) do
+  @raise_method = {}
+  ALL_METHODS.each do |method|
+    @raise_method[method] = @resource[method]._halchemy.method(:raise_for_status_codes)
+  end
 end
 
 Then(/^based on the override settings (.*) an exception (.*) thrown$/) do |settings, is_or_is_not|
-  exception_thrown = false
-  begin
-    if settings == "empty"
-      @raise_method.call
-    else
-      @raise_method.call(settings)
+  ALL_METHODS.each do |method|
+    exception_thrown = false
+    begin
+      if settings == "empty"
+        @raise_method[method].call
+      else
+        @raise_method[method].call(settings)
+      end
+    rescue StandardError
+      exception_thrown = true
     end
-  rescue StandardError
-    exception_thrown = true
-  end
 
-  expect(exception_thrown).to be(is_or_is_not == "is")
+    expect(exception_thrown).to be(is_or_is_not == "is")
+  end
 end

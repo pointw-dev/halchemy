@@ -11,6 +11,8 @@ module Halchemy
 
     private
 
+    def prepare_modify_header: -> void
+
     def prepare_payload: -> void
   end
 end

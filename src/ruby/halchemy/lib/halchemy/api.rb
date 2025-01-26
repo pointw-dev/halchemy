@@ -54,7 +54,7 @@ module Halchemy
 
 
       http = HTTPX.with(headers: request_headers)
-      result = http.send(method, url, body: data)
+      result = http.public_send(method, url, body: data)
 
       raise_for_errors(result)
       build_resource(request, result)

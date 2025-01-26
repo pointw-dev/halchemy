@@ -22,7 +22,9 @@ end
 
 When(/^I iterate the items in that field's collection$/) do
   @iterator = @resource.collection("_items")
-  @all_hal = @resource.collection("_items").reduce(false) { |all_hal, item| all_hal || item.is_a?(Halchemy::HalResource) }
+  @all_hal = @resource.collection("_items").reduce(false) do |all_hal, item|
+    all_hal || item.is_a?(Halchemy::HalResource)
+  end
 end
 
 Then(/^each item is a HAL resource$/) do
@@ -40,7 +42,7 @@ Then(/^it throws an exception telling me that the field does not exist$/) do
   expect(@error.message).to include("does not exist")
 end
 
-Given(/^a HAL resource with a non\-collection field$/) do
+Given(/^a HAL resource with a non-collection field$/) do
   @resource = Halchemy::HalResource.new.merge!(JSON.parse({
     _id: "3a834-34f9f03-39b843",
     _links: { self: { href: "/resource" } }
@@ -81,7 +83,7 @@ rescue TypeError => e
   @error = e
 end
 
-Then(/^it throws an exception telling me collection contains non\-HAL formatted objects$/) do
+Then(/^it throws an exception telling me collection contains non-HAL formatted objects$/) do
   expect(@error).to be_a(TypeError)
   expect(@error.message).to include("non-HAL")
 end

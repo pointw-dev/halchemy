@@ -3,7 +3,8 @@
 HEADERS = {
   "Cache-control" => "no-cache",
   "Connection" => "close",
-  "User-agent" => "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/67.0.3396.99 Safari/537.36"
+  "User-agent" => "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_6) AppleWebKit/537.36 " \
+                  "(KHTML, like Gecko) Chrome/67.0.3396.99 Safari/537.36"
 }.freeze
 
 REMOVE_HEADERS = %w[Cache-control Authorization].freeze
@@ -18,15 +19,20 @@ And(/^later is given new a new (.*) with its (.*)$/) do |header, value|
 end
 
 When(/^a request is sent$/) do
-  @api.using_endpoint("/").get
+  @headers = {}
+  ALL_METHODS.each do |method|
+    @api.using_endpoint("/").public_send(method)
+    @headers[method] = last_request.headers
+  end
 end
 
-Then(/^the request contains each (.*) with its (.*) for all sensible ones for the (.*)$/) do |header, value, method_type|
+Then(/^the request contains each (.*) with its (.*) for all sensible ones for the (.*)$/) do |header, value, type|
   # TODO: handle different method types having different headers - for now all headers are in
-  expect(a_request(:get, BASE_URL).with(headers: { header => value })).to have_been_made.at_least_once
+  ALL_METHODS.each do |method|
+    p "In the future, this will be checked against method type #{type}"
+    expect(a_request(method, BASE_URL).with(headers: { header => value })).to have_been_made.at_least_once
+  end
 end
-
-
 
 Given(/^the Api is created with headers$/) do
   @api = Halchemy::Api.new(BASE_URL, headers: HEADERS)
@@ -37,18 +43,17 @@ And(/^later some headers are removed$/) do
 end
 
 Then(/^the request does not contain the removed headers$/) do
-  headers = last_request.headers
-
-  headers_remain = REMOVE_HEADERS.reduce(false) { |result, header| result ||= headers.has_key?(header) }
-  expect(headers_remain).to be(false), "the request was made with headers that were removed"
+  ALL_METHODS.each do |method|
+    remaining_headers = REMOVE_HEADERS.select { |header| @headers[method].key?(header) }
+    expect(remaining_headers).to match_array([])
+  end
 end
-
 
 Then(/^the request contains the headers and their values$/) do
   expect(a_request(:get, BASE_URL).with(headers: HEADERS)).to have_been_made.at_least_once
 end
 
-Given(/^an Api is created with a different (.*) for an out\-of\-the\-box (.*)$/) do |value, header|
+Given(/^an Api is created with a different (.*) for an out-of-the-box (.*)$/) do |value, header|
   headers = { header => value }
   @api = Halchemy::Api.new(BASE_URL, headers: headers)
 end

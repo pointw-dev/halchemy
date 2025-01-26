@@ -2,6 +2,12 @@
 
 BASE_URL = "http://example.org"
 
+READ_METHODS = %i[get head options].freeze
+MODIFY_METHODS = %i[put patch delete].freeze
+PAYLOAD_METHODS = %i[post put patch].freeze
+ALL_METHODS = READ_METHODS + MODIFY_METHODS + %i[post]
+
+
 Before do
   WebMock::HttpLibAdapters::HttpxAdapter.enable!
   WebMock::Config.instance.query_values_notation = :flat_array
@@ -57,6 +63,10 @@ def last_request
   executed_requests.keys.last
 end
 
+def clear_request_registry
+  WebMock::RequestRegistry.instance.reset!
+end
+
 def normalize_path(url)
   uri = URI.parse(url)
 
@@ -68,4 +78,20 @@ def normalize_path(url)
 
   # Return normalized path with query
   uri.path + (uri.query ? "?#{uri.query}" : "")
+end
+
+def make_requests(methods, requester, payload = nil, content_type = nil)
+  requests = {}
+  methods.each do |method|
+    clear_request_registry
+
+    if payload.nil?
+      requester.public_send(method)
+    else
+      requester.public_send(method, payload, content_type)
+    end
+
+    requests[method] = last_request
+  end
+  requests
 end

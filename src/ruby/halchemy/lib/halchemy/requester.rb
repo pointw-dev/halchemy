@@ -141,16 +141,18 @@ module Halchemy
 
     def put(data = nil, content_type = nil)
       prepare_payload(content_type, data)
-      @_headers.merge!(@api.optimistic_concurrency_header(@resource)) if @resource.is_a?(HalResource)
+      prepare_modify_header
       request :put
     end
 
     def patch(data = nil, content_type = nil)
       prepare_payload(content_type, data)
+      prepare_modify_header
       request :patch
     end
 
     def delete
+      prepare_modify_header
       request :delete
     end
 
@@ -160,6 +162,10 @@ module Halchemy
     def prepare_payload(content_type, data)
       @_data = data
       @_headers["Content-Type"] = content_type unless content_type.nil?
+    end
+
+    def prepare_modify_header
+      @_headers.merge!(@api.optimistic_concurrency_header(@resource)) if @resource.is_a?(HalResource)
     end
 
   end

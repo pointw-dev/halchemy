@@ -1,13 +1,16 @@
 # frozen_string_literal: true
 
 When(/^I supply (.*)$/) do |parameters|
-  @api.follow(@root_resource).to("resource1").with_parameters(JSON.parse(parameters)).get
+  requester = @api.follow(@root_resource).to("resource1").with_parameters(JSON.parse(parameters))
+  @requests = make_requests(ALL_METHODS, requester)
 end
 
 Then(/^the parameters are added to the URL as a RFC 3986 compliant (.*)$/) do |query_string|
-  request_path = normalize_path(last_request.uri.to_s)
-  correct_query_string = normalize_path("/path?#{query_string}")[5..]
-  expect(request_path).to end_with(correct_query_string)
+  ALL_METHODS.each do |method|
+    request_path = normalize_path(@requests[method].uri.to_s)
+    correct_query_string = normalize_path("/path?#{query_string}")[5..]
+    expect(request_path).to end_with(correct_query_string)
+  end
 end
 
 Given(/^an endpoint at (.*)$/) do |url|

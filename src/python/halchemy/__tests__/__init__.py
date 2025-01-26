@@ -3,8 +3,7 @@ import requests_mock
 READ_METHODS = ['GET', 'HEAD', 'OPTIONS']
 MODIFY_METHODS = ['PUT', 'PATCH', 'DELETE']
 PAYLOAD_METHODS = ['POST', 'PUT', 'PATCH']
-ALL_METHODS = READ_METHODS + MODIFY_METHODS
-
+ALL_METHODS = READ_METHODS + MODIFY_METHODS + ['POST']
 
 def make_requests(context, url):
     with requests_mock.Mocker() as m:

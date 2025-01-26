@@ -1,22 +1,30 @@
 # frozen_string_literal: true
 
 When(/^I make a request using its link relations$/) do
-  @api.follow(@root_resource).to("resource1").get
+  @requests = make_requests(ALL_METHODS, @api.follow(@root_resource).to("resource1"))
 end
 
 Then(/^the href of the link is used for the request$/) do
-  expect(last_request.uri.to_s).to include("resource1")
+  ALL_METHODS.each do |method|
+    expect(@requests[method].uri.to_s).to include("resource1")
+  end
 end
 
 When(/^I make a request to a link relation the resource does not have$/) do
-  @api.follow(@root_resource).to("non-existent").get
-rescue KeyError => e
-  @error = e
+  @error = {}
+  ALL_METHODS.each do |method|
+    @error[method] = nil
+    @api.follow(@root_resource).to("non-existent").public_send(method)
+  rescue KeyError => e
+    @error[method] = e
+  end
 end
 
 Then(/^the request fails, informing me of the issue$/) do
-  expect(@error).to be_a(KeyError)
-  expect(@error.message).to include("does not have a link relation named non-existent")
+  ALL_METHODS.each do |method|
+    expect(@error[method]).to be_a(KeyError)
+    expect(@error[method].message).to include("does not have a link relation named non-existent")
+  end
 end
 
 When(/^I ask for the links it has$/) do
@@ -48,28 +56,31 @@ When(/^I use an object my language uses to represent JSON as the payload of a re
     "key5" => [1, 2, 3],
     "key6" => { "subkey1" => "sub value", "subkey2" => 2 }
   }
+
   @payload = data.to_json
-  @api.follow(@root_resource).to("resource1").post(data)
+  @requests = make_requests(PAYLOAD_METHODS, @api.follow(@root_resource).to("resource1"), @payload)
 end
 
 Then(/^the request body is properly formatted JSON$/) do
-  request = last_request
-  expect(request.headers["Content-Type"]).to eq("application/json")
-  expect(request.body).to eq(@payload)
+  PAYLOAD_METHODS.each do |method|
+    expect(@requests[method].headers["Content-Type"]).to eq("application/json")
+    expect(@requests[method].body).to eq(@payload)
+  end
 end
 
 When(/^I use data type that is not an object but is valid as JSON, e\.g\. (.*)$/) do |data|
   @payload = data
-  @api.follow(@root_resource).to("resource1").post(@payload)
+  @requests = make_requests(PAYLOAD_METHODS, @api.follow(@root_resource).to("resource1"), @payload)
 end
 
 When(/^the payload of a request is has (.*) of a different (.*)$/) do |data, content_type|
   @payload = data
-  @api.follow(@root_resource).to("resource1").post(data, content_type)
+  @requests = make_requests(PAYLOAD_METHODS, @api.follow(@root_resource).to("resource1"), data, content_type)
 end
 
 Then(/^the request is made with the correct (.*) and (.*) header$/) do |data, content_type|
-  request = last_request
-  expect(request.headers["Content-Type"]).to eq(content_type)
-  expect(request.body).to eq(data)
+  PAYLOAD_METHODS.each do |method|
+    expect(@requests[method].headers["Content-Type"]).to eq(content_type)
+    expect(@requests[method].body).to eq(data)
+  end
 end

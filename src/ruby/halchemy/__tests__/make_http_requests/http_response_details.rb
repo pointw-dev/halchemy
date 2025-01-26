@@ -1,25 +1,31 @@
 # frozen_string_literal: true
 
 When(/^I make a request$/) do
-  @resource = @api.follow(@root_resource).to("resource1").get
+  @resource = {}
+  ALL_METHODS.each do |method|
+    @resource[method] = @api.follow(@root_resource).to("resource1").public_send(method)
+  end
 end
 
 Then(/^the HTTP request and response details are available to me$/) do
-  expect(@resource).not_to be_nil
-  request = @resource._halchemy.request
-  response = @resource._halchemy.response
-  error = @resource._halchemy.error
+  ALL_METHODS.each do |method|
+    resource = @resource[method]
+    expect(resource).not_to be_nil
+    request = resource._halchemy.request
+    response = resource._halchemy.response
+    error = resource._halchemy.error
 
-  expect(request).not_to be_nil
-  expect(response).not_to be_nil
+    expect(request).not_to be_nil
+    expect(response).not_to be_nil
 
-  expect(request.method).to eq(:get)
-  expect(request.url).to end_with("/path/to/resource1")
+    expect(request.method).to eq(method)
+    expect(request.url).to end_with("/path/to/resource1")
 
-  expect(response.status_code).to eq(200)
-  expect(response.reason).to eq("OK")
+    expect(response.status_code).to eq(200)
+    expect(response.reason).to eq("OK")
 
-  expect(error).to be_nil
+    expect(error).to be_nil
+  end
 end
 
 When(/^the request I made fails: (.*)$/) do |failure|
@@ -33,17 +39,22 @@ When(/^the request I made fails: (.*)$/) do |failure|
   end
   @expected_failure = failure
 
-  @resource = @api.follow(@root_resource).to("resource1").get
+  @resource = {}
+  ALL_METHODS.each do |method|
+    @resource[method] = @api.follow(@root_resource).to("resource1").public_send(method)
+  end
 end
 
 Then(/^I can access the error details$/) do
-  response = @resource._halchemy.response
-  error = @resource._halchemy.error
-  expect(error).not_to be_nil
+  ALL_METHODS.each do |method|
+    response = @resource[method]._halchemy.response
+    error = @resource[method]._halchemy.error
+    expect(error).not_to be_nil
 
-  if @expected_failure.start_with?("status_code:")
-    expect(response.status_code).to eq(@expected_failure.sub("status_code:", "").to_i)
-  else
-    expect(error.message).to be @expected_failure
+    if @expected_failure.start_with?("status_code:")
+      expect(response.status_code).to eq(@expected_failure.sub("status_code:", "").to_i)
+    else
+      expect(error.message).to be @expected_failure
+    end
   end
 end
