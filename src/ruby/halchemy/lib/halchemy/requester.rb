@@ -2,6 +2,18 @@
 
 require "uri_template"
 
+LIST_STYLE_HANDLERS = {
+  "repeat_key" => ->(key, array) { array.map { |item| [key, URI.encode_www_form_component(item.to_s)] } },
+  "bracket" => ->(key, array) { array.map { |item| ["#{key}[]", URI.encode_www_form_component(item.to_s)] } },
+  "index" => lambda { |key, array|
+    array.each_with_index.map do |item, index|
+      ["#{key}[#{index}]", URI.encode_www_form_component(item.to_s)]
+    end
+  },
+  "comma" => ->(key, array) { [[key, array.map { |item| URI.encode_www_form_component(item.to_s) }.join(",")]] },
+  "pipe" => ->(key, array) { [[key, array.map { |item| URI.encode_www_form_component(item.to_s) }.join("|")]] }
+}.freeze
+
 module Halchemy
   # The results of a Follower#to is a Requester.  In the case of a GET for the root resource, the Requester is Read Only
   # Otherwise it is a full Requester.  Both requester types share much in common.  This is defined in BaseRequester
@@ -21,10 +33,12 @@ module Halchemy
 
     def url
       rtn = @_url
+
       if @_is_templated
         tpl = URITemplate.new(rtn)
         rtn = tpl.expand(@_template_values)
       end
+
       rtn = add_parameters_to_url rtn unless @_parameters.empty?
       rtn
     end
@@ -54,8 +68,10 @@ module Halchemy
 
     private
 
+    # @param [String | Tuple[HalResource, String]] target
+    # @return [void]
     def process_target(target)
-      if target.instance_of?(String)
+      if target.is_a?(String)
         @_url = target
       else
         resource, rel = target
@@ -67,21 +83,10 @@ module Halchemy
 
     # Handle list-style parameters based on the list style configuration
     def handle_list(key, array)
-      list_style = @api.parameters_list_style
-      case list_style
-      when "repeat_key"
-        array.map { |item| [key, URI.encode_www_form_component(item.to_s)] }
-      when "bracket"
-        array.map { |item| ["#{key}[]", URI.encode_www_form_component(item.to_s)] }
-      when "index"
-        array.each_with_index.map { |item, index| ["#{key}[#{index}]", URI.encode_www_form_component(item.to_s)] }
-      when "comma"
-        [[key, array.map { |item| URI.encode_www_form_component(item.to_s) }.join(",")]]
-      when "pipe"
-        [[key, array.map { |item| URI.encode_www_form_component(item.to_s) }.join("|")]]
-      else
-        raise ArgumentError, "Unsupported parameters list style: #{list_style}"
-      end
+      handler = LIST_STYLE_HANDLERS[@api.parameters_list_style]
+      raise ArgumentError, "Unsupported parameters list style: #{@api.parameters_list_style}" unless handler
+
+      handler.call(key, array)
     end
 
     # Recursively flatten parameters into a list of key-value pairs
@@ -111,17 +116,12 @@ module Halchemy
     # Add the flattened parameters to the URL as a query string
     def add_parameters_to_url(url)
       query_params = flatten_parameters(nil, @_parameters)
+      query_string = query_params.map { |key, value| value.nil? ? key : "#{key}=#{value}" }.join("&")
 
-      query_string_parts = query_params.map do |key, value|
-        value.nil? ? key : "#{key}=#{value}"
-      end
-
-      query_string = query_string_parts.join("&")
-
-      if url.include?("?") && !url.end_with?("?")
+      if url.include?("?")
         "#{url}&#{query_string}"
       else
-        "#{url}#{url.end_with?("?") ? "" : "?"}#{query_string}"
+        "#{url}?#{query_string}"
       end
     end
   end
