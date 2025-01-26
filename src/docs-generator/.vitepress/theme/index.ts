@@ -5,6 +5,7 @@ import DefaultTheme from 'vitepress/theme'
 
 import { Tab, Tabs } from 'vue3-tabs-component'
 import TitleImage from '../components/TitleImage.vue'
+import NotFound from '../components/NotFound.vue'
 import AskStackOverflow from '../components/AskStackOverflow.vue'
 import FutureLanguages from '../components/FutureLanguages.vue'
 import JsonExample from '../components/JsonExample.vue'
@@ -18,7 +19,8 @@ export default {
   Layout: () => {
     return h(DefaultTheme.Layout, null, {
       // https://vitepress.dev/guide/extending-default-theme#layout-slots
-      'doc-footer-before': () => h(AskStackOverflow)
+      'doc-footer-before': () => h(AskStackOverflow),
+      'not-found': () => h(NotFound)
     })
   },
   
