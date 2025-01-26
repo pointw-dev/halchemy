@@ -284,8 +284,8 @@ url = url_join(api_url, customer['_links']['self']['href'])
 # as well as Content-type as before
 etag = result.headers['Etag']                               
 headers = {
-    'If-match': etag,
-    'Content-type': 'application/json'
+    "If-match": etag,
+    "Content-type": "application/json"
 }
 
 # We need to convert the update dict to a JSON string
@@ -293,7 +293,7 @@ HTTPX.with(headers: headers).patch(url, json: {"givenName" => new_name})
 
 ###############
 # With halchemy
-api.follow(customer).to('self').patch({"givenName" => new_name})
+api.follow(customer).to("self").patch("givenName" => new_name)
 ```
 </tab>
 <future-languages />
@@ -333,16 +333,16 @@ The syntax for this operation not greatly improved when using Javascript compare
 </tab>
 <tab name="Ruby">
 
-```python{7-9}
+```ruby{7-9}
 ###############
 # Without halchemy (using requests)
 
-url = urljoin(api_url, customer['_links']['activate']['href'])  
+url = url_join(api_url, customer["_links"]["activate"]["href"])  
 HTTPX.put(update_url)
 
 ###############
 # With halchemy
-api.follow(customer).to('activate').put
+api.follow(customer).to("activate").put
 ```
 </tab>
 <future-languages />
@@ -386,7 +386,7 @@ console.log(`Hello ${customer.givenName}`)
 </tab>
 <tab name="Ruby">
 
-```python
+```ruby
 ###############
 # Without halchemy
 
@@ -398,7 +398,6 @@ puts "Hello #{customer["givenName"]}"
 #   and stays out of the way until you need it
 
 puts "Hello #{customer["givenName"]}"
-
 ```
 </tab>
 <future-languages />

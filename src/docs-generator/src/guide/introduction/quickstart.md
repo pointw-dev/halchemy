@@ -75,12 +75,12 @@ require "halchemy"
 api = Halchemy::Api.new "http://example.org/api"
 
 root = api.root.get                          # get the root resource
-people = api.follow(root).to('people').get   # follow the people rel to get the list of people
+people = api.follow(root).to("people").get   # follow the people rel to get the list of people
 
 # Issue a refund of $5 to everyone
-people['_items'].each do |person|:
+people["_items"].each do |person|:
   account = api.follow(person).to("account").get
-  api.follow(account).to('deposit').post({"amount":5.00})
+  api.follow(account).to("deposit").post("amount"=> 5.00)
 end
 ```
 </tab>

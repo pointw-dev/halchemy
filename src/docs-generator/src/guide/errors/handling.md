@@ -121,13 +121,13 @@ api.error_handling.raise_on_status_codes = "400-403, >404"
 
 root = api.root.get
 begin
-  resource = api.follow(root).to('search').get
+  resource = api.follow(root).to("search").get
   if resource._halchemy.response.status_code == 404
    puts "no results found"
   else
     puts "results found", resource
   end
-rescue Halchemy::HttpError => e:
+rescue Halchemy::HttpError => e
     puts "an error occurred", e.message
 end
 ```
@@ -177,8 +177,8 @@ if (customer._halchemy.response.status === 404) {
 <tab name="Ruby">
 
 ```ruby
-customer = api.follow(customers).to("item").with_template_values({"customerId" => 'A375'}).get
-customer._halchemy.raise_for_status_codes('400-403, >404')
+customer = api.follow(customers).to("item").with_template_values({"customerId" => "A375"}).get
+customer._halchemy.raise_for_status_codes("400-403, >404")
 
 # if we make it here, we know the status code is not 400-403 or 405 or above, but might be 404
 if customer._halchemy.response.status_code == 404

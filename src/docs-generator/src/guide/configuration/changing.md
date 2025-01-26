@@ -62,13 +62,13 @@ console.log(api.baseUrl)  // http://example.org/api
 
 <tab name="Ruby">
 
-```python
+```ruby
 require "halchemy"
 
 api = Halchemy::Api.new
-puts api.base_url  # http://localhost:2112
-api.base_url = 'http://example.org/api'
-puts api.base_url  # http://example.org/api
+puts api.base_url                        # http://localhost:2112
+api.base_url = "http://example.org/api"
+puts api.base_url                        # http://example.org/api
 ```
 
 > Note: the Ruby gem does not yet support config files.  Coming soon!

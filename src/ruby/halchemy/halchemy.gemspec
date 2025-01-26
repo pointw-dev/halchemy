@@ -8,8 +8,8 @@ Gem::Specification.new do |spec|
   spec.authors = ["Michael Ottoson"]
   spec.email = ["michael@pointw.com"]
 
-  spec.summary = "This is a summary."
-  spec.description = "This is a longer description."
+  spec.summary = "HAL for humans"
+  spec.description = "Do you have an API that serves data following the HAL specification?  The **halchemy** library makes it easy for your client to make the most of that API."
   spec.homepage = "https://github.com/pointw-dev/halchemy"
   spec.license = "MIT"
   spec.required_ruby_version = ">= 3.1.0"

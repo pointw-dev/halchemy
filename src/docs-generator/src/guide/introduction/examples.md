@@ -68,10 +68,11 @@ api = Halchemy::Api.new("http://example.org/api", headers: auth_header)
 root = api.root.get
 customers = api.follow(root).to("customers").get
 
-customers.collection('_items').each do |customer|
-  if !customer['active'] and customer.rel?("activate"):
+customers.collection("_items").each do |customer|
+  if customer.rel?("activate") && !customer["active"]
     puts "Activating #{customer["givenName"]} #{customer["familyName"]}"
-    api.follow(customer).to('activate').put
+    api.follow(customer).to("activate").put
+  end
 end
 ```
 </tab>
@@ -198,7 +199,7 @@ require "halchemy"
 api = Halchemy::Api.new "http://example.org/api"
 
 root = api.root.get
-customers = api.follow(root).to('customers').get
+customers = api.follow(root).to("customers").get
 
 puts "Show orders"
 puts "-----------"
