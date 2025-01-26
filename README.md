@@ -20,6 +20,11 @@ pip install halchemy
 npm install halchemy
 ```
 
+### Ruby
+```bash
+gem install halchemy
+```
+
 In your code, create an `Api` object with the URL of your API.
 
 ### Python
@@ -53,6 +58,22 @@ for (const person of people._items) {
     async api.follow(account).to('deposit').post({amount:5.00})
     console.log(`${person.name} has a new balance of ${account.balance}`)
 }
+```
+
+### Ruby
+```ruby
+require "halchemy"
+
+api = Halchemy::Api.new "http://example.org/api"
+
+root = api.root.get                           # get the root resource
+people = api.follow(root).to("people").get    # follow the people rel to get the list of people
+
+# Issue a refund of $5 to everyone
+people['_items'].each do |person|
+  account = api.follow(person).to("account").get
+  api.follow(account).to("deposit").post({ "amount" => 5.00 })
+end
 ```
 
 [Read the docs](https://pointw-dev.github.io/halchemy) to learn more!
