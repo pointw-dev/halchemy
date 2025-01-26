@@ -49,9 +49,6 @@ export default defineConfig({
     ['meta', {name: 'twitter:card', value: 'summary'}]
   ],
   srcDir: 'src',
-//  sitemap: {
-//    hostname: hostname
-//  },
   vite: {
     resolve: {
       alias: [
@@ -61,6 +58,9 @@ export default defineConfig({
         }
       ]
     }
+  },
+  sitemap: {
+    hostname: hostname + (basePath? `/${basePath}/` : '')
   },
   
   transformPageData(pageData) {
