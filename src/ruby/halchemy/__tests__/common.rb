@@ -23,14 +23,27 @@ ROOT_JSON = {
 }.to_json
 
 RESOURCE_JSON = {
-  data: "some resource"
+  data: "some resource",
+  _links: {
+    self: { href: "/path/to/resource1" }
+  },
+  _etag: "from field"
 }.to_json
 
 
 
+Given(/^a HAL resource$/) do
+  stub_for_hal_resource_scenarios
+  @api = Halchemy::Api.new BASE_URL
+  @root_resource = @api.root.get
+end
+
 # @return [void]
 def stub_for_hal_resource_scenarios
-  headers = { "Content-Type" => %w[application/json charset=UTF-8] }
+  headers = {
+    "Content-Type" => %w[application/json charset=UTF-8],
+    "Etag" => "from header"
+  }
 
   stub_request(:get, BASE_URL).to_return(body: ROOT_JSON, headers: headers)
   stub_request(:get, %r{\A#{BASE_URL}/path(/.*)?\z}).to_return(status: 200, body: RESOURCE_JSON, headers: headers)

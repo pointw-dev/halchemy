@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 HEADERS = {
   "Cache-control" => "no-cache",
   "Connection" => "close",
@@ -5,7 +7,6 @@ HEADERS = {
 }.freeze
 
 REMOVE_HEADERS = %w[Cache-control Authorization].freeze
-
 
 Given(/^the Api is created with no headers$/) do
   @api = Halchemy::Api.new BASE_URL

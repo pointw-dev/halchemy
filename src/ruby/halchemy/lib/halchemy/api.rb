@@ -15,18 +15,13 @@ require_relative "metadata"
 module Halchemy
   # This is the Halchemy::Api class, that is the main class for interacting with HAL-based APIs
   class Api
-    attr_accessor :base_url, :headers, :error_handling
+    attr_accessor :base_url, :headers, :error_handling, :parameters_list_style
 
     def initialize(base_url, headers: {})
       @base_url = base_url
-      @headers = CICPHash.new
-      {
-        "Authorization" => "Basic cm9vdDpwYXNzd29yZA==",
-        "Content-type" => "application/json",
-        "Accept" => "application/hal+json, application/json;q=0.9, */*;q=0.8"
-      }.each { |key, value| @headers[key] = value }
+      configure
+
       @headers.merge!(headers)
-      @error_handling = ErrorHandling.new
     end
 
     def root
@@ -69,8 +64,23 @@ module Halchemy
       Follower.new(self, resource)
     end
 
+    def optimistic_concurrency_header(resource)
+      etag = resource._halchemy.response.headers["Etag"] ? resource._halchemy.response.headers["Etag"] : resource[@etag_field]
+      etag.nil? ? {} : { "If-Match" => etag }
+    end
 
     private
+
+    def configure
+      @headers = CICPHash.new.merge!({
+                                       "Authorization" => "Basic cm9vdDpwYXNzd29yZA==",
+                                       "Content-type" => "application/json",
+                                       "Accept" => "application/hal+json, application/json;q=0.9, */*;q=0.8"
+                                     })
+      @error_handling = ErrorHandling.new
+      @parameters_list_style = "repeat_key"
+      @etag_field = "_etag"
+    end
 
     def build_url(target)
       if target.start_with?("http")

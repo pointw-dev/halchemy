@@ -2,7 +2,9 @@ module Halchemy
   class BaseRequester
     @_data: Object | nil
     @_headers: CICPHash
-    @_template_values: Hash[String, String]
+    @_is_templated: bool
+    @_parameters: Hash[String, Object]
+    @_template_values: Hash[String, Object]
     @_url: String
     @api: Api
     @resource: Resource | HalResource
@@ -12,6 +14,8 @@ module Halchemy
     def url: -> String
 
     def with_headers: -> (BaseRequester | ReadOnlyRequester | Requester)
+
+    def with_parameters: -> (BaseRequester | ReadOnlyRequester | Requester)
 
     def with_template_values: -> (BaseRequester | ReadOnlyRequester | Requester)
   end

@@ -2,6 +2,9 @@ module Halchemy
   class Api
     @error_handling: ErrorHandling
 
+    @etag_field: String
+    @parameters_list_style: String
+
     def self.build_response: -> HttpModel::Response
 
     attr_accessor base_url: String
@@ -9,6 +12,8 @@ module Halchemy
     attr_accessor headers: hash[String, String]
 
     def follow: -> Follower
+
+    def optimistic_concurrency_header: -> Hash[String, String]
 
     def request: -> (Resource | HalResource)
 
@@ -23,6 +28,8 @@ module Halchemy
     def build_response: -> HttpModel::Response
 
     def build_url: -> String
+
+    def configure: -> void
 
     def do_settings_include_status_code: -> bool
 

@@ -1,11 +1,5 @@
 # frozen_string_literal: true
 
-Given(/^a HAL resource$/) do
-  stub_for_hal_resource_scenarios
-  @api = Halchemy::Api.new BASE_URL
-  @root_resource = @api.root.get
-end
-
 When(/^I make a request using its link relations$/) do
   @api.follow(@root_resource).to("resource1").get
 end

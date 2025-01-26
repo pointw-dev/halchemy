@@ -53,5 +53,3 @@ Feature: Easily add complex query strings by way of a parameter object
         | index      | {"list":["a","b","c"]} | list[0]=a&list[1]=b&list[2]=c |
         | comma      | {"list":["a","b","c"]} | list=a,b,c                    |
         | pipe       | {"list":["a","b","c"]} | list=a\|b\|c                  |
-
-

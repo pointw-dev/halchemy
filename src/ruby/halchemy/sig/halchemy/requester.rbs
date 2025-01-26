@@ -1,6 +1,16 @@
 module Halchemy
   class Requester < ReadOnlyRequester
 
+    def delete: -> (Resource | HalResource)
+
+    def patch: -> (Resource | HalResource)
+
     def post: -> (Resource | HalResource)
+
+    def put: -> (Resource | HalResource)
+
+    private
+
+    def prepare_payload: -> void
   end
 end

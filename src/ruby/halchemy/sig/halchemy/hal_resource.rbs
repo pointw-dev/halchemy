@@ -2,6 +2,8 @@ module Halchemy
   class HalResource
     def self.hal?: -> bool
 
+    def collection: -> Enumerator[HalResource]
+
     def links: -> Array[String]
 
     def rel?: -> bool
