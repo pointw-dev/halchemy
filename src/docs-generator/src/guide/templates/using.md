@@ -38,6 +38,13 @@ const order = await api.follow('orders')
 ```
 </tab>
 
+<tab name="Ruby">
+
+```ruby
+order = api.follow("orders").to("item").with_template_values({ "order_number" => "XH123" }).get
+```
+</tab>
+
 <future-languages />
 </tabs>
 

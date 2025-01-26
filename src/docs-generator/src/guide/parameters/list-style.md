@@ -20,6 +20,13 @@ api.parameterslistStyle = 'comma'
 ```
 </tab>
 
+<tab name="Ruby">
+
+```ruby
+api.parameters_list_style = "comma"
+```
+</tab>
+
 <future-languages />
 </tabs>
 

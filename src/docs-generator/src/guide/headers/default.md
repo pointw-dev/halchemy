@@ -97,6 +97,14 @@ const api = new Api(undefined, {accept: 'application/xml'})
 ```
 </tab>
 
+<tab name="Ruby">
+
+> Ruby docs coming soon
+>
+> Functionality is available - while waiting for this code sample you can review the other languagaes. Ruby will apply similar patterns.
+
+</tab>
+
 <future-languages />
 </tabs>
 
@@ -142,6 +150,14 @@ api.headers = {
 ```
 </tab>
 
+<tab name="Ruby">
+
+> Ruby docs coming soon
+>
+> Functionality is available - while waiting for this code sample you can review the other languagaes. Ruby will apply similar patterns.
+
+</tab>
+
 <future-languages />
 </tabs>
 
@@ -178,6 +194,14 @@ api.addHeaders({
 ```
 </tab>
 
+<tab name="Ruby">
+
+> Ruby docs coming soon
+>
+> Functionality is available - while waiting for this code sample you can review the other languagaes. Ruby will apply similar patterns.
+
+</tab>
+
 <future-languages />
 </tabs>
 
@@ -201,6 +225,14 @@ api.remove_headers(['Authorization', 'Accept'])
 const api = new Api()
 api.removeHeaders(['Authorization', 'Accept'])
 ```
+</tab>
+
+<tab name="Ruby">
+
+> Ruby docs coming soon
+>
+> Functionality is available - while waiting for this code sample you can review the other languagaes. Ruby will apply similar patterns.
+
 </tab>
 
 <future-languages />

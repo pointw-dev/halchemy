@@ -40,6 +40,21 @@ if (resource._halchemy.error) {
 ```
 </tab>
 
+<tab name="Ruby">
+
+```ruby
+require "halchemy"
+
+api = Halchemy::Api.new "http://non-existent-server"
+api.error_handling.raise_on_network_error = false
+
+resource = api.root.get
+if resource._halchemy.error
+  puts "a network error occurred"
+end
+```
+</tab>
+
 <future-languages />
 </tabs>
 
@@ -96,6 +111,28 @@ try {
 ```
 </tab>
 
+<tab name="Ruby">
+
+```ruby
+require "halchemy"
+
+api = Halchemy::Api.new "http://example.org/api"
+api.error_handling.raise_on_status_codes = "400-403, >404"
+
+root = api.root.get
+begin
+  resource = api.follow(root).to('search').get
+  if resource._halchemy.response.status_code == 404
+   puts "no results found"
+  else
+    puts "results found", resource
+  end
+rescue Halchemy::HttpError => e:
+    puts "an error occurred", e.message
+end
+```
+</tab>
+
 <future-languages />
 </tabs>
 
@@ -134,6 +171,21 @@ if (customer._halchemy.response.status === 404) {
 } else {
     console.log('results found', customer)
 }
+```
+</tab>
+
+<tab name="Ruby">
+
+```ruby
+customer = api.follow(customers).to("item").with_template_values({"customerId" => 'A375'}).get
+customer._halchemy.raise_for_status_codes('400-403, >404')
+
+# if we make it here, we know the status code is not 400-403 or 405 or above, but might be 404
+if customer._halchemy.response.status_code == 404
+  puts "no results found"
+else
+  puts "results found", customer
+end
 ```
 </tab>
 

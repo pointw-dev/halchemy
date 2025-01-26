@@ -17,7 +17,7 @@ module Halchemy
   class Api
     attr_accessor :base_url, :headers, :error_handling, :parameters_list_style
 
-    def initialize(base_url, headers: {})
+    def initialize(base_url = "http://localhost:2112", headers: {})
       @base_url = base_url
       configure
 

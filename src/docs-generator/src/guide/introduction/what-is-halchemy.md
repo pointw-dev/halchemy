@@ -92,6 +92,31 @@ axios.post(customer._links.orders.href, order, {
 api.follow(customer).to('orders').post(order)
 ```
 </tab>
+<tab name="Ruby">
+
+```ruby{18-20}
+order = {
+  "orderNumber" => "12345",
+  "partNumber" => "009343-12",
+  "quantity" => 3
+}
+
+###############
+# Without halchemy (using HTTPX)
+
+# the _links all have relative hrefs, but HTTPX needs an absolute URL
+def url_join(base, path)
+  [base.chomp("/"), path.sub(%r{\A/+}, "")].join("/")
+end
+
+url = url_join(api_url, customer["_links"]["orders"]["href"])
+HTTPX.with(headers: headers).post(url, json: order)
+
+###############
+# With halchemy
+api.follow(customer).to("orders").post(order)
+```
+</tab>
 <future-languages />
 </tabs>
 
@@ -154,6 +179,40 @@ for (const order of orders._items) {
 console.log(orders._halchemy.response.status)
 ```
 </tab>
+<tab name="Ruby">
+
+```ruby{19-28}
+###############
+# Without halchemy (using HTTPX)
+
+# the _links all have relative hrefs, but requests needs an absolute URL
+url = urljoin(api_url, customer['_links']['orders']['href'])
+
+# HTTPX returns an object that contains HTTP details at the top level
+# and the resource data inside
+url = url_join(api_url, customer["_links"]["orders"]["href"])
+result = HTTPX.get(url)
+orders = result.json
+
+orders["_items"].each do |order| 
+  puts order["orderNumber"]
+end
+
+puts result.status
+
+###############
+# With halchemy
+#   halchemy operations return resource data at the top level
+#   and HTTP details inside
+orders = api.follow(customer).to("orders").get()
+orders["_items"].each do |order| 
+  puts order["orderNumber"]
+end
+
+puts orders._halchemy.response.status_code
+
+```
+</tab>
 <future-languages />
 </tabs>
 
@@ -210,6 +269,33 @@ axios.patch(customer._links.self.href, { givenName: newName }, { headers: update
 api.follow(customer).to('self').patch({ givenName: newName })
 ```
 </tab>
+<tab name="Ruby">
+
+```ruby{20-22}
+###############
+# Without halchemy (using HTTPX)
+
+# the _links all have relative hrefs, but requests needs an absolute URL
+url = url_join(api_url, customer['_links']['self']['href'])  
+
+# This API uses optimistic concurrency control, 
+# so we need to supply the If-match header with the Etag from the
+# response that we got when we did the GET request for the customer,
+# as well as Content-type as before
+etag = result.headers['Etag']                               
+headers = {
+    'If-match': etag,
+    'Content-type': 'application/json'
+}
+
+# We need to convert the update dict to a JSON string
+HTTPX.with(headers: headers).patch(url, json: {"givenName" => new_name})
+
+###############
+# With halchemy
+api.follow(customer).to('self').patch({"givenName" => new_name})
+```
+</tab>
 <future-languages />
 </tabs>
 
@@ -244,6 +330,20 @@ api.follow(customer).to('activate').put()
 ::: tip NOTE
 The syntax for this operation not greatly improved when using Javascript compared to other languages.  However, even with this simple example there are additional benefits you will see given the fluent approach and given how errors are handled.
 :::
+</tab>
+<tab name="Ruby">
+
+```python{7-9}
+###############
+# Without halchemy (using requests)
+
+url = urljoin(api_url, customer['_links']['activate']['href'])  
+HTTPX.put(update_url)
+
+###############
+# With halchemy
+api.follow(customer).to('activate').put
+```
 </tab>
 <future-languages />
 </tabs>
@@ -282,6 +382,23 @@ console.log(`Hello ${customer.givenName}`)
 //   and stays out of the way until you need it
 
 console.log(`Hello ${customer.givenName}`)
+```
+</tab>
+<tab name="Ruby">
+
+```python
+###############
+# Without halchemy
+
+puts "Hello #{customer["givenName"]}"
+
+###############
+# With halchemy - same code
+#   halchemy focuses on resource data first
+#   and stays out of the way until you need it
+
+puts "Hello #{customer["givenName"]}"
+
 ```
 </tab>
 <future-languages />

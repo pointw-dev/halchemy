@@ -33,6 +33,14 @@ if (customer._halchemy.response.status === 412) {
 ```
 </tab>
 
+<tab name="Ruby">
+
+> Ruby docs coming soon
+> 
+> Functionality is available - while waiting for this code sample you can review the other languagaes. Ruby will apply similar patterns.
+
+</tab>
+
 <future-languages />
 </tabs>
 
