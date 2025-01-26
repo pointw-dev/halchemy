@@ -1,8 +1,14 @@
 # frozen_string_literal: true
+
 require "uri_template"
 
 module Halchemy
+  # The results of a Follower#to is a Requester.  In the case of a GET for the root resource, the Requester is Read Only
+  # Otherwise it is a full Requester.  Both requester types share much in common.  This is defined in BaseRequester
   class BaseRequester
+    # @param [Halchemy::Api] api
+    # @param [String | Tuple[HalResource, String]] target
+    # @return [void]
     def initialize(api, target)
       @api = api
       @_data = nil
@@ -10,15 +16,7 @@ module Halchemy
       @_template_values = {}
       @_parameters = {}
 
-      if target.instance_of?(String)
-        @_url = target
-        return
-      end
-
-      resource, rel = target
-      @_url = resource["_links"][rel]["href"]
-      @_is_templated = resource["_links"][rel].fetch("templated", false)
-      @resource = resource
+      process_target(target)
     end
 
     def url
@@ -54,8 +52,18 @@ module Halchemy
       @api.request(method, url, @_headers, data)
     end
 
-
     private
+
+    def process_target(target)
+      if target.instance_of?(String)
+        @_url = target
+      else
+        resource, rel = target
+        @_url = resource["_links"][rel]["href"]
+        @_is_templated = resource["_links"][rel].fetch("templated", false)
+        @resource = resource
+      end
+    end
 
     # Handle list-style parameters based on the list style configuration
     def handle_list(key, array)
@@ -116,9 +124,10 @@ module Halchemy
         "#{url}#{url.end_with?("?") ? "" : "?"}#{query_string}"
       end
     end
-
   end
 
+  # The result of GET on the root URL is a ReadOnlyRequester, i.e. only
+  # GET, HEAD, and OPTIONS are permitted
   class ReadOnlyRequester < BaseRequester
     def get
       request :get
@@ -133,6 +142,8 @@ module Halchemy
     end
   end
 
+  # This provides a full-suite of HTTP methods, with handling of payload conversion and
+  # optimistic concurrency.
   class Requester < ReadOnlyRequester
     def post(data = nil, content_type = nil)
       prepare_payload(content_type, data)
@@ -156,7 +167,6 @@ module Halchemy
       request :delete
     end
 
-
     private
 
     def prepare_payload(content_type, data)
@@ -167,6 +177,5 @@ module Halchemy
     def prepare_modify_header
       @_headers.merge!(@api.optimistic_concurrency_header(@resource)) if @resource.is_a?(HalResource)
     end
-
   end
 end

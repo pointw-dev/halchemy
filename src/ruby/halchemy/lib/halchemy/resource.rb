@@ -9,10 +9,10 @@ module Halchemy
     attr_accessor :_halchemy
 
     def to_s
-      if keys.length > 0
+      if !keys.empty?
         to_json
       else
-        _halchemy.response.body.to_s
+        _halchemy&.response&.body.to_s
       end
     end
   end
@@ -44,13 +44,21 @@ module Halchemy
       self["_links"].keys ||= []
     end
 
-    def collection(field)
-      raise KeyError, "Field '#{field}' does not exist, so cannot be iterated as a collection" unless keys.include?(field)
+    def raise_for_syntax_error(field)
+      unless keys.include?(field)
+        raise KeyError, "Field '#{field}' does not exist, so cannot be iterated as a collection"
+      end
       raise TypeError, "Field '#{field}' is not a collection" unless self[field].is_a?(Array)
+    end
+
+    def collection(field)
+      raise_for_syntax_error(field)
 
       Enumerator.new do |y|
         self[field].each do |item|
-          raise TypeError, "The '#{field}' collection contains non-HAL formatted objects" unless Halchemy::HalResource.hal?(item)
+          unless Halchemy::HalResource.hal?(item)
+            raise TypeError, "The '#{field}' collection contains non-HAL formatted objects"
+          end
 
           y.yield Halchemy::HalResource.new.merge!(item)
         end

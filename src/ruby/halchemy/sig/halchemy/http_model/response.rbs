@@ -5,7 +5,11 @@ module Halchemy
       @reason: String
       @status_code: int
 
+      attr_accessor body: Object | nil
+      attr_accessor error: Object | nil
+      attr_accessor headers: CICPHash
       attr_accessor reason: String
+      attr_accessor status_code: Integer
     end
   end
 end

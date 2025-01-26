@@ -4,6 +4,8 @@ module Halchemy
   module HttpModel
     # frozen_string_literal: true
 
+    # Provides essential details about the request that was made which resulted in the Resource
+    # this is attached to
     class Request
       attr_accessor :method, :url, :headers, :body
 
@@ -19,6 +21,8 @@ module Halchemy
       end
     end
 
+    # Provides HTTP metadata that came along with the response resulting in the Resource
+    # this is attached to
     class Response
       attr_accessor :status_code, :reason, :headers, :body, :error
 
@@ -33,6 +37,5 @@ module Halchemy
         "#{@status_code} #{@reason}"
       end
     end
-
   end
 end

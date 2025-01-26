@@ -11,9 +11,15 @@ module Halchemy
     attr_accessor error_handling: ErrorHandling
     attr_accessor headers: hash[String, String]
 
+    attr_accessor parameters_list_style: String
+
+    def add_headers: -> void
+
     def follow: -> Follower
 
     def optimistic_concurrency_header: -> Hash[String, String]
+
+    def remove_headers: -> void
 
     def request: -> (Resource | HalResource)
 
@@ -25,6 +31,8 @@ module Halchemy
 
     def self.build_resource: -> (Resource | HalResource)
 
+    def build_resource: -> (Resource | HalResource)
+
     def build_response: -> HttpModel::Response
 
     def build_url: -> String
@@ -33,7 +41,11 @@ module Halchemy
 
     def do_settings_include_status_code: -> bool
 
+    def extract_body: -> (String | Hash[String, Object] | nil)
+
     def match_condition?: -> bool
+
+    def parse_body: -> (Hash[String, Object] | nil)
 
     def parse_status_code_setting: -> Array[String]
 

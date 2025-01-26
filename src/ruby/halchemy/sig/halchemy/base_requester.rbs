@@ -9,6 +9,8 @@ module Halchemy
     @api: Api
     @resource: Resource | HalResource
 
+    def initialize: -> void
+
     def request: -> (Resource | HalResource)
 
     def url: -> String
@@ -18,5 +20,16 @@ module Halchemy
     def with_parameters: -> (BaseRequester | ReadOnlyRequester | Requester)
 
     def with_template_values: -> (BaseRequester | ReadOnlyRequester | Requester)
+
+    private
+
+    def add_parameters_to_url: -> String
+
+    def flatten_parameters: -> Array[String]
+
+    def handle_list: -> Array[Object]
+
+    def process_target: -> void
+
   end
 end

@@ -28,7 +28,7 @@ module Halchemy
       using_endpoint("/", is_root: true)
     end
 
-    def using_endpoint(target, is_root = false)
+    def using_endpoint(target, is_root: false)
       if is_root
         ReadOnlyRequester.new(self, target)
       else
@@ -36,12 +36,12 @@ module Halchemy
       end
     end
 
-    # @param [Hash[string, string]] headers
+    # @param [Hash[String, string]] headers
     def add_headers(headers)
       @headers.merge!(headers)
     end
 
-    # @param [Array[string] headers
+    # @param [Array[String] headers
     def remove_headers(header_keys)
       header_keys.map { |key| @headers.delete(key) }
     end
@@ -51,7 +51,6 @@ module Halchemy
 
       request_headers = headers.nil? ? @headers : @headers.merge(headers)
       request = HttpModel::Request.new(method, url, data, request_headers)
-
 
       http = HTTPX.with(headers: request_headers)
       result = http.public_send(method, url, body: data)
@@ -65,7 +64,7 @@ module Halchemy
     end
 
     def optimistic_concurrency_header(resource)
-      etag = resource._halchemy.response.headers["Etag"] ? resource._halchemy.response.headers["Etag"] : resource[@etag_field]
+      etag = resource._halchemy.response.headers["Etag"] || resource[@etag_field]
       etag.nil? ? {} : { "If-Match" => etag }
     end
 
@@ -83,21 +82,20 @@ module Halchemy
     end
 
     def build_url(target)
-      if target.start_with?("http")
-        target
-      else
-        [@base_url.chomp("/"), target.sub(%r{\A/+}, "")].join("/")
-      end
+      return target if target.start_with?("http")
+
+      [@base_url.chomp("/"), target.sub(%r{\A/+}, "")].join("/")
     end
 
     def raise_for_errors(result)
       if @error_handling.raise_for_network_errors && result.error.instance_of?(StandardError)
-        raise StandardError, result.error.message
+        raise HttpError, result.error.message
       end
 
-      if result.respond_to?(:status) && do_settings_include_status_code(@error_handling.raise_for_status_codes, result.status)
-        raise StandardError, "status code matches #{@error_handling.raise_for_status_codes}"
-      end
+      return unless result.respond_to?(:status)
+      return unless settings_include_status_code?(@error_handling.raise_for_status_codes, result.status)
+
+      raise HttpError, "Status code #{result.status} matches \"#{@error_handling.raise_for_status_codes}\""
     end
 
     # @param [HttpModel::Request] request
@@ -116,9 +114,7 @@ module Halchemy
                    Resource.new.merge! json
                  end
 
-      resource._halchemy = Metadata.new(request, response, result.error)
-
-      resource
+      resource.tap { |r| r._halchemy = Metadata.new(request, response, result.error) }
     end
 
     def parse_body(result)
@@ -126,7 +122,7 @@ module Halchemy
       return body if body.is_a?(Hash)
 
       begin
-        json = JSON.parse(body) unless body.is_a?(Hash) || body.nil?
+        json = JSON.parse(body.to_s) unless body.is_a?(Hash) || body.nil?
       rescue JSON::ParserError
         json = nil
       end
@@ -150,8 +146,5 @@ module Halchemy
 
       HttpModel::Response.new(status, reason, headers, body)
     end
-
   end
 end
-
-

@@ -31,7 +31,7 @@ When(/^a request has this result (.*)$/) do |result|
   ALL_METHODS.each do |method|
     @exception_thrown[method] = false
     @api.using_endpoint("/").public_send(method)
-  rescue StandardError
+  rescue Halchemy::HttpError
     @exception_thrown[method] = true
   end
 end
@@ -66,7 +66,7 @@ Then(/^based on the override settings (.*) an exception (.*) thrown$/) do |setti
       else
         @raise_method[method].call(settings)
       end
-    rescue StandardError
+    rescue Halchemy::HttpError
       exception_thrown = true
     end
 

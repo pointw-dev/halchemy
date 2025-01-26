@@ -6,6 +6,8 @@ module Halchemy
 
     def links: -> Array[String]
 
+    def raise_for_syntax_error: -> void
+
     def rel?: -> bool
   end
 end
