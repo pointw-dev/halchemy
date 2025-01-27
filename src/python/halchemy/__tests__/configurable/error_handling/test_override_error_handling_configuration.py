@@ -6,7 +6,7 @@ from __tests__.configurable.error_handling import FEATURE, ALL_METHODS
 from lib.api import Api, HTTPError
 
 
-@scenario(FEATURE, 'Can override error handling configuration')
+@scenario(FEATURE, 'Can override error handling configuration per request')
 def test_override_error_handling_configuration():
     pass
 
