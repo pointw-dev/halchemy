@@ -186,11 +186,10 @@ console.log(orders._halchemy.response.status)
 # Without halchemy (using HTTPX)
 
 # the _links all have relative hrefs, but requests needs an absolute URL
-url = urljoin(api_url, customer['_links']['orders']['href'])
+url = url_join(api_url, customer["_links"]["orders"]["href"])
 
 # HTTPX returns an object that contains HTTP details at the top level
 # and the resource data inside
-url = url_join(api_url, customer["_links"]["orders"]["href"])
 result = HTTPX.get(url)
 orders = result.json
 
@@ -276,20 +275,20 @@ api.follow(customer).to('self').patch({ givenName: newName })
 # Without halchemy (using HTTPX)
 
 # the _links all have relative hrefs, but requests needs an absolute URL
-url = url_join(api_url, customer['_links']['self']['href'])  
+url = url_join(api_url, customer["_links"]["self"]["href"])  
 
 # This API uses optimistic concurrency control, 
 # so we need to supply the If-match header with the Etag from the
 # response that we got when we did the GET request for the customer,
 # as well as Content-type as before
-etag = result.headers['Etag']                               
+etag = result.headers["Etag"]                               
 headers = {
     "If-match": etag,
     "Content-type": "application/json"
 }
 
 # We need to convert the update dict to a JSON string
-HTTPX.with(headers: headers).patch(url, json: {"givenName" => new_name})
+HTTPX.with(headers: headers).patch(url, json: { "givenName" => new_name })
 
 ###############
 # With halchemy

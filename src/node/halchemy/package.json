@@ -1,6 +1,6 @@
 {
   "name": "halchemy",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "HAL for humans",
   "main": "dist/index.js",
   "types": "dist/types/index.d.ts",
@@ -8,7 +8,7 @@
     "dist/**/*"
   ],
   "scripts": {
-    "test": "npx cucumber-js --tags \"not @wip and not @skip\"",
+    "test": "npx cucumber-js",
     "build": "tsc && cp src/lib/rfc6570.js dist/rfc6570.js && npm pack"
   },
   "keywords": [],

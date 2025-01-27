@@ -1,0 +1,23 @@
+class Configurator
+  DEFAULT_CONFIG: Hash[String, Object]
+
+  @filename: String
+
+  attr_reader config: Hash[String, Object]
+
+  private
+
+  def determine_current_dir: -> (String | nil)
+
+  def find_project_root: -> void
+
+  def ini_to_hash: -> Hash[String, Object]
+
+  def load_config: -> Hash[String, Object]
+
+  def merge_config: -> void
+
+  def root_indicator_files: -> Array[String]
+
+  def traverse_to_root: -> void
+end

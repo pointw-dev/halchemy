@@ -4,29 +4,31 @@ require "cicphash"
 require "httpx"
 require "http_status_codes"
 
-require_relative "requester"
-require_relative "follower"
+require_relative "configurator"
 require_relative "error_handling"
-require_relative "status_codes"
-require_relative "resource"
+require_relative "follower"
 require_relative "http_model"
 require_relative "metadata"
+require_relative "requester"
+require_relative "status_codes"
+require_relative "resource"
 
 module Halchemy
   # This is the Halchemy::Api class, that is the main class for interacting with HAL-based APIs
   class Api
     attr_accessor :base_url, :headers, :error_handling, :parameters_list_style
 
-    def initialize(base_url = "http://localhost:2112", headers: {})
-      @base_url = base_url
-      configure
+    def initialize(base_url = nil, headers: {})
+      config = Configurator.new.config
+      configure_base(config)
+      configure_headers(config)
+      configure_error_handling(config)
 
+      @base_url = base_url unless base_url.nil?
       @headers.merge!(headers)
     end
 
-    def root
-      using_endpoint("/", is_root: true)
-    end
+    def root = using_endpoint("/", is_root: true)
 
     def using_endpoint(target, is_root: false)
       if is_root
@@ -37,13 +39,11 @@ module Halchemy
     end
 
     # @param [Hash[String, string]] headers
-    def add_headers(headers)
-      @headers.merge!(headers)
-    end
+    def add_headers(headers) = @headers.merge!(headers)
 
-    # @param [Array[String] headers
+    # @param [Array[String] header_keys
     def remove_headers(header_keys)
-      header_keys.map { |key| @headers.delete(key) }
+      header_keys.each { |key| @headers.delete(key) }
     end
 
     def request(method, target, headers = nil, data = nil)
@@ -52,16 +52,13 @@ module Halchemy
       request_headers = headers.nil? ? @headers : @headers.merge(headers)
       request = HttpModel::Request.new(method, url, data, request_headers)
 
-      http = HTTPX.with(headers: request_headers)
-      result = http.public_send(method, url, body: data)
+      result = HTTPX.with(headers: request_headers).send(method, url, body: data)
 
       raise_for_errors(result)
       build_resource(request, result)
     end
 
-    def follow(resource)
-      Follower.new(self, resource)
-    end
+    def follow(resource) = Follower.new(self, resource)
 
     def optimistic_concurrency_header(resource)
       etag = resource._halchemy.response.headers["Etag"] || resource[@etag_field]
@@ -70,15 +67,21 @@ module Halchemy
 
     private
 
-    def configure
-      @headers = CICPHash.new.merge!({
-                                       "Authorization" => "Basic cm9vdDpwYXNzd29yZA==",
-                                       "Content-type" => "application/json",
-                                       "Accept" => "application/hal+json, application/json;q=0.9, */*;q=0.8"
-                                     })
+    # @return [void]
+    def configure_headers(config)
+      @headers = CICPHash.new.merge!(config["headers"])
+    end
+
+    def configure_error_handling(config)
       @error_handling = ErrorHandling.new
-      @parameters_list_style = "repeat_key"
-      @etag_field = "_etag"
+      @error_handling.raise_for_status_codes = config["error_handling"]["raise_for_status_codes"]
+      @error_handling.raise_for_network_errors = config["error_handling"]["raise_for_network_errors"]
+    end
+
+    def configure_base(config)
+      @base_url = config["halchemy"]["base_url"] if @base_url.nil?
+      @parameters_list_style = config["halchemy"]["parameters_list_style"]
+      @etag_field = config["halchemy"]["etag_field"]
     end
 
     def build_url(target)

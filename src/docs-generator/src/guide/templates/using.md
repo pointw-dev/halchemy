@@ -41,7 +41,10 @@ const order = await api.follow('orders')
 <tab name="Ruby">
 
 ```ruby
-order = api.follow("orders").to("item").with_template_values({ "order_number" => "XH123" }).get
+order = api.follow("orders")
+           .to("item")
+           .with_template_values("order_number" => "XH123")
+           .get
 ```
 </tab>
 

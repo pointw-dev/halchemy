@@ -1,5 +1,7 @@
 module Halchemy
   class BaseRequester
+    LIST_STYLE_HANDLERS: Hash[String, Object]
+
     @_data: Object | nil
     @_headers: CICPHash
     @_is_templated: bool

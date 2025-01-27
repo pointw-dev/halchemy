@@ -35,10 +35,15 @@ if (customer._halchemy.response.status === 412) {
 
 <tab name="Ruby">
 
-> Ruby docs coming soon
-> 
-> Functionality is available - while waiting for this code sample you can review the other languagaes. Ruby will apply similar patterns.
+```ruby
+customer = api.follow(customers).to("item").with_template_values("customerId" => "A375").get
+customer = api.follow(customer).to("self").patch("givenName" => "Leslie")
 
+if customer._halchemy.response.status_code == 412
+    puts "Someone else has changed customer ##{customer["customerId"]}."
+    puts "Please refresh to see the changes, then try again if necessary."
+end
+```
 </tab>
 
 <future-languages />

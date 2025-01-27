@@ -42,6 +42,7 @@ from halchemy import Api
 
 api = Api()
 print(api.base_url)  # http://localhost:2112
+
 api.base_url = 'http://example.org/api'
 print(api.base_url)  # http://example.org/api
 ```
@@ -54,6 +55,7 @@ const {Api} = require('halchemy')
 
 api = new Api()
 console.log(api.baseUrl)  // http://localhost:2112
+
 api.baseUrl = 'http://example.org/api'
 console.log(api.baseUrl)  // http://example.org/api
 
@@ -67,12 +69,10 @@ require "halchemy"
 
 api = Halchemy::Api.new
 puts api.base_url                        # http://localhost:2112
+
 api.base_url = "http://example.org/api"
 puts api.base_url                        # http://example.org/api
 ```
-
-> Note: the Ruby gem does not yet support config files.  Coming soon!
-
 </tab>
 
 <future-languages />

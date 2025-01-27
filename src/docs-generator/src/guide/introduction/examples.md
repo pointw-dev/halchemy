@@ -60,7 +60,7 @@ activateCustomers()
 require "halchemy"
 
 auth_header = {
-    "Authorization": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJpYXQiOjB9.49jV8bS3WGLP20VBpCDane-kjxfGmO8L6LHgE7mLO9I"
+  "Authorization" => "Bearer eyJhbGciOiJIUzI1NiJ9.eyJpYXQiOjB9.49jV8bS3WGLP20VBpCDane-kjxfGmO8L6LHgE7mLO9I"
 }
 
 api = Halchemy::Api.new("http://example.org/api", headers: auth_header)
@@ -343,7 +343,10 @@ loop do
     "max_results" => 10,
     "page" => page
   }
-  customers = api.follow(root).to("customers").with_parameters(pagination).get
+  customers = api.follow(root)
+                 .to("customers")
+                 .with_parameters(pagination)
+                 .get
 
   customers.collection("_items").each do |customer|
     puts "#{customer['customerId']} - #{customer['givenName']} #{customer['familyName']}"

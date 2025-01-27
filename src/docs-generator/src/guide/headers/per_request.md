@@ -44,10 +44,19 @@ useDifferentHeadersPerRequest()
 
 <tab name="Ruby">
 
-> Ruby docs coming soon
->
-> Functionality is available - while waiting for this code sample you can review the other languagaes. Ruby will apply similar patterns.
+```ruby
+require "halchemy"
 
+api = Halchemy::Api.new
+
+headers = {
+    "Cache-control" => "no-cache",
+    "Accept-language" => "en-CA, en;q=0.9, fr-CA;q=0.8, fr;q=0.7"
+}
+
+root = api.root.with_headers(headers).get
+customers = api.follow(root).to("customers").with_headers("Accept" => "application/xml").get
+```
 </tab>
 
 <future-languages />

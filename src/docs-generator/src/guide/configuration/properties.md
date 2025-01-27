@@ -42,10 +42,13 @@ table th:nth-of-type(3) {
 
 <tab name="Ruby">
 
-> Ruby docs coming soon
->
-> Functionality is available - while waiting for this code sample you can review the other languagaes. Ruby will apply similar patterns.
-
+| Setting                                                                                                                                                            | Description                                                                                                                                                                                                                                                                                                                      | Default                                    |
+|-------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|--------------------------------------------|
+| `base_url`              | The base URL to the API you are working with.  This default matches the default URL for a hypermea API running locally                                                                                                   | `http://localhost:2112`                    |
+| `parameters_list_style` | When creating a query string, this setting determines how lists are serialzied.  The options are:<br/>`repeat_key`, `bracket`, `index`, `comma`, `pipe`<br/>See [Query String Parameters](/guide/parameters/passing) for more details. | `repeat_key`                               |
+| `etag_field`            | This is the field used to populate `If-Match` on a change request if ETag header is missing.  This default is tuned for use with a hypermea API.<br/>See [Optimistic Concurrency](/guide/concurrency/using) for more details.        | `_etag`                                    |
+| `headers`               | A set of default headers to include with each request.  You can use this API property directly, and there are helper functions too.<br/>See [Request Headers](/guide/headers/request) for more details.                                | ([details below](#default-headers))        |
+| `error_handling`        | Determines when exceptions are thrown/raised.  There are two properties: <br/>`raise_for_network_errors`<br/>`raise_for_status_codes` | ([details below](#default-error-handling)) |
 </tab>
 
 <future-languages />
@@ -60,6 +63,8 @@ Content-type: application/json
 Accept: application/hal+json, application/json;q=0.9, */*;q=0.8
 Authorization: Basic cm9vdDpwYXNzd29yZA==
 ```
+The default `Authorization:` header is `root:password` base-64 encoded.  This is to provide the default credentials hypermea services use when in under development.
+
 See the [Request Headers](/guide/headers/request) page for more details.
 
 ## Default Error Handling
@@ -88,6 +93,16 @@ console.log(api.errorHandling.raiseOnStatusCodes)     // null
 ```
 </tab>
 
+<tab name="Ruby">
+
+```ruby
+require "halchemy"
+
+api = Halchemy::Api.new "http://example.org/api"
+puts api.error_handling.raise_on_network_error  # true
+puts api.error_handling.raise_on_status_codes   # nil
+```
+</tab>
 <future-languages />
 </tabs>
 

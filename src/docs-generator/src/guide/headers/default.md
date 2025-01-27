@@ -78,7 +78,7 @@ The constructor takes two parameters: base url and headers.  Here is an example 
 ```python
 api = Api('http://example.org/api', {'Accept':'application/xml'})
 ```
-> If you do not want to specify a base URL, you can use Python's named parameters, like this:
+> If you want to set headers but not specify a base URL, you can use Python's named parameters, like this:
 
 ```python
 api = Api(headers={'Accept':'application/xml'})
@@ -91,7 +91,7 @@ api = Api(headers={'Accept':'application/xml'})
 ```javascript
 const api = new Api('http://example.org/api', {accept: 'application/xml'})
 ```
-> If you do not want to specify a base URL, you can pass `undefined` as the first parameter, like this:
+> If you want to set headers but not specify a base URL, you can pass `undefined` as the first parameter, like this:
 ```javascript
 const api = new Api(undefined, {accept: 'application/xml'})
 ```
@@ -99,9 +99,14 @@ const api = new Api(undefined, {accept: 'application/xml'})
 
 <tab name="Ruby">
 
-> Ruby docs coming soon
->
-> Functionality is available - while waiting for this code sample you can review the other languagaes. Ruby will apply similar patterns.
+```ruby
+api = Halchemy::Api.new("http://example.org/api", headers: { "Accept" => "application/xml" })
+```
+> If you want to set headers but not specify a base URL, you can omit it like this:
+
+```ruby
+api = Halchemy::Api.new(headers: { "Accept" => "application/xml" })
+```
 
 </tab>
 
@@ -109,7 +114,7 @@ const api = new Api(undefined, {accept: 'application/xml'})
 </tabs>
 
 ::: tip NOTE
-The example above only sets one header.  You can set as many headers as you like in the dictionary/object passed to the constructor.
+The example above only sets one header.  You can set as many headers as you like in the dictionary/object/hash passed to the constructor.
 :::
 
 Like the `.halchemy` file, the headers passed to the constructor are merged with the out-of-the-box default headers.
@@ -152,10 +157,15 @@ api.headers = {
 
 <tab name="Ruby">
 
-> Ruby docs coming soon
->
-> Functionality is available - while waiting for this code sample you can review the other languagaes. Ruby will apply similar patterns.
+```ruby
+api = Halchemy.Api.new
 
+api.headers = {
+  "Cache-control" => "no-cache",
+  "Accept-language" => "Accept-Language: en-CA, en;q=0.9, fr-CA;q=0.8, fr;q=0.7",
+  "Authorization" => "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwiaWF0IjoyfQ.nMoAK-oiZTdVT0CcGhgS5yCscaNSf49BYFR3DiGT3tM"
+}
+```
 </tab>
 
 <future-languages />
@@ -196,10 +206,15 @@ api.addHeaders({
 
 <tab name="Ruby">
 
-> Ruby docs coming soon
->
-> Functionality is available - while waiting for this code sample you can review the other languagaes. Ruby will apply similar patterns.
+```ruby
+api = Halchemy.Api.new
 
+api.add_headers({
+  "Cache-control" => "no-cache",
+  "Accept-language" => "Accept-Language: en-CA, en;q=0.9, fr-CA;q=0.8, fr;q=0.7",
+  "Authorization" => "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwiaWF0IjoyfQ.nMoAK-oiZTdVT0CcGhgS5yCscaNSf49BYFR3DiGT3tM"
+})
+```
 </tab>
 
 <future-languages />
@@ -229,10 +244,10 @@ api.removeHeaders(['Authorization', 'Accept'])
 
 <tab name="Ruby">
 
-> Ruby docs coming soon
->
-> Functionality is available - while waiting for this code sample you can review the other languagaes. Ruby will apply similar patterns.
-
+```ruby
+api = Halchemy::Api.new
+api.remove_headers(%w[Authorization Accept])
+```
 </tab>
 
 <future-languages />

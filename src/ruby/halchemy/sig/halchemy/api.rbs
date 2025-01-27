@@ -37,7 +37,11 @@ module Halchemy
 
     def build_url: -> String
 
-    def configure: -> void
+    def configure_base: -> void
+
+    def configure_error_handling: -> void
+
+    def configure_headers: -> void
 
     def do_settings_include_status_code: -> bool
 

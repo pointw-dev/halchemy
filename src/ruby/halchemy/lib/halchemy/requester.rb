@@ -2,22 +2,22 @@
 
 require "uri_template"
 
-LIST_STYLE_HANDLERS = {
-  "repeat_key" => ->(key, array) { array.map { |item| [key, URI.encode_www_form_component(item.to_s)] } },
-  "bracket" => ->(key, array) { array.map { |item| ["#{key}[]", URI.encode_www_form_component(item.to_s)] } },
-  "index" => lambda { |key, array|
-    array.each_with_index.map do |item, index|
-      ["#{key}[#{index}]", URI.encode_www_form_component(item.to_s)]
-    end
-  },
-  "comma" => ->(key, array) { [[key, array.map { |item| URI.encode_www_form_component(item.to_s) }.join(",")]] },
-  "pipe" => ->(key, array) { [[key, array.map { |item| URI.encode_www_form_component(item.to_s) }.join("|")]] }
-}.freeze
-
 module Halchemy
   # The results of a Follower#to is a Requester.  In the case of a GET for the root resource, the Requester is Read Only
   # Otherwise it is a full Requester.  Both requester types share much in common.  This is defined in BaseRequester
   class BaseRequester
+    LIST_STYLE_HANDLERS = {
+      "repeat_key" => ->(key, array) { array.map { |item| [key, URI.encode_www_form_component(item.to_s)] } },
+      "bracket" => ->(key, array) { array.map { |item| ["#{key}[]", URI.encode_www_form_component(item.to_s)] } },
+      "index" => lambda { |key, array|
+        array.each_with_index.map do |item, index|
+          ["#{key}[#{index}]", URI.encode_www_form_component(item.to_s)]
+        end
+      },
+      "comma" => ->(key, array) { [[key, array.map { |item| URI.encode_www_form_component(item.to_s) }.join(",")]] },
+      "pipe" => ->(key, array) { [[key, array.map { |item| URI.encode_www_form_component(item.to_s) }.join("|")]] }
+    }.freeze
+
     # @param [Halchemy::Api] api
     # @param [String | Tuple[HalResource, String]] target
     # @return [void]

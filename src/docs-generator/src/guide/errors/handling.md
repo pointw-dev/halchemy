@@ -177,7 +177,10 @@ if (customer._halchemy.response.status === 404) {
 <tab name="Ruby">
 
 ```ruby
-customer = api.follow(customers).to("item").with_template_values({"customerId" => "A375"}).get
+customer = api.follow(customers)
+              .to("item")
+              .with_template_values("customerId" => "A375")
+              .get
 customer._halchemy.raise_for_status_codes("400-403, >404")
 
 # if we make it here, we know the status code is not 400-403 or 405 or above, but might be 404

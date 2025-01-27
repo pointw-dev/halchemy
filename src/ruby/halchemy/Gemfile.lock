@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    halchemy (1.0.2)
+    halchemy (1.0.3)
 
 GEM
   remote: https://rubygems.org/
@@ -49,6 +49,7 @@ GEM
       sorbet-runtime
     httpx (1.4.0)
       http-2 (>= 1.0.0)
+    iniparse (1.5.0)
     json (2.9.1)
     language_server-protocol (3.17.0.3)
     logger (1.6.5)
@@ -112,6 +113,7 @@ DEPENDENCIES
   halchemy!
   http_status_codes (~> 0.1.0)
   httpx (~> 1.4)
+  iniparse (~> 1.5.0)
   json (~> 2.9.1)
   logger (~> 1.6.0)
   rake (~> 13.0)
