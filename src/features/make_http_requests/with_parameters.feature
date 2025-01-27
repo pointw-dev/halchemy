@@ -10,7 +10,7 @@ Feature: Easily add complex query strings by way of a parameter object
     Scenario Outline: Make requests with query string / parameters
         Given a HAL resource
         When I supply <parameters>
-        Then the parameters are added to the URL as a RFC 3986 compliant <query_string>
+        Then the parameters are added to the URL as an RFC 3986 compliant <query_string>
 
         Examples:
             | parameters                                                           | query_string                                               |
@@ -44,7 +44,7 @@ Feature: Easily add complex query strings by way of a parameter object
         Given a HAL resource
         And I choose a parameters <list_style>
         When I supply <parameters>
-        Then the parameters are added to the URL as a RFC 3986 compliant <query_string>
+        Then the parameters are added to the URL as an RFC 3986 compliant <query_string>
 
         Examples:
         | list_style | parameters             | query_string                  |

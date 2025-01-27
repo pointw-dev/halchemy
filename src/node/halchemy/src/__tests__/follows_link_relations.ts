@@ -230,7 +230,7 @@ Then("the previous request's headers are not included",
 Scenario Outline: Make requests with query string / parameters
     Given a HAL resource
     When I supply <parameters>
-    Then the parameters are added to the URL as a RFC 3986 compliant <query_string>
+    Then the parameters are added to the URL as an RFC 3986 compliant <query_string>
  */
 
 // Given a HAL resource
@@ -243,7 +243,7 @@ When(/I supply (?<parameters>.*)/,
         }
     })
 
-Then(/the parameters are added to the URL as a RFC 3986 compliant (?<queryString>.*)/,
+Then(/the parameters are added to the URL as an RFC 3986 compliant (?<queryString>.*)/,
     async function (queryString: string) {
         type requestKey = keyof typeof requestContext.headers
         AllMethods.forEach((method) => {
@@ -284,7 +284,7 @@ Scenario Outline: Can change how lists are serialized to query string
     Given a HAL resource
     And I choose a parameters <list_style>
     When I supply <parameters>
-    Then the parameters are added to the URL as a RFC3986 compliant <query_string>
+    Then the parameters are added to the URL as an RFC 3986 compliant <query_string>
  */
 
 // Given a HAL resource
@@ -296,7 +296,7 @@ Given(/I choose a parameters (?<listStyle>.*)/,
 
 // When I supply <parameters>
 
-// Then the parameters are added to the URL as a RFC3986 compliant <query_string>
+// Then the parameters are added to the URL as an RFC 3986 compliant <query_string>
 
 
 /*

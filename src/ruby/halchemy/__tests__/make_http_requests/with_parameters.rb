@@ -5,7 +5,7 @@ When(/^I supply (.*)$/) do |parameters|
   @requests = make_requests(ALL_METHODS, requester)
 end
 
-Then(/^the parameters are added to the URL as a RFC 3986 compliant (.*)$/) do |query_string|
+Then(/^the parameters are added to the URL as an RFC 3986 compliant (.*)$/) do |query_string|
   ALL_METHODS.each do |method|
     request_path = normalize_path(@requests[method].uri.to_s)
     correct_query_string = normalize_path("/path?#{query_string}")[5..]
