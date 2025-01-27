@@ -12,4 +12,4 @@ def test_follows_with_parameters():
 
 # When I supply <parameters>
 
-# Then the parameters are added to the URL as a RFC 3986 compliant <query_string>
+# Then the parameters are added to the URL as an RFC 3986 compliant <query_string>
