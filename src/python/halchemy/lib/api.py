@@ -142,11 +142,15 @@ class Api:
                 raise ConnectionError(resource)
             return resource
 
+        try:
+            body = result.json()
+        except JSONDecodeError:
+            body = result.text
         response = Response(
             status_code=result.status_code,
             reason=result.reason,
             headers=result.headers,
-            body=result.text
+            body=body
         )
 
         rtn = Resource()

@@ -25,3 +25,7 @@ Feature: HTTP details are available, but separate from resource representation.
         | network error   |
         | timeout         |
 
+    Scenario: _halchemy.response.body is my languages representation of JSON when that is what was returned
+        Given a HAL resource
+        When I make a request that returns JSON in the body
+        Then I can use the body in the way my language supports JSON

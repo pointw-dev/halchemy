@@ -22,9 +22,9 @@ BeforeFeature('Follows link relations provided by a HAL resource.',
             http.all('http://example.org/', async () => {
                 return HttpResponse.json({
                     _links: {
-                        self: { href: '/'},
-                        resource1: { href: '/path/to/resource1'},
-                        resource2: { href: '/resource2/is/the/path'}
+                        self: {href: '/'},
+                        resource1: {href: '/path/to/resource1'},
+                        resource2: {href: '/resource2/is/the/path'}
                     }
                 })
             }),
@@ -74,9 +74,9 @@ Then('the href of the link is used for the request',
     function () {
         AllMethods.forEach((method) => {
             for (const [rel, result] of Object.entries(this.calls[method])) {
-                const actualUrl = (result as {_halchemy: any})._halchemy.response.body.url
+                const actualUrl = (result as { _halchemy: any })._halchemy.response.body.url
                 const expectedUrl = this.root._links[rel].href
-                assert.ok(actualUrl.endsWith(expectedUrl) )
+                assert.ok(actualUrl.endsWith(expectedUrl))
             }
         })
     })
@@ -274,9 +274,8 @@ When(/I provide (?<parameters>.*)/,
 
 Then(/the result is a (?<correctUrl>.*)/,
     function (correctUrl: string) {
-        assert.ok(this.url.endsWith(correctUrl) )
+        assert.ok(this.url.endsWith(correctUrl))
     })
-
 
 
 /*
@@ -350,7 +349,7 @@ Scenario Outline: Using templated URLs handles missing values
 
 When(/the (?<templateValues>.*) provided are missing one or more values/,
     function (templateValues: string) {
-        const values = templateValues == '-omit-'? {} : JSON.parse(templateValues)
+        const values = templateValues == '-omit-' ? {} : JSON.parse(templateValues)
         try {
             this.constructedUrl = this.api.follow(this.resource).to('next').withTemplateValues(values).url
             this.error = null
@@ -364,7 +363,6 @@ Then(/the constructed URL ends with the (?<correctUrl>.*)/,
         assert.ok(!this.error, 'An exception should not be thrown but was')
         assert.ok(this.constructedUrl.endsWith(correctUrl), `The constructed URL "${this.constructedUrl}" should end with the correct url "${correctUrl}" but does not`)
     })
-
 
 
 /*
@@ -422,7 +420,7 @@ When(/the request I made fails: (?<failure>.*)/,
             )
         } else if (failure == 'network error') {
             server.use(
-                http.all(url , async () => {
+                http.all(url, async () => {
                     return HttpResponse.error()
                 })
             )
@@ -447,7 +445,7 @@ When(/the request I made fails: (?<failure>.*)/,
     })
 
 Then('I can access the error details',
-    function() {
+    function () {
         AllMethods.forEach((method) => {
             const failure = this.failures[method]
             const response = this.resources[method]._halchemy.response
@@ -476,7 +474,7 @@ Scenario: I can pass a native-language object representation of a JSON body
 
 When('I use an object my language uses to represent JSON as the payload of a request',
     async function () {
-        this.payload = {
+        this.data = {
             'key1': 'value1',
             'key2': 'value2',
             'key3': 3,
@@ -490,7 +488,7 @@ When('I use an object my language uses to represent JSON as the payload of a req
         this.contentTypes = {}
         this.bodies = {}
         for (const method of PayloadMethods) {
-            const resource = await this.api.usingEndpoint('http://example.org/payload')[method.toLowerCase()](this.payload)
+            const resource = await this.api.usingEndpoint('http://example.org/payload')[method.toLowerCase()](this.data)
             this.contentTypes[method] = resource._halchemy.request.headers.get('Content-type')
             this.bodies[method] = resource._halchemy.request.body
             this.resources[method] = resource
@@ -500,7 +498,7 @@ When('I use an object my language uses to represent JSON as the payload of a req
 Then('the request body is properly formatted JSON',
     function () {
         PayloadMethods.forEach((method) => {
-            const expectedJsonString = JSON.stringify(this.payload)
+            const expectedJsonString = JSON.stringify(this.data)
             const response = this.resources[method]._halchemy.response
             assert.ok(response.statusCode >= 200 && response.statusCode < 300, `response.statusCode should be 2xx`)
             assert.equal(this.contentTypes[method], 'application/json', 'Content-type should be application/json')
@@ -524,16 +522,16 @@ When(/I use data type that is not an object but is valid as JSON, e.g. (?<data>.
         this.resources = {}
         this.contentTypes = {}
         if (data == '"true"' || data == '"false"') {
-            this.payload = data.includes('true')? 'true' : 'false'
+            this.data = data.includes('true') ? 'true' : 'false'
         } else if (data == 'null') {
-            this.payload = null
+            this.data = null
         } else if (data == '{}') {
-            this.payload = {}
+            this.data = {}
         } else {
-            this.payload = eval(data)
+            this.data = eval(data)
         }
         for (const method of PayloadMethods) {
-            const resource = await this.api.follow(this.root).to('resource1')[method.toLowerCase()](this.payload)
+            const resource = await this.api.follow(this.root).to('resource1')[method.toLowerCase()](this.data)
             this.bodies[method] = resource._halchemy.request.body
             this.contentTypes[method] = resource._halchemy.request.headers.get('Content-type')
             this.resources[method] = resource
@@ -557,9 +555,9 @@ When(/the payload of a request is has (?<data>.*) of a different (?<contentType>
         this.statusCodes = {}
         this.contentTypes = {}
         this.bodies = {}
-        this.payload = data.startsWith('object:')? JSON.parse(data.split('=>')[0].substring(7)) : data
+        this.data = data.startsWith('object:') ? JSON.parse(data.split('=>')[0].substring(7)) : data
         for (const method of PayloadMethods) {
-            const resource = await this.api.follow(this.root).to('resource1')[method.toLowerCase()](this.payload, contentType)
+            const resource = await this.api.follow(this.root).to('resource1')[method.toLowerCase()](this.data, contentType)
             this.statusCodes[method] = resource._halchemy.response.statusCode
             this.contentTypes[method] = resource._halchemy.request.headers.get('Content-Type')
             this.bodies[method] = resource._halchemy.request.body
@@ -576,5 +574,41 @@ Then(/the request is made with the correct (?<data>.*) and (?<contentType>.*) he
             }
             assert.equal(this.contentTypes[method], contentType, 'Content-type should be ' + contentType)
             assert.equal(this.bodies[method], data, 'request body has the correct data')
+        })
+    })
+
+
+When('I make a request that returns JSON in the body',
+    async function () {
+        const url = 'http://example.org/error'
+        const response_body = {
+            _status: "ERR",
+            _error: {
+                code: 404,
+                message: "The requested URL was not found on the server. " +
+                    "If you entered the URL manually please check your spelling and try again."
+            }
+        }
+        server.use(
+            http.all(url, async () => {
+                return HttpResponse.json(response_body, {status: 404})
+            })
+        )
+
+        this.resources = {}
+        for (const method of AllMethods) {
+            try {
+                this.resources[method] = await this.api.usingEndpoint(url)[method.toLowerCase()]()
+            } catch (resource) {
+                this.resources[method] = resource
+            }
+        }
+    })
+
+Then('I can use the body in the way my language supports JSON',
+    function () {
+        AllMethods.forEach((method) => {
+            const body = this.resources[method]._halchemy.response.body
+            assert.equal(typeof body, 'object')
         })
     })
