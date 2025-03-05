@@ -32,6 +32,6 @@ features:
     icon: 🔗
     details: Hypermedia is a simple idea with powerful results.  If you are new to hypermedia, start here.
     linkText: Learn more
-    link: /guide/concepts/hypermedia
+    link: https://pointw-dev.github.io/hypermedia-docs/
 
 ---
