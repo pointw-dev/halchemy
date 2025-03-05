@@ -2,3 +2,6 @@ assertpy==1.1
 pytest-bdd==7.1.2
 requests-mock==1.11.0
 uritemplate==4.1.1
+setuptools==75.8.0
+twine==6.1.0
+
