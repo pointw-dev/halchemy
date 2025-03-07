@@ -13,10 +13,10 @@ hero:
   actions:
     - theme: brand
       text: What is halchemy?
-      link: /guide/introduction/what-is-halchemy
+      link: /introduction/what-is-halchemy
     - theme: alt
       text: Quickstart
-      link: /guide/introduction/quickstart
+      link: /introduction/quickstart
 
 features:
   - title: Smart

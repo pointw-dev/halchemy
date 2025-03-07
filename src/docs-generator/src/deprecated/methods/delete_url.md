@@ -3,7 +3,7 @@
 This API is frozen and deprecated.  Please use the fluent API from 0.9.4 on
 :::
 
-This seldom used method is available if, for some reason, you need to send a DELETE request to a URL outside of the web of links provided by the API.
+This seldom used method is available if, for some reason, you need to send a DELETE request to a URL outside the web of links provided by the API.
 
 
 ## Signature

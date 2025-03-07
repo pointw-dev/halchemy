@@ -22,7 +22,7 @@ export default defineConfig({
 
     nav: [
       { text: 'Home', link: '/' },
-      { text: 'Quickstart', link: '/guide/introduction/quickstart' },
+      { text: 'Quickstart', link: '/introduction/quickstart' },
       { text: pkg.version, link: null }
     ],
 
@@ -83,21 +83,21 @@ export default defineConfig({
 
 function getSidebar() {
   return {
-    "/guide/": [
+    "/": [
       {
         "text": "Introduction",
         "items": [
           {
             "text": "What is halchemy?",
-            "link": "/guide/introduction/what-is-halchemy"
+            "link": "/introduction/what-is-halchemy"
           },
           {
             "text": "Getting started",
-            "link": "/guide/introduction/quickstart"
+            "link": "/introduction/quickstart"
           },
           {
             "text": "Examples",
-            "link": "/guide/introduction/examples"
+            "link": "/introduction/examples"
           }
         ]
       },
@@ -107,11 +107,11 @@ function getSidebar() {
         "items": [
           {
             "text": "Configuration Properties",
-            "link": "/guide/configuration/properties"
+            "link": "/configuration/properties"
           },
           {
             "text": "Changing the Configuration",
-            "link": "/guide/configuration/changing"
+            "link": "/configuration/changing"
           }
         ]
       },
@@ -120,15 +120,15 @@ function getSidebar() {
         "items": [
           {
             "text": "Request Headers",
-            "link": "/guide/headers/request"
+            "link": "/headers/request"
           },
           {
             "text": "Default Request Headers",
-            "link": "/guide/headers/default"
+            "link": "/headers/default"
           },
           {
             "text": "Per Request Headers",
-            "link": "/guide/headers/per_request"
+            "link": "/headers/per_request"
           }
         ]
       },
@@ -137,11 +137,11 @@ function getSidebar() {
         "items": [
           {
             "text": "Passing parameters",
-            "link": "/guide/parameters/passing"
+            "link": "/parameters/passing"
           },
           {
             "text": "Parameters list style",
-            "link": "/guide/parameters/list-style"
+            "link": "/parameters/list-style"
           }
         ]
       },
@@ -150,7 +150,7 @@ function getSidebar() {
         "items": [
           {
             "text": "Using templated links",
-            "link": "/guide/templates/using"
+            "link": "/templates/using"
           }
         ]
       },
@@ -159,7 +159,7 @@ function getSidebar() {
         "items": [
           {
             "text": "Requesting changes",
-            "link": "/guide/concurrency/using"
+            "link": "/concurrency/using"
           }
         ]
       },
@@ -168,7 +168,7 @@ function getSidebar() {
         "items": [
           {
             "text": "Handling Errors",
-            "link": "/guide/errors/handling"
+            "link": "/errors/handling"
           }
         ]
       },
@@ -178,11 +178,11 @@ function getSidebar() {
         "items": [
           {
             "text": "Key terms",
-            "link": "/guide/concepts/terms"
+            "link": "/concepts/terms"
           },
           {
             "text": "Hypermedia",
-            "link": "/guide/concepts/hypermedia"
+            "link": "/concepts/hypermedia"
           }
         ]
       },
@@ -263,9 +263,7 @@ function getSidebar() {
             "link": "/deprecated/concurrency"
           }
         ]
-      },
-      ,
-      { text: 'Fluent API', base: '/guide/', link: 'introduction/quickstart' }
+      }
     ]
   }
 }

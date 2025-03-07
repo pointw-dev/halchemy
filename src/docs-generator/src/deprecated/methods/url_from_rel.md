@@ -21,7 +21,7 @@ url_from_rel(resource, rel, parameters={}, template={}) -> str
 ```javascript
 urlFromRel({resource, rel, parameters = {}, template = {}}: RelSpec): string
 ```
-> With JavaScript, the first four paramters are actually members of one parameter of type `RelSpec`, with each being a member of that object.
+> With JavaScript, the first four parameters are actually members of one parameter of type `RelSpec`, with each being a member of that object.
 </tab>
 
 <future-languages />

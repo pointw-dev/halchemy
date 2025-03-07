@@ -5,9 +5,9 @@ This API is frozen and deprecated.  Please use the fluent API from 0.9.4 on
 
 Identical to [GET from rel](/deprecated/methods/get_from_rel), but uses an implicit URL template - if the API is so configured.
 
-This method is seldom used, and was only created here to take advantage of hypermea's "additional lookup" field.  It allows a resource in the API to designate one field that can be used to lookup an item.  It requires the client know which field is so designated, and thus violates strict adherence to the "no out of band knowledge" constraint.
+This method is seldom used, and was only created here to take advantage of hypermea's "additional lookup" field.  It allows a resource in the API to designate one field that can be used to look up an item.  It requires the client know which field is so designated, and thus violates strict adherence to the "no out of band knowledge" constraint.
 
-> NOTE: only GET can use the implicit template of a lookup field.  If you need to send a different request, follow the `self` rel (e.g. `patch_resource(the_resource, 'self')`.
+> NOTE: only GET can use the implicit template of a lookup field.  If you need to send a different request, follow the `self` rel (e.g. `patch_resource(the_resource, 'self')`).
 
 ## Signature
 The method signature for **GET from rel with lookup** is:
@@ -31,7 +31,7 @@ get_from_rel_with_lookup(resource,
 ```javascript
 getFromRelWithLookup({resource, rel, parameters = {}, template = {}}: RelSpec, lookup: string, headers = {}): Promise<HalResource | {}>
 ```
-> With JavaScript, the first four paramters are actually members of one parameter of type `RelSpec`, with each being a member of that object.
+> With JavaScript, the first four parameters are actually members of one parameter of type `RelSpec`, with each being a member of that object.
 </tab>
 
 <future-languages />
