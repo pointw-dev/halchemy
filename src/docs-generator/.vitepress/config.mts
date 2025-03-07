@@ -57,7 +57,7 @@ export default defineConfig({
 
 //    ['meta', {name: 'twitter:card', value: 'summary'}],
     ['meta', {name: "twitter:card", content: "summary_large_image"}],
-    ['meta', {name: 'twitter:image', value: seoLogo}],
+    ['meta', {name: 'twitter:image', content: seoLogo}],
 //    ['meta', {property: "twitter:domain", content: "pointw.com"}],
     ['meta', {property: "twitter:url", content: siteUrl}],
     ['meta', {name: "twitter:title", content: title}],
