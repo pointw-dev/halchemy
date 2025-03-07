@@ -5,7 +5,7 @@ const pkg = require('../../version_stamp.json')
 
 const hostname = 'https://pointw-dev.github.io'
 const basePath = 'halchemy'
-const seoLogo = 'https://pointw-dev.github.io/halchemy/img/logo.png'
+const seoLogo = 'https://pointw-dev.github.io/halchemy/img/halchemy-card.png'
 const title = 'halchemy'
 const tagline = 'HAL for Humans'
 
