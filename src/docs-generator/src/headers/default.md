@@ -256,3 +256,5 @@ api.remove_headers(%w[Authorization Accept])
 ::: tip NOTE
 Removing the `Accept` header only removes it from the default headers of the `Api` object.  This lets the underlying http library use its default `Accept` header.
 :::
+
+<comments-section repo="pointw-dev/halchemy" repoId="R_kgDOJ3PqBg" category="General" categoryId="DIC_kwDOJ3PqBs4CoFSi" />

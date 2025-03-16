@@ -70,3 +70,5 @@ Halchemy automates steps 2. and 3.   When you follow a resource to `self` to mak
 Usually the Etag comes from the response's `ETag` header, and halchemy looks there first.  Some APIs include the ETag in one of the resource's fields.  If halchemy does not find the `ETag` header, it looks next for a field named `_etag`.  You can change the name of the field halchemy looks for by setting the "etag field" in the `Api` object.
 
 See [Configuration](../configuration/properties) for more information on configuring halchemy.
+
+<comments-section repo="pointw-dev/halchemy" repoId="R_kgDOJ3PqBg" category="General" categoryId="DIC_kwDOJ3PqBs4CoFSi" />

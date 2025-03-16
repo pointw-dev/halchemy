@@ -410,3 +410,6 @@ These are only a few examples of how halchemy lets your client application more 
 
 -----
 <a id="fn1" href="#fnref1" class="footnote-backref">[1]</a> HAL adds links to JSON (`application/hal+json`) and to XML (`application/hal+xml`).  Halchemy only works with the JSON flavour of HAL.
+
+
+<comments-section repo="pointw-dev/halchemy" repoId="R_kgDOJ3PqBg" category="General" categoryId="DIC_kwDOJ3PqBs4CoFSi" />

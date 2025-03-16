@@ -40,3 +40,5 @@ Given this parameters object: `{"list":["a","b","c"]}`, each parameters list sty
 | `comma`                | `list=a,b,c`                    |
 | `pipe`                 | `list=a\|b\|c`                  |
 
+
+<comments-section repo="pointw-dev/halchemy" repoId="R_kgDOJ3PqBg" category="General" categoryId="DIC_kwDOJ3PqBs4CoFSi" />

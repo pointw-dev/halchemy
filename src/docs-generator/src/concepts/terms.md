@@ -113,3 +113,6 @@ All of these terms are easily confused - especially the ones that begin with "RE
 > The body of the response to a request is a representation of a resource.
 
 The object returned to you by a request using halchemy is a blend of the resource representation, and the request and response.  The object is optimized to be used as the resource representation, so is modeled as a Resource object.  It contains the other data (request, response, error details) in a property named `_halchemy` to keep it out of the way while you are working with the data you really care about.  The metadata is there when you need it.
+
+
+<comments-section repo="pointw-dev/halchemy" repoId="R_kgDOJ3PqBg" category="General" categoryId="DIC_kwDOJ3PqBs4CoFSi" />

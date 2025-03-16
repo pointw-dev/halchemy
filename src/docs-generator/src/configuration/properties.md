@@ -107,3 +107,5 @@ puts api.error_handling.raise_on_status_codes   # nil
 </tabs>
 
 See the [Handling Errors](/errors/handling) page for more details.
+
+<comments-section repo="pointw-dev/halchemy" repoId="R_kgDOJ3PqBg" category="General" categoryId="DIC_kwDOJ3PqBs4CoFSi" />

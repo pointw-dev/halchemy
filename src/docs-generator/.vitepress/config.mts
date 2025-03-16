@@ -20,7 +20,8 @@ export default defineConfig({
     siteTitle: 'halchemy',
     stackOverflowTags: ['halchemy', 'HAL', 'http', 'rest', 'hypermedia'],
     socialLinks: [
-      { icon: 'github', link: 'https://github.com/pointw-dev/halchemy' }
+      { icon: 'github', link: 'https://github.com/pointw-dev/halchemy' },
+      { icon: 'discord', link: 'https://discord.gg/6n2c8xmtvk' }
     ],
     logo: '/img/hero.svg',
 
@@ -69,7 +70,7 @@ export default defineConfig({
       alias: [
         {
           find: /^.*\/VPFeature\.vue$/,
-          replacement: fileURLToPath(new URL('./components/VPFeature.vue', import.meta.url))
+          replacement: fileURLToPath(new URL('./overrides/VPFeature.vue', import.meta.url))
         }
       ]
     }

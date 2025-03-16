@@ -177,3 +177,5 @@ td.header {
   <td><pre class="tableSnippet">/path?fixedParam=value&foo=bar</pre></td>
 </tr>
 </table>
+
+<comments-section repo="pointw-dev/halchemy" repoId="R_kgDOJ3PqBg" category="General" categoryId="DIC_kwDOJ3PqBs4CoFSi" />

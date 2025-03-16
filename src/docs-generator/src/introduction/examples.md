@@ -377,3 +377,5 @@ This example demonstrates:
 ## Sample API
 The examples above are based on an imaginary API that serves the following resources:
 <json-example />
+
+<comments-section repo="pointw-dev/halchemy" repoId="R_kgDOJ3PqBg" category="General" categoryId="DIC_kwDOJ3PqBs4CoFSi" />

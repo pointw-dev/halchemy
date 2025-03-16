@@ -63,3 +63,5 @@ customers = api.follow(root).to("customers").with_headers("Accept" => "applicati
 </tabs>
 
 Headers added to a request this way are merged with the default headers.  That is, all default headers continue to be included in the request, and the headers you specify are also included.  If you add a header to the request that already exists in the default header, the value you specify will be used for this request only.
+
+<comments-section repo="pointw-dev/halchemy" repoId="R_kgDOJ3PqBg" category="General" categoryId="DIC_kwDOJ3PqBs4CoFSi" />

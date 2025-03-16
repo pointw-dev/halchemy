@@ -19,3 +19,5 @@ The headers are merged in the order listed above.  That is, if the same header i
 ::: tip NOTE
 The names of all headers managed by halchemy are case-insensitive.  That is, `Content-Type` is the same as `content-type`.  This is handled by halchemy, so you don't have to worry about the case of headers you specify.
 :::
+
+<comments-section repo="pointw-dev/halchemy" repoId="R_kgDOJ3PqBg" category="General" categoryId="DIC_kwDOJ3PqBs4CoFSi" />
