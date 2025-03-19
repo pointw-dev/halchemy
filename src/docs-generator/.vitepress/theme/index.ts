@@ -5,8 +5,7 @@ import type { Theme } from 'vitepress'
 import DefaultTheme from 'vitepress/theme'
 
 import { Tab, Tabs } from 'vue3-tabs-component'
-import { AskStackOverflow, CenteredImage, CommentsSection, Copyright, NotFound } from '@pointw/vitepress-component-bundle'
-import FutureLanguages from '../components/FutureLanguages.vue'
+import { AskStackOverflow, CenteredImage, CommentsSection, Copyright, FutureLanguages, NotFound } from '@pointw/vitepress-component-bundle'
 import JsonExample from '../components/JsonExample.vue'
 
 import './tabs.css'
@@ -31,8 +30,8 @@ export default {
 
     app.component('CenteredImage', CenteredImage)
     app.component('CommentsSection', CommentsSection)
-
     app.component('FutureLanguages', FutureLanguages)
+
     app.component('JsonExample', JsonExample)
   }
 } satisfies Theme
