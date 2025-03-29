@@ -19,6 +19,9 @@ setup(
         'Topic :: Utilities'
     ],
     url='https://github.com/pointw-dev/halchemy',
+    project_urls = {
+        'Documentation': 'https://pointw-dev.github.io/halchemy'
+    },
     author='Michael Ottoson',
     author_email='michael@pointw.com',
     package_dir={'halchemy': 'halchemy/lib'},
