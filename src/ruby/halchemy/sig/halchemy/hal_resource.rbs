@@ -1,8 +1,19 @@
 module Halchemy
   class HalResource
+    def self.from_hash: -> HalResource
+
     def self.hal?: -> bool
 
     def collection: -> Enumerator[HalResource]
+
+    def embedded:  (Symbol | nil) -> (HalResource | Array[HalResource])
+
+    def embedded_many:  -> Array[HalResource]
+    def embedded_one:  -> HalResource
+
+    def embedded_rel?: -> bool
+
+    def embedded_rels: -> Array[String]
 
     def links: -> Array[String]
 

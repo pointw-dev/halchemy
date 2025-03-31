@@ -9,7 +9,7 @@ let requestContext: RequestContext = {
     headers: {}
 }
 
-let isRoot: boolean = false
+let isHome: boolean = false
 
 BeforeFeature('Configuring the base URL influences requests to relative urls but not absolute urls.',
     function ()  {
@@ -23,14 +23,14 @@ BeforeFeature('Configuring the base URL influences requests to relative urls but
 })
 
 Before(() =>{
-    isRoot = false
+    isHome = false
 })
 
 
 /*
-Scenario Outline:  Request the root resource
+Scenario Outline:  Request the home resource
     Given the Api is created with a <base_url>
-    When I GET the root resource
+    When I GET the home resource
     Then the request is made to the <expected_url>
  */
 
@@ -39,16 +39,16 @@ Given(/the Api is created with a (?<baseUrl>.*)/,
         this.api = new Api(baseUrl)
     })
 
-When('I GET the root resource',
+When('I GET the home resource',
     async function () {
-        isRoot = true
-        await this.api.root.get()
+        isHome = true
+        await this.api.home.get()
     })
 
 Then(/the request is made to the (?<expectedUrl>.*)/,
     function (expectedUrl: string) {
         AllMethods.forEach((method) => {
-            if (isRoot && method == 'GET' || !isRoot) {
+            if (isHome && method == 'GET' || !isHome) {
                 assert.equal(requestContext.urls[method], expectedUrl)
             }
         })

@@ -8,10 +8,10 @@ When you need to add query string parameters to the URL of a request, halchemy m
 <tab name="Python">
 
 ```python
-root = api.root.get()
+home = api.home.get()
 
 # get the first page of customers, 100 per page
-customers = api.follow(root).to('customers').with_parameters({'max_results':100,'page':1}).get()
+customers = api.follow(home).to('customers').with_parameters({'max_results':100,'page':1}).get()
 # adds ?max_results=100&page=1 to the URL
 ```
 </tab>
@@ -19,10 +19,10 @@ customers = api.follow(root).to('customers').with_parameters({'max_results':100,
 <tab name="JavaScript">
 
 ```javascript
-const root = await api.root.get()
+const home = await api.home.get()
 
 // get the first page of customers, 100 per page
-let customers = await api.follow(root)
+let customers = await api.follow(home)
     .to('customers')
     .withParameters({ max_results: 100, page: 1 })
     .get()
@@ -33,10 +33,10 @@ let customers = await api.follow(root)
 <tab name="Ruby">
 
 ```ruby
-root = api.root.get
+home = api.home.get
 
 # get the first page of customers, 100 per page
-customers = @api.follow(root)
+customers = @api.follow(home)
                 .to("customers")
                 .with_parameters({ "max_results" => 100, "page" => 1 })
                 .get
@@ -67,6 +67,7 @@ td.header {
 }
 </style>
 <table>
+<tbody>
 <tr>
   <td class="header">Parameters</td>
   <td class="header">Query String</td>
@@ -148,7 +149,7 @@ td.header {
   &chinese=%E4%B8%AD%E6%96%87</pre></td>
   <td>You can include Unicode in your parameters values.</td>
 </tr>
-
+</tbody>
 </table>
 
 <comments-section repo="pointw-dev/halchemy" repoId="R_kgDOJ3PqBg" category="General" categoryId="DIC_kwDOJ3PqBs4CoFSi" />

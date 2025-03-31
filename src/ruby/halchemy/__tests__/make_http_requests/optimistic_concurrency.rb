@@ -3,8 +3,8 @@
 Given(/^a modifiable HAL resource$/) do
   stub_for_hal_resource_scenarios
   @api = Halchemy::Api.new BASE_URL
-  root_resource = @api.root.get
-  @resource = @api.follow(root_resource).to("resource1").get
+  home_resource = @api.home.get
+  @resource = @api.follow(home_resource).to("resource1").get
 end
 
 When(/^I request a change to the resource$/) do

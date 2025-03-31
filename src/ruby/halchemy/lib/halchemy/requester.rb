@@ -3,7 +3,7 @@
 require "uri_template"
 
 module Halchemy
-  # The results of a Follower#to is a Requester.  In the case of a GET for the root resource, the Requester is Read Only
+  # The results of a Follower#to is a Requester.  In the case of a GET for the home resource, the Requester is Read Only
   # Otherwise it is a full Requester.  Both requester types share much in common.  This is defined in BaseRequester
   class BaseRequester
     LIST_STYLE_HANDLERS = {
@@ -126,7 +126,7 @@ module Halchemy
     end
   end
 
-  # The result of GET on the root URL is a ReadOnlyRequester, i.e. only
+  # The result of GET on the home URL is a ReadOnlyRequester, i.e. only
   # GET, HEAD, and OPTIONS are permitted
   class ReadOnlyRequester < BaseRequester
     def get

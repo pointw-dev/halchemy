@@ -3,7 +3,7 @@
 When(/^I make a request$/) do
   @resource = {}
   ALL_METHODS.each do |method|
-    @resource[method] = @api.follow(@root_resource).to("resource1").public_send(method)
+    @resource[method] = @api.follow(@home_resource).to("resource1").public_send(method)
   end
 end
 
@@ -41,7 +41,7 @@ When(/^the request I made fails: (.*)$/) do |failure|
 
   @resource = {}
   ALL_METHODS.each do |method|
-    @resource[method] = @api.follow(@root_resource).to("resource1").public_send(method)
+    @resource[method] = @api.follow(@home_resource).to("resource1").public_send(method)
   end
 end
 
@@ -64,21 +64,21 @@ When(/^I make a request that returns JSON in the body$/) do
     "_status" => "ERR",
     "_error" => {
       "code" => 404,
-      "message" => "The requested URL was not found on the server. " /
-                   "If you entered the URL manually please check your spelling and try again."
+      "message" => "The requested URL was not found on the server. /
+                    If you entered the URL manually please check your spelling and try again."
     }
   }.to_json
   stub_request(:any, /.*/).to_return(body: response_body, status: 404)
 
   @resource = {}
   ALL_METHODS.each do |method|
-    @resource[method] = @api.follow(@root_resource).to("resource1").public_send(method)
+    @resource[method] = @api.follow(@home_resource).to("resource1").public_send(method)
   end
 end
 
 Then(/^I can use the body in the way my language supports JSON$/) do
   ALL_METHODS.each do |method|
     response = @resource[method]._halchemy.response
-    expect(response.body.respond_to?("to_json")).to be true
+    expect(  response.body.respond_to?("to_json")  ).to be true
   end
 end

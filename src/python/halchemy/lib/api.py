@@ -66,8 +66,13 @@ class Api:
         self._api = RequestsWithDefaults(url_base=self._base_url, headers=self._headers)
 
     @property
+    def home(self) -> ReadOnlyRequester:
+        return self.using_endpoint('/', is_home=True)
+
+    @property
     def root(self) -> ReadOnlyRequester:
-        return self.using_endpoint('/', is_root=True)
+        # root is deprecated and will be removed in an upcoming release, please use home instead
+        return self.using_endpoint('/', is_home=True)
 
     def follow(self, resource: HalResource) -> Follower:
         return Follower(self, resource)
@@ -83,8 +88,8 @@ class Api:
 
         return CaseInsensitiveDict({'If-Match': etag}) if etag else {}
 
-    def using_endpoint(self, url: str, is_root: bool=False) -> Requester | ReadOnlyRequester:
-        if is_root:
+    def using_endpoint(self, url: str, is_home: bool=False) -> Requester | ReadOnlyRequester:
+        if is_home:
             return ReadOnlyRequester(self, url)
         return Requester(self, url)
 

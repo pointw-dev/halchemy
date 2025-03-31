@@ -3,8 +3,8 @@ from urllib.parse import urlparse, parse_qsl, urlencode
 import requests_mock
 
 
-def add_root_to_context(context):
-    root_resource = {
+def add_home_to_context(context):
+    home_resource = {
         '_links': {
             'self': {'href': '/'},
             'resource1': {'href': '/path/to/resource1'},
@@ -12,8 +12,8 @@ def add_root_to_context(context):
         }
     }
     with requests_mock.Mocker() as m:
-        m.register_uri('GET', 'http://example.org/', json=root_resource)
-        context.root = context.api.root.get()
+        m.register_uri('GET', 'http://example.org/', json=home_resource)
+        context.home = context.api.home.get()
 
 
 def are_query_strings_equal(actual, expected):

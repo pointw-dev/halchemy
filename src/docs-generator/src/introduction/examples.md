@@ -20,8 +20,8 @@ auth_header = {
 
 api = Api('http://example.org/api', headers=auth_header)
 
-root = api.root.get()
-customers = api.follow(root).to('customers').get()
+home = api.home.get()
+customers = api.follow(home).to('customers').get()
 
 for customer in customers.collection('_items'):
     if not customer['active'] and customer.has_rel('activate'):
@@ -40,8 +40,8 @@ async function activateCustomers() {
         authorization: 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJpYXQiOjB9.49jV8bS3WGLP20VBpCDane-kjxfGmO8L6LHgE7mLO9I'
     }
     const api = new Api('http://example.org/api', headers=authHeader)
-    const root = await api.root.get()
-    const customers = await api.follow(root).to('customers').get()
+    const home = await api.home.get()
+    const customers = await api.follow(home).to('customers').get()
 
     for (const customer of customers.collection('_items')) {
         if (!customer.active && customer.hasRel('activate')) {
@@ -65,8 +65,8 @@ auth_header = {
 
 api = Halchemy::Api.new("http://example.org/api", headers: auth_header)
 
-root = api.root.get
-customers = api.follow(root).to("customers").get
+home = api.home.get
+customers = api.follow(home).to("customers").get
 
 customers.collection("_items").each do |customer|
   if customer.rel?("activate") && !customer["active"]
@@ -84,9 +84,9 @@ This example demonstrates:
 * setting default headers for all requests
   * in this example, an authorization header is set when creating the `Api` object
   * each request will include this header
-* getting the root resource
+* getting the home resource
 * following a link to a collection resource
-  * from root to customers
+  * from home to customers
 * iterating over a collection
   * accessing the items in the collection using the `collection()` method ensures that each item is a HAL resource object
   * in other words, if you access the items directly, each item would not have the "has rel" method (for example)
@@ -105,8 +105,8 @@ from halchemy import Api
 
 api = Api('http://example.org/api')
 
-root = api.root.get()
-customers = api.follow(root).to('customers').get()
+home = api.home.get()
+customers = api.follow(home).to('customers').get()
 
 print('Show orders')
 print('-----------')
@@ -151,8 +151,8 @@ async function prompt(message) {
 
 async function displayOrders() {
     const api = new Api('http://example.org/api')
-    const root = await api.root.get()
-    const customers = await api.follow(root).to('customers').get()
+    const home = await api.home.get()
+    const customers = await api.follow(home).to('customers').get()
 
     console.log('Show Orders')
     console.log('-----------')
@@ -198,8 +198,8 @@ require "halchemy"
 
 api = Halchemy::Api.new "http://example.org/api"
 
-root = api.root.get
-customers = api.follow(root).to("customers").get
+home = api.home.get
+customers = api.follow(home).to("customers").get
 
 puts "Show orders"
 puts "-----------"
@@ -256,7 +256,7 @@ from halchemy import Api
 
 api = Api('http://example.org/api')
 
-root = api.root.get()
+home = api.home.get()
 page = 1
 
 while True:
@@ -264,7 +264,7 @@ while True:
         'max_results': 10,
         'page': page
     }
-    customers = api.follow(root).to('customers').with_parameters(pagination).get()
+    customers = api.follow(home).to('customers').with_parameters(pagination).get()
     for customer in customers.collection('_items'):
         print(f'{customer["customerId"]} - {customer["givenName"]} {customer["familyName"]}')
 
@@ -298,7 +298,7 @@ async function prompt(message) {
 
 async function displayCustomers() {
     const api = new Api('http://example.org/api')
-    const root = await api.root.get()
+    const home = await api.home.get()
     let page = 1
 
     while (true) {
@@ -306,7 +306,7 @@ async function displayCustomers() {
             max_results: 10,
             page
         }
-        const customers = await api.follow(root).to('customers').withParameters(pagination).get()
+        const customers = await api.follow(home).to('customers').withParameters(pagination).get()
         for (const customer of customers.collection('_items')) {
             console.log(`${customer.customerId} - ${customer.givenName} ${customer.familyName}`)
         }
@@ -335,7 +335,7 @@ require "halchemy"
 
 api = Halchemy::Api.new("http://example.org/api")
 
-root = api.root.get
+home = api.home.get
 page = 1
 
 loop do
@@ -343,7 +343,7 @@ loop do
     "max_results" => 10,
     "page" => page
   }
-  customers = api.follow(root)
+  customers = api.follow(home)
                  .to("customers")
                  .with_parameters(pagination)
                  .get

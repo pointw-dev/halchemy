@@ -14,9 +14,9 @@ And(/^is later changed to a (.*)$/) do |new_base_url|
   @api.base_url = new_base_url
 end
 
-When(/^I GET the root resource$/) do
+When(/^I GET the home resource$/) do
   @methods_used = [:get]
-  @api.root.get
+  @api.home.get
 end
 
 When(/^a request is given a (.*)$/) do |relative_url|

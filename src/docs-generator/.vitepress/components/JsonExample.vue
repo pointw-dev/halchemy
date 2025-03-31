@@ -4,6 +4,7 @@
 
 <template>
   <table>
+    <tbody>
     <tr>
       <td> <pre>/</pre> </td>
       <td> <pre>/customers</pre> </td>
@@ -93,9 +94,11 @@
 }</pre>
       </td>
     </tr>
+    </tbody>
   </table>
 
   <table>
+    <tbody>
     <tr>
       <td> <pre>/customers/A375</pre> </td> <td> <pre>/customers/A375/orders</pre> </td>
     </tr>
@@ -169,6 +172,7 @@
       </td>
 
     </tr>
+    </tbody>
   </table>
 </template>
 

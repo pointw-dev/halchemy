@@ -3,27 +3,27 @@ Feature: Configuring the base URL influences requests to relative urls but not a
     To create an Api object there is only one mandatory parameter: the base URL of the service.
     The main purpose of this base URL is to say "The API that I am using is this one".  This serves
     two functional purposes
-        - the client will usually GET the root resource as its first action - this base URL is the
-          location of the root resource
+        - the client will usually GET the home resource as its first action - this base URL is the
+          location of the home resource
 
         - all relative urls are considered to be relative to this base URL, e.g. if the base URL
           is http://example.org/this/that  and a request is given a relative path /other  then the
           request is made to http://example.org/this/that/other
 
-    Once the client has the root resource, normally it will navigate links provided by following its links.
+    Once the client has the home resource, normally it will navigate links provided by following its links.
     For flexibility you can also request urls directly.  If the url is a path only, the Api object treats
     that as a relative path of the base url.  If the url is absolute, the request is made to that URL.
 
     Finally (though I'm not sure when this will be useful), you can change the base URL at any time.
 
     NOTE:  Although there are no scenarios below for this, you can also configure everything with a
-           configuration file.  Place a file named `.halchemy` in the root of your project, or in
+           configuration file.  Place a file named `.halchemy` in the home of your project, or in
            your home directory.
 
 
-    Scenario Outline:  Request the root resource
+    Scenario Outline:  Request the home resource
         Given the Api is created with a <base_url>
-        When I GET the root resource
+        When I GET the home resource
         Then the request is made to the <expected_url>
 
         Examples:

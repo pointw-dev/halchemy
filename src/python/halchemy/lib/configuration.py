@@ -3,26 +3,35 @@ This module provides functions to load configuration from an .ini file.
 It is intended only for internal use by the library.
 """
 
-import inspect
 import os
+import sys
+import inspect
 import configparser
 
 
-def get_caller_file() -> str | None:
+def get_caller_dir() -> str | None:
+    # Am I running in interactive mode?
+    if bool(getattr(sys, 'ps1', sys.flags.interactive)):
+        return os.getcwd()
+
     # Get the current stack frame and go back one level to find the caller
     # The 0-index is the current function, 1-index is the caller
     caller_frame = inspect.stack()[4]
     caller_module = inspect.getmodule(caller_frame[0])
+
     if caller_module is not None and hasattr(caller_module, '__file__'):
         # Return the path of the caller's file
-        return caller_module.__file__
+        return os.path.dirname(caller_module.__file__)
     else:
         # Caller does not have a __file__ attribute, or inspection failed
         return None
 
 
 def find_project_root(current_dir: str =None) -> str | None:
-    current_dir = current_dir or os.path.dirname(get_caller_file())
+    current_dir = current_dir or get_caller_dir()
+    if current_dir is None:
+        return None
+
     root_indicators = [
         '.git', 'pyproject.toml', 'requirements.txt',
         'setup.py', 'setup.cfg', '.venv', 'venv',
@@ -50,6 +59,7 @@ def ini_to_dict(config_filename: str, project_root: str) -> dict:
 def load_config() -> dict:
     config_filename = '.halchemy'
     project_root = find_project_root()
+
     rtn = {
         'halchemy': {
             'base_url': 'http://localhost:2112',

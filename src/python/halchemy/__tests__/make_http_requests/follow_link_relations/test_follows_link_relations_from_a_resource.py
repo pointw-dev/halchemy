@@ -16,9 +16,9 @@ def follow_link_rels():
     context.calledUrls = {}
     with requests_mock.Mocker() as m:
         m.register_uri(requests_mock.ANY, requests_mock.ANY, text='resp')
-        for rel in context.root['_links']:
+        for rel in context.home['_links']:
             for method in ALL_METHODS:
-                getattr(context.api.follow(context.root).to(rel), method.lower())()
+                getattr(context.api.follow(context.home).to(rel), method.lower())()
                 if rel not in context.calledUrls:
                     context.calledUrls[rel] = {}
                 context.calledUrls[rel][method] = m.last_request.url
@@ -28,4 +28,4 @@ def follow_link_rels():
 def verify_requests():
     for rel, methods in context.calledUrls.items():
         for method, url in methods.items():
-            assert_that(url).ends_with(context.root['_links'][rel]['href'])
+            assert_that(url).ends_with(context.home['_links'][rel]['href'])

@@ -66,6 +66,7 @@ td.header {
 }
 </style>
 <table>
+<tbody>
 <tr>
   <td class="header">Templated URL</td>
   <td class="header">Values</td>
@@ -176,6 +177,7 @@ td.header {
   <td><pre class="tableSnippet">{"foo":"bar"}</pre></td>
   <td><pre class="tableSnippet">/path?fixedParam=value&foo=bar</pre></td>
 </tr>
+</tbody>
 </table>
 
 <comments-section repo="pointw-dev/halchemy" repoId="R_kgDOJ3PqBg" category="General" categoryId="DIC_kwDOJ3PqBs4CoFSi" />

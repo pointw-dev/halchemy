@@ -3,14 +3,14 @@ import requests_mock
 from assertpy import assert_that
 from pytest_bdd import given, when, then, parsers
 from __tests__ import ALL_METHODS, MODIFY_METHODS
-from __tests__.make_http_requests import add_root_to_context, are_query_strings_equal
+from __tests__.make_http_requests import add_home_to_context, are_query_strings_equal
 from lib.api import Api
 
 
 @given('a HAL resource', target_fixture='context')
 def context():
     context.api = Api('http://example.org')
-    add_root_to_context(context)
+    add_home_to_context(context)
     return context
 
 
@@ -21,7 +21,7 @@ def handle_parameters(context, parameters):
     with requests_mock.Mocker() as m:
         m.register_uri(requests_mock.ANY, requests_mock.ANY, text='resp')
         for method in ALL_METHODS:
-            getattr(context.api.follow(context.root).to('self').with_parameters(parameters), method.lower())()
+            getattr(context.api.follow(context.home).to('self').with_parameters(parameters), method.lower())()
             context.qs[method] = m.last_request.url.split('?', 1)[1] if '?' in m.last_request.url else ''
 
 
@@ -34,7 +34,7 @@ def verify_requests(context, query_string):
 @given('a modifiable HAL resource', target_fixture='context')
 def context():
     context.api = Api('http://example.org')
-    add_root_to_context(context)
+    add_home_to_context(context)
     resource = {
         '_links': {
             'self': {'href': '/path/to/resource1'}
@@ -46,7 +46,7 @@ def context():
     }
     with requests_mock.Mocker() as m:
         m.register_uri(requests_mock.ANY, requests_mock.ANY, json=resource, headers=headers)
-        context.resource = context.api.follow(context.root).to('resource1').get()
+        context.resource = context.api.follow(context.home).to('resource1').get()
     return context
 
 

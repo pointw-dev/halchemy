@@ -17,7 +17,7 @@ def follow_link_rels():
     with requests_mock.Mocker() as m:
         m.register_uri(requests_mock.ANY, requests_mock.ANY, text='resp')
         try:
-            context.api.follow(context.root).to('non-existent').get()
+            context.api.follow(context.home).to('non-existent').get()
         except KeyError as e:
             context.error = e
 

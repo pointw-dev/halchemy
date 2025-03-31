@@ -1,0 +1,6 @@
+module Halchemy
+  module Multiplicity
+    ONE: Symbol
+    MANY: Symbol
+  end
+end

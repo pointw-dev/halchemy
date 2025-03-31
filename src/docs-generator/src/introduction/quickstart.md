@@ -39,8 +39,8 @@ from halchemy import Api
 
 api = Api('http://example.org/api')
 
-root = api.root.get()                          # get the root resource
-people = api.follow(root).to('people').get()   # follow the people rel to get the list of people
+home = api.home.get()                          # get the home resource
+people = api.follow(home).to('people').get()   # follow the people rel to get the list of people
 
 # Issue a refund of $5 to everyone
 for person in people['_items']:
@@ -56,8 +56,8 @@ import { Api } from 'halchemy'
 
 const api = new Api('http://example.org/api')
 
-const root = api.root.get()                         // get the root resource
-const people = api.follow(root).to('people').get()  // follow the people rel to get the list of people
+const home = api.home.get()                         // get the home resource
+const people = api.follow(home).to('people').get()  // follow the people rel to get the list of people
 
 // Issue a refund of $5 to everyone
 for (const person of people._items) {
@@ -74,8 +74,8 @@ require "halchemy"
 
 api = Halchemy::Api.new "http://example.org/api"
 
-root = api.root.get                          # get the root resource
-people = api.follow(root).to("people").get   # follow the people rel to get the list of people
+home = api.home.get                          # get the home resource
+people = api.follow(home).to("people").get   # follow the people rel to get the list of people
 
 # Issue a refund of $5 to everyone
 people["_items"].each do |person|

@@ -53,18 +53,18 @@ Scenario: Make requests using links provided by a resource
 Given('a HAL resource',
     async function () {
         this.api = new Api('http://example.org')
-        this.root = await this.api.root.get()
+        this.home = await this.api.home.get()
     })
 
 When('I make a request using its link relations',
     async function () {
         this.calls = {}
-        for (const [rel] of Object.entries(this.root._links)) {
+        for (const [rel] of Object.entries(this.home._links)) {
             if (rel == 'self') continue
             await Promise.all(
                 AllMethods.map(async (method) => {
                     this.calls[method] = this.calls[method] || {}
-                    this.calls[method][rel] = await this.api.follow(this.root).to(rel)[method.toLowerCase()]()
+                    this.calls[method][rel] = await this.api.follow(this.home).to(rel)[method.toLowerCase()]()
                 })
             )
         }
@@ -75,7 +75,7 @@ Then('the href of the link is used for the request',
         AllMethods.forEach((method) => {
             for (const [rel, result] of Object.entries(this.calls[method])) {
                 const actualUrl = (result as { _halchemy: any })._halchemy.response.body.url
-                const expectedUrl = this.root._links[rel].href
+                const expectedUrl = this.home._links[rel].href
                 assert.ok(actualUrl.endsWith(expectedUrl))
             }
         })
@@ -94,7 +94,7 @@ Scenario: Make request to non-existent link relation
 When('I make a request to a link relation the resource does not have',
     async function () {
         try {
-            await this.api.follow(this.root).to('non-existent').get()
+            await this.api.follow(this.home).to('non-existent').get()
             this.error = null
         } catch (e) {
             this.error = e
@@ -119,12 +119,12 @@ Scenario: Inspect links
 
 When('I ask for the links it has',
     function () {
-        this.links = this.root.links
+        this.links = this.home.links
     })
 
 Then('I get a list of its relations',
     function () {
-        const expected = Object.keys(this.root._links)
+        const expected = Object.keys(this.home._links)
         assert.deepEqual(this.links, expected)
     })
 
@@ -140,7 +140,7 @@ Scenario: Has link relation
 
 When('I ask if it has a link relation',
     function () {
-        this.hasRel = (rel: string) => this.root.hasRel(rel)
+        this.hasRel = (rel: string) => this.home.hasRel(rel)
     })
 
 Then('it tells me whether it does or not',
@@ -170,7 +170,7 @@ When('I specify additional headers for a request',
             'User-agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/67.0.3396.99 Safari/537.36'
         }
         for (const method of AllMethods) {
-            this.response = await this.api.follow(this.root).to('resource1').withHeaders(this.headers)[method.toLowerCase()]()
+            this.response = await this.api.follow(this.home).to('resource1').withHeaders(this.headers)[method.toLowerCase()]()
         }
     })
 
@@ -201,16 +201,16 @@ Given('I have made a request with additional headers',
             'Cache-control': 'no-cache'
         }
         this.api = new Api('http://example.org')
-        this.root = await this.api.root.get()
+        this.home = await this.api.home.get()
         for (const method of AllMethods) {
-            await this.api.follow(this.root).to('resource1').withHeaders(this.headers)[method.toLowerCase()]()
+            await this.api.follow(this.home).to('resource1').withHeaders(this.headers)[method.toLowerCase()]()
         }
     })
 
 When('I make a new request without headers',
     async function () {
         for (const method of AllMethods) {
-            this.response = await this.api.follow(this.root).to('resource1')[method.toLowerCase()]()
+            this.response = await this.api.follow(this.home).to('resource1')[method.toLowerCase()]()
         }
     })
 
@@ -239,7 +239,7 @@ When(/I supply (?<parameters>.*)/,
     async function (parameters: string) {
         for (const method of AllMethods) {
             const params = JSON.parse(parameters)
-            await this.api.follow(this.root).to('resource1').withParameters(params)[method.toLowerCase()]()
+            await this.api.follow(this.home).to('resource1').withParameters(params)[method.toLowerCase()]()
         }
     })
 
@@ -308,7 +308,7 @@ Scenario Outline: Make requests to templated URLs
 Given(/a HAL resource with a link that is an RFC 6570 compliant (?<templatedHref>.*)/,
     async function (templatedHref: string) {
         this.api = new Api('http://example.org')
-        this.root = await this.api.root.get()
+        this.home = await this.api.home.get()
         this.resource = {
             '_links': {
                 'self': {'href': '/resource1'},
@@ -531,7 +531,7 @@ When(/I use data type that is not an object but is valid as JSON, e.g. (?<data>.
             this.data = eval(data)
         }
         for (const method of PayloadMethods) {
-            const resource = await this.api.follow(this.root).to('resource1')[method.toLowerCase()](this.data)
+            const resource = await this.api.follow(this.home).to('resource1')[method.toLowerCase()](this.data)
             this.bodies[method] = resource._halchemy.request.body
             this.contentTypes[method] = resource._halchemy.request.headers.get('Content-type')
             this.resources[method] = resource
@@ -557,7 +557,7 @@ When(/the payload of a request is has (?<data>.*) of a different (?<contentType>
         this.bodies = {}
         this.data = data.startsWith('object:') ? JSON.parse(data.split('=>')[0].substring(7)) : data
         for (const method of PayloadMethods) {
-            const resource = await this.api.follow(this.root).to('resource1')[method.toLowerCase()](this.data, contentType)
+            const resource = await this.api.follow(this.home).to('resource1')[method.toLowerCase()](this.data, contentType)
             this.statusCodes[method] = resource._halchemy.response.statusCode
             this.contentTypes[method] = resource._halchemy.request.headers.get('Content-Type')
             this.bodies[method] = resource._halchemy.request.body

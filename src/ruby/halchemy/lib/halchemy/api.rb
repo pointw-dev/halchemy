@@ -28,10 +28,13 @@ module Halchemy
       @headers.merge!(headers)
     end
 
-    def root = using_endpoint("/", is_root: true)
+    def home = using_endpoint("/", is_home: true)
 
-    def using_endpoint(target, is_root: false)
-      if is_root
+    # root is deprecated and will be removed in an upcoming release, please use home instead
+    def root = using_endpoint("/", is_home: true)
+
+    def using_endpoint(target, is_home: false)
+      if is_home
         ReadOnlyRequester.new(self, target)
       else
         Requester.new(self, target)
@@ -112,7 +115,7 @@ module Halchemy
       resource = if json.nil?
                    Resource.new
                  elsif HalResource.hal?(json)
-                   HalResource.new.merge! json
+                   HalResource.from_hash json
                  else
                    Resource.new.merge! json
                  end

@@ -23,7 +23,7 @@ module Halchemy
 
     def request: -> (Resource | HalResource)
 
-    def root: -> BaseRequester
+    def home: -> BaseRequester
 
     def using_endpoint: -> BaseRequester
 

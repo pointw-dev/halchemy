@@ -2,7 +2,7 @@ import requests_mock
 from pytest_bdd import scenario, given, when, then
 from assertpy import assert_that
 from __tests__ import ALL_METHODS
-from __tests__.make_http_requests import add_root_to_context
+from __tests__.make_http_requests import add_home_to_context
 from __tests__.make_http_requests.with_headers import FEATURE
 from lib.api import Api
 
@@ -19,8 +19,8 @@ def test_follows_with_headers_are_per_call_only():
 @given('I have made a request with additional headers', target_fixture='context')
 def context():
     context.api = Api('http://example.org')
-    add_root_to_context(context)
-    context.api.follow(context.root).to('resource1').with_headers(HEADERS).get()
+    add_home_to_context(context)
+    context.api.follow(context.home).to('resource1').with_headers(HEADERS).get()
     return context
 
 
@@ -30,7 +30,7 @@ def follow_link_rels(context):
     with requests_mock.Mocker() as m:
         m.register_uri(requests_mock.ANY, requests_mock.ANY, text='resp')
         for method in ALL_METHODS:
-            getattr(context.api.follow(context.root).to('resource1'), method.lower())()
+            getattr(context.api.follow(context.home).to('resource1'), method.lower())()
             context.headers[method] = m.last_request.headers
 
 

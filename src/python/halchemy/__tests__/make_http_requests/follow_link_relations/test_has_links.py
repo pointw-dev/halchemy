@@ -12,8 +12,8 @@ def test_has_links():
 
 @when('I ask if it has a link relation')
 def follow_link_rels():
-    context.true_if_exists = context.root.has_rel('self')
-    context.false_if_not_exists = context.root.has_rel('not-a-rel')
+    context.true_if_exists = context.home.has_rel('self')
+    context.false_if_not_exists = context.home.has_rel('not-a-rel')
 
 
 @then('it tells me whether it does or not')

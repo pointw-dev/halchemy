@@ -5,8 +5,8 @@ from __tests__.configurable.base_url import FEATURE
 from lib.api import Api
 
 
-@scenario(FEATURE, 'Request the root resource')
-def test_configurable_base_url_gets_root():
+@scenario(FEATURE, 'Request the home resource')
+def test_configurable_base_url_gets_home():
     pass
 
 
@@ -16,12 +16,12 @@ def context(base_url):
     return context
 
 
-@when('I GET the root resource')
-def get_root_resource(context):
+@when('I GET the home resource')
+def get_home_resource(context):
     with requests_mock.Mocker() as m:
         context.request_urls = {}
         m.register_uri(requests_mock.ANY, requests_mock.ANY, text='resp')
-        context.api.root.get()
+        context.api.home.get()
         context.request_urls['GET'] = m.last_request.url
 
 

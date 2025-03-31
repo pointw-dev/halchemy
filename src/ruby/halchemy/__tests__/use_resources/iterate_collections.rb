@@ -1,7 +1,10 @@
 # frozen_string_literal: true
 
 Given(/^a HAL resource that has a field which is a collection of objects in HAL format$/) do
-  @resource = Halchemy::HalResource.new.merge!(JSON.parse({
+  @resource = Halchemy::HalResource.from_hash(JSON.parse({
+    _links: {
+      self: { href: "/" }
+    },
     _items: [
       {
         field: "alpha",
@@ -15,8 +18,7 @@ Given(/^a HAL resource that has a field which is a collection of objects in HAL 
         field: "delta",
         _links: { self: { href: "/resource/delta" } }
       }
-    ],
-    _links: { self: { href: "/resource" } }
+    ]
   }.to_json))
 end
 
@@ -32,7 +34,7 @@ Then(/^each item is a HAL resource$/) do
 end
 
 When(/^I try to iterate as a collection a field in the resource that does not exist$/) do
-  @root_resource.collection("_items").reduce(false) { |all_hal, item| all_hal || item.is_a?(Halchemy::HalResource) }
+  @home_resource.collection("_items").reduce(false) { |all_hal, item| all_hal || item.is_a?(Halchemy::HalResource) }
 rescue KeyError => e
   @error = e
 end
@@ -43,7 +45,7 @@ Then(/^it throws an exception telling me that the field does not exist$/) do
 end
 
 Given(/^a HAL resource with a non-collection field$/) do
-  @resource = Halchemy::HalResource.new.merge!(JSON.parse({
+  @resource = Halchemy::HalResource.from_hash(JSON.parse({
     _id: "3a834-34f9f03-39b843",
     _links: { self: { href: "/resource" } }
   }.to_json))
@@ -61,7 +63,7 @@ Then(/^it throws an exception telling me that the field is not a collection$/) d
 end
 
 Given(/^a HAL resource that has a field which is a collection, but not of HAL formatted objects$/) do
-  @resource = Halchemy::HalResource.new.merge!(JSON.parse({
+  @resource = Halchemy::HalResource.from_hash(JSON.parse({
     _items: [
       {
         make: "Ford Mustang"

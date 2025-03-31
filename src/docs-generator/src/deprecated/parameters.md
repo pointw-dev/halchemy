@@ -7,7 +7,7 @@ Most of the time a client blindly follows links from one resource to another or 
 
 Most of the methods has `parameters` in its signature.  This is a name/value pair object which is used by the method to build the query string.
 
-Let's want to send a `GET` request from the root resource to the link whose relation is `customers` - and you want to add to the `href` the following query string parameters: `...?max_results=50&page=7`
+Let's want to send a `GET` request from the home resource to the link whose relation is `customers` - and you want to add to the `href` the following query string parameters: `...?max_results=50&page=7`
 
 Here is how you do that using `parameters`
 
@@ -15,7 +15,7 @@ Here is how you do that using `parameters`
 <tab name="Python">
 
 ```python
-customers = api.get_from_rel(root, 'customers', parameters={'max_results':50,'page':7})
+customers = api.get_from_rel(home, 'customers', parameters={'max_results':50,'page':7})
 ```
 </tab>
 
@@ -23,7 +23,7 @@ customers = api.get_from_rel(root, 'customers', parameters={'max_results':50,'pa
 
 ```javascript
 const customers = await api.getFromRel({
-    resource: root,
+    resource: home,
     rel: 'customers',
     parameters: {
         max_results: 50,

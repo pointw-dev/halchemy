@@ -27,7 +27,7 @@ def follow_link_rels():
     with requests_mock.Mocker() as m:
         m.register_uri(requests_mock.ANY, requests_mock.ANY, text='resp')
         for method in ALL_METHODS:
-            getattr(context.api.follow(context.root).to('self').with_headers(HEADERS), method.lower())()
+            getattr(context.api.follow(context.home).to('self').with_headers(HEADERS), method.lower())()
             context.headers[method] = m.last_request.headers
 
 

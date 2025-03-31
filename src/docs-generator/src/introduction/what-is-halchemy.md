@@ -82,7 +82,7 @@ order = {
 ////////////////
 // Without halchemy (using axios)
 
-// assuming axios.defaults.baseURL has been set to the API root URL
+// assuming axios.defaults.baseURL has been set to the API home URL
 axios.post(customer._links.orders.href, order, { 
     headers: { 'Content-type': 'application/json' } 
 })

@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 When(/^I make a request using its link relations$/) do
-  @requests = make_requests(ALL_METHODS, @api.follow(@root_resource).to("resource1"))
+  @requests = make_requests(ALL_METHODS, @api.follow(@home_resource).to("resource1"))
 end
 
 Then(/^the href of the link is used for the request$/) do
@@ -14,7 +14,7 @@ When(/^I make a request to a link relation the resource does not have$/) do
   @error = {}
   ALL_METHODS.each do |method|
     @error[method] = nil
-    @api.follow(@root_resource).to("non-existent").public_send(method)
+    @api.follow(@home_resource).to("non-existent").public_send(method)
   rescue KeyError => e
     @error[method] = e
   end
@@ -28,7 +28,7 @@ Then(/^the request fails, informing me of the issue$/) do
 end
 
 When(/^I ask for the links it has$/) do
-  @links = @root_resource.links
+  @links = @home_resource.links
 end
 
 Then(/^I get a list of its relations$/) do
@@ -38,8 +38,8 @@ Then(/^I get a list of its relations$/) do
 end
 
 When(/^I ask if it has a link relation$/) do
-  @true_if_exists = @root_resource.rel?("self")
-  @false_if_not_exists = @root_resource.rel?("not-a-rel")
+  @true_if_exists = @home_resource.rel?("self")
+  @false_if_not_exists = @home_resource.rel?("not-a-rel")
 end
 
 Then(/^it tells me whether it does or not$/) do
@@ -58,7 +58,7 @@ When(/^I use an object my language uses to represent JSON as the payload of a re
   }
 
   @payload = data.to_json
-  @requests = make_requests(PAYLOAD_METHODS, @api.follow(@root_resource).to("resource1"), @payload)
+  @requests = make_requests(PAYLOAD_METHODS, @api.follow(@home_resource).to("resource1"), @payload)
 end
 
 Then(/^the request body is properly formatted JSON$/) do
@@ -70,12 +70,12 @@ end
 
 When(/^I use data type that is not an object but is valid as JSON, e\.g\. (.*)$/) do |data|
   @payload = data
-  @requests = make_requests(PAYLOAD_METHODS, @api.follow(@root_resource).to("resource1"), @payload)
+  @requests = make_requests(PAYLOAD_METHODS, @api.follow(@home_resource).to("resource1"), @payload)
 end
 
 When(/^the payload of a request is has (.*) of a different (.*)$/) do |data, content_type|
   @payload = data
-  @requests = make_requests(PAYLOAD_METHODS, @api.follow(@root_resource).to("resource1"), data, content_type)
+  @requests = make_requests(PAYLOAD_METHODS, @api.follow(@home_resource).to("resource1"), data, content_type)
 end
 
 Then(/^the request is made with the correct (.*) and (.*) header$/) do |data, content_type|

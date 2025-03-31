@@ -167,6 +167,15 @@ function getSidebar() {
         ]
       },
       {
+        "text": "Embedded",
+        "items": [
+          {
+            "text": "Embedded content",
+            "link": "/embedded/content"
+          }
+        ]
+      },
+      {
         "text": "Optimistic Concurrency",
         "items": [
           {

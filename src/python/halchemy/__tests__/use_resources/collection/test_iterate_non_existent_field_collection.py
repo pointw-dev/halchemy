@@ -1,5 +1,5 @@
 from pytest_bdd import scenario, given, when, then
-from __tests__.use_resources import FEATURE
+from __tests__.use_resources.collection import FEATURE
 from __tests__.make_http_requests.shared_step_definitions import *
 from lib.resource import HalResource
 
@@ -17,7 +17,7 @@ def iterate_missing_resources():
     context.error_occurred = False
     context.all_hal = True
     try:
-        for item in context.root.collection('_items'):
+        for item in context.home.collection('_items'):
             if type(item) is not HalResource:
                 context.all_hal = False
     except Exception as e:

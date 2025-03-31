@@ -1,6 +1,6 @@
 from assertpy import assert_that
 from pytest_bdd import scenario, given, when, then
-from __tests__.use_resources import FEATURE
+from __tests__.use_resources.collection import FEATURE
 from lib.resource import HalResource
 
 

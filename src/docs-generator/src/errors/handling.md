@@ -19,7 +19,7 @@ from halchemy import Api
 api = Api('http://non-existent-server')
 api.error_handling.raise_on_network_error = False
 
-resource = api.root.get()
+resource = api.home.get()
 if resource._halchemy.error:
     print('a network error occurred')
 ```
@@ -33,7 +33,7 @@ const {Api} = require('halchemy')
 const api = new Api('http://non-existent-server')
 api.errorHandling.raiseOnNetworkError = false
 
-const resource = api.root.get()
+const resource = api.home.get()
 if (resource._halchemy.error) {
     console.log('a network error occurred')
 }
@@ -48,7 +48,7 @@ require "halchemy"
 api = Halchemy::Api.new "http://non-existent-server"
 api.error_handling.raise_on_network_error = false
 
-resource = api.root.get
+resource = api.home.get
 if resource._halchemy.error
   puts "a network error occurred"
 end
@@ -76,9 +76,9 @@ from halchemy import Api
 api = Api('http://example.org/api')
 api.error_handling.raise_on_status_codes = '400-403, >404'
 
-root = api.root.get()
+home = api.home.get()
 try:
-    resource = api.follow(root).to('search').get()
+    resource = api.follow(home).to('search').get()
     if resource._halchemy.response.status_code == 404:
         print('no results found')
     else:
@@ -96,10 +96,10 @@ const {Api} = require('halchemy')
 const api = new Api('http://example.org/api')
 api.errorHandling.raiseOnStatusCodes = '400-403, >404'
 
-const root = api.root.get()
+const home = api.home.get()
 
 try {
-    resource = api.follow(root).to('search').get()
+    resource = api.follow(home).to('search').get()
     if (resource._halchemy.response.status_code == 404) {
         console.log('no results found')
     } else {
@@ -119,9 +119,9 @@ require "halchemy"
 api = Halchemy::Api.new "http://example.org/api"
 api.error_handling.raise_on_status_codes = "400-403, >404"
 
-root = api.root.get
+home = api.home.get
 begin
-  resource = api.follow(root).to("search").get
+  resource = api.follow(home).to("search").get
   if resource._halchemy.response.status_code == 404
    puts "no results found"
   else

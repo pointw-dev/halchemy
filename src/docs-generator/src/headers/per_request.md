@@ -14,8 +14,8 @@ headers = {
     'Accept-language': 'en-CA, en;q=0.9, fr-CA;q=0.8, fr;q=0.7'
 }
 
-root = api.root.with_headers(headers).get()
-customers = api.follow(root).to('customers').with_headers({'Accept': 'application/xml'}).get()
+home = api.home.with_headers(headers).get()
+customers = api.follow(home).to('customers').with_headers({'Accept': 'application/xml'}).get()
 ```
 </tab>
 
@@ -32,8 +32,8 @@ async function useDifferentHeadersPerRequest() {
         'Accept-language': 'en-CA, en;q=0.9, fr-CA;q=0.8, fr;q=0.7'
     }
 
-    const root = await api.root.withHeaders(headers).get()
-    const customers = await api.follow(root)
+    const home = await api.home.withHeaders(headers).get()
+    const customers = await api.follow(home)
         .to('customers')
         .withHeaders({Accept: 'application/xml'})
         .get()
@@ -54,8 +54,8 @@ headers = {
     "Accept-language" => "en-CA, en;q=0.9, fr-CA;q=0.8, fr;q=0.7"
 }
 
-root = api.root.with_headers(headers).get
-customers = api.follow(root).to("customers").with_headers("Accept" => "application/xml").get
+home = api.home.with_headers(headers).get
+customers = api.follow(home).to("customers").with_headers("Accept" => "application/xml").get
 ```
 </tab>
 

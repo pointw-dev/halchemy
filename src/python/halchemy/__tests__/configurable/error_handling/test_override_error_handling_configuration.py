@@ -1,7 +1,7 @@
 import requests_mock
 from assertpy import assert_that
 from pytest_bdd import scenario, given, when, then, parsers
-from __tests__.make_http_requests import add_root_to_context
+from __tests__.make_http_requests import add_home_to_context
 from __tests__.configurable.error_handling import FEATURE, ALL_METHODS
 from lib.api import Api, HTTPError
 
@@ -14,7 +14,7 @@ def test_override_error_handling_configuration():
 @given('an Api with default error handling configuration', target_fixture='context')
 def context():
     context.api = Api('http://example.org')
-    add_root_to_context(context)
+    add_home_to_context(context)
     return context
 
 

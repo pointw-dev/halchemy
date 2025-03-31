@@ -5,7 +5,7 @@ from lib.resource import HalResource
 from pytest_bdd import scenario, given, when, then, parsers
 from assertpy import assert_that
 from __tests__ import ALL_METHODS
-from __tests__.make_http_requests import add_root_to_context
+from __tests__.make_http_requests import add_home_to_context
 from __tests__.make_http_requests.with_templates import FEATURE
 from lib.api import Api
 
@@ -18,7 +18,7 @@ def test_follows_with_missing_template_values():
 @given(parsers.parse('a HAL resource with a link that is an RFC 6570 compliant {template_href}'), target_fixture='context')
 def context(template_href):
     context.api = Api('http://example.org')
-    add_root_to_context(context)
+    add_home_to_context(context)
     context.resource = HalResource({
         '_links': {
             'self': {'href': '/resource1'},

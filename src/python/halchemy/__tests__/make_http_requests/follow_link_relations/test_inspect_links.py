@@ -13,10 +13,10 @@ def test_inspect_links():
 
 @when('I ask for the links it has')
 def follow_link_rels():
-    context.links = context.root.links
+    context.links = context.home.links
 
 
 @then('I get a list of its relations')
 def verify_requests():
-    for rel in context.root['_links']:
+    for rel in context.home['_links']:
         assert_that(context.links).contains(rel)

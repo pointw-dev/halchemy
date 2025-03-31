@@ -72,12 +72,17 @@ export class Api {
         })
     }
 
-    public get root() {
+    public get home() {
         return this.usingEndpoint('/', true)
     }
 
-    usingEndpoint(url: string, isRoot: boolean = false): Requester | ReadOnlyRequester {
-        if (isRoot) {
+    public get root() {
+        // root is deprecated and will be removed in an upcoming release, please use home instead
+        return this.usingEndpoint('/', true)
+    }
+
+    usingEndpoint(url: string, isHome: boolean = false): Requester | ReadOnlyRequester {
+        if (isHome) {
             return new ReadOnlyRequester(this, url)
         }
         return new Requester(this, url)

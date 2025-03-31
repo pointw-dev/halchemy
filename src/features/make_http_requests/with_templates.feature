@@ -48,3 +48,4 @@ Feature: Easily populate templated URLs with a template object
             | /tags{?list*}                              | {"list":["api"]}                      | /tags?list=api            |
             | /users/{userId}/posts{/postId}{?comments}  | {"userId":"100"}                      | /users/100/posts          |
             | /path?fixedParam=value{&foo}               | {"wrong":"values"}                    | /path?fixedParam=value    |
+            | /path{?links_only}                         | -omit-                                | /path                     |

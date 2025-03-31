@@ -20,7 +20,7 @@ After do
 end
 
 
-ROOT_JSON = {
+HOME_JSON = {
   _links: {
     self: { href: "/" },
     resource1: { href: "/path/to/resource1" },
@@ -41,7 +41,7 @@ RESOURCE_JSON = {
 Given(/^a HAL resource$/) do
   stub_for_hal_resource_scenarios
   @api = Halchemy::Api.new BASE_URL
-  @root_resource = @api.root.get
+  @home_resource = @api.home.get
 end
 
 # @return [void]
@@ -51,7 +51,7 @@ def stub_for_hal_resource_scenarios
     "Etag" => "from header"
   }
 
-  stub_request(:get, BASE_URL).to_return(body: ROOT_JSON, headers: headers)
+  stub_request(:get, BASE_URL).to_return(body: HOME_JSON, headers: headers)
   stub_request(:get, %r{\A#{BASE_URL}/path(/.*)?\z}).to_return(status: 200, body: RESOURCE_JSON, headers: headers)
 end
 

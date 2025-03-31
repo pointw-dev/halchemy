@@ -28,7 +28,7 @@ def request_with_payload():
     with requests_mock.Mocker() as m:
         m.register_uri(requests_mock.ANY, requests_mock.ANY, text='resp')
         for method in PAYLOAD_METHODS:
-            context.resources[method] = getattr(context.api.follow(context.root).to('resource1'),
+            context.resources[method] = getattr(context.api.follow(context.home).to('resource1'),
                                                 method.lower())(context.payload)
             context.bodies[method] = m.last_request.text
             context.content_types[method] = m.last_request.headers['Content-type']

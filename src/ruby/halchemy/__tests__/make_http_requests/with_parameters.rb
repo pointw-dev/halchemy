@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 When(/^I supply (.*)$/) do |parameters|
-  requester = @api.follow(@root_resource).to("resource1").with_parameters(JSON.parse(parameters))
+  requester = @api.follow(@home_resource).to("resource1").with_parameters(JSON.parse(parameters))
   @requests = make_requests(ALL_METHODS, requester)
 end
 
