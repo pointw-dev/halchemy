@@ -2,14 +2,14 @@ import { defineConfig, withBase } from 'vitepress'
 import { fileURLToPath, URL } from 'node:url'
 const pkg = require('../../version_stamp.json')
 
-
 const hostname = 'https://pointw-dev.github.io'
 const basePath = 'halchemy'
 const seoLogo = 'https://pointw-dev.github.io/halchemy/img/halchemy-card.png'
 const title = 'halchemy'
 const tagline = 'HAL for Humans'
 
-const siteUrl = hostname + (basePath? `/${basePath}/` : '')
+const calculatedBasePath = (basePath? `/${basePath}/` : '/')
+const siteUrl = hostname + calculatedBasePath
 
 // https://vitepress.dev/reference/site-config
 export default defineConfig({
@@ -17,7 +17,7 @@ export default defineConfig({
   description: tagline,
 
   themeConfig: {
-    siteTitle: 'halchemy',
+    siteTitle: title,
     stackOverflowTags: ['halchemy', 'HAL', 'http', 'rest', 'hypermedia'],
     socialLinks: [
       { icon: 'github', link: 'https://github.com/pointw-dev/halchemy' },
@@ -46,9 +46,9 @@ export default defineConfig({
   },
 
   appearance: 'dark',
-  base: `/${basePath}/`,
+  base: calculatedBasePath,
   head: [
-    ['link', { rel: 'icon', href: `/${basePath}/favicon.ico` }],
+    ['link', { rel: 'icon', href: `/${calculatedBasePath}/favicon.ico` }],
 
     // test with https://www.opengraph.xyz/url/
     ['meta', {property: 'og:image', content: seoLogo}],
@@ -78,11 +78,10 @@ export default defineConfig({
   sitemap: {
     hostname: siteUrl
   },
-  
   transformPageData(pageData) {
-    const canonicalUrl = hostname + (basePath? `/${basePath}` : '') + `/${pageData.relativePath}`
-      .replace(/index\.md$/, '')
-      .replace(/\.md$/, '.html')
+    const canonicalUrl = siteUrl + `${pageData.relativePath}`
+        .replace(/index\.md$/, '')
+        .replace(/\.md$/, '.html')
 
     pageData.frontmatter.head ??= []
     pageData.frontmatter.head.push([
