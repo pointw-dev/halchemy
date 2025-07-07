@@ -2,6 +2,12 @@ import * as path from 'path';
 import * as os from 'os';
 import * as fs from 'fs';
 import {readIniFileSync} from "read-ini-file";
+import { fileURLToPath } from "node:url";
+
+// Determine the directory of this module for both CJS and ESM environments
+const moduleDir = typeof __dirname !== 'undefined'
+    ? __dirname
+    : path.dirname(fileURLToPath(eval('import.meta.url')));
 
 
 function findProjectRoot(currentPath: string = __dirname): string | undefined {
@@ -27,7 +33,7 @@ function findProjectRoot(currentPath: string = __dirname): string | undefined {
 
 export function loadConfig(): any {
     const configFileName = '.halchemy';
-    const projectRoot = findProjectRoot();
+    const projectRoot = findProjectRoot(moduleDir);
     let config: any = {}
 
     if (projectRoot) {
