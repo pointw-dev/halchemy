@@ -1,6 +1,6 @@
 {
   "name": "halchemy",
-  "version": "1.0.7",
+  "version": "1.0.8",
   "description": "HAL for humans",
   "main": "dist/index.js",
   "types": "dist/types/index.d.ts",
@@ -28,5 +28,6 @@
     "read-ini-file": "^4.0.0"
   }
 }
+
 
 
