@@ -10,7 +10,7 @@ const moduleDir = typeof __dirname !== 'undefined'
     : path.dirname(fileURLToPath(eval('import.meta.url')));
 
 
-function findProjectRoot(currentPath: string): string | undefined {
+function findProjectRoot(currentPath: string = __dirname): string | undefined {
     // This function recursively searches for a directory containing `node_modules`
     // and returns the path of its parent directory (the project root).
     const parentDir = path.dirname(currentPath);

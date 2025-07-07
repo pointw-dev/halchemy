@@ -5,5 +5,4 @@ node    [X] npm
 php     [ ] Packagist
 python  [X] PyPi
 r       [ ] CRAN
-ruby    [ ] RubyGems
-
+ruby    [X] RubyGems
