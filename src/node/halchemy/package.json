@@ -1,6 +1,6 @@
 {
   "name": "halchemy",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "description": "HAL for humans",
   "main": "dist/index.js",
   "types": "dist/types/index.d.ts",
@@ -8,7 +8,7 @@
     "dist/**/*"
   ],
   "scripts": {
-    "test": "npx cucumber-js",
+    "test": "cucumber-js",
     "build": "tsc && cp src/lib/rfc6570.js dist/rfc6570.js && npm pack"
   },
   "keywords": [],
@@ -28,3 +28,4 @@
     "read-ini-file": "^4.0.0"
   }
 }
+
