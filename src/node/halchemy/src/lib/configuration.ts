@@ -4,6 +4,11 @@ import * as fs from 'fs';
 import {readIniFileSync} from "read-ini-file";
 import { fileURLToPath } from "node:url";
 
+// Determine the directory of this module for both CJS and ESM environments
+const moduleDir = typeof __dirname !== 'undefined'
+    ? __dirname
+    : path.dirname(fileURLToPath(eval('import.meta.url')));
+
 
 function findProjectRoot(currentPath: string): string | undefined {
     // This function recursively searches for a directory containing `node_modules`
@@ -28,8 +33,7 @@ function findProjectRoot(currentPath: string): string | undefined {
 
 export function loadConfig(): any {
     const configFileName = '.halchemy';
-    const parentDir = (typeof __dirname !== 'undefined') ? __dirname : '.';
-    const projectRoot = findProjectRoot(parentDir);
+    const projectRoot = findProjectRoot(moduleDir);
     let config: any = {}
 
     if (projectRoot) {
