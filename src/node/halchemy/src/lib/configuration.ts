@@ -2,10 +2,9 @@ import * as path from 'path';
 import * as os from 'os';
 import * as fs from 'fs';
 import {readIniFileSync} from "read-ini-file";
-import { fileURLToPath } from "node:url";
 
 
-function findProjectRoot(currentPath: string): string | undefined {
+function findProjectRoot(currentPath: string = __dirname): string | undefined {
     // This function recursively searches for a directory containing `node_modules`
     // and returns the path of its parent directory (the project root).
     const parentDir = path.dirname(currentPath);
@@ -28,8 +27,7 @@ function findProjectRoot(currentPath: string): string | undefined {
 
 export function loadConfig(): any {
     const configFileName = '.halchemy';
-    const parentDir = (typeof __dirname !== 'undefined') ? __dirname : '.';
-    const projectRoot = findProjectRoot(parentDir);
+    const projectRoot = findProjectRoot();
     let config: any = {}
 
     if (projectRoot) {
