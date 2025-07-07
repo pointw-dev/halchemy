@@ -1,3 +1,4 @@
 # do not change version manually here, use the script in /src
-VERSION = '1.0.6'
+VERSION = '1.0.7'
+
 
