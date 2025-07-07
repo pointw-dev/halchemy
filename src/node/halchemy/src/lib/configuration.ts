@@ -4,35 +4,57 @@ import * as fs from 'fs';
 import {readIniFileSync} from "read-ini-file";
 import { fileURLToPath } from "node:url";
 
-// Determine the directory of this module for both CJS and ESM environments
-const moduleDir = typeof __dirname !== 'undefined'
-    ? __dirname
-    : path.dirname(fileURLToPath(eval('import.meta.url')));
+const isBrowser = typeof window !== 'undefined' && typeof window.document !== 'undefined';
 
+// Functions and utilities below are only used when running in Node.
+// They are intentionally defined lazily to avoid evaluating Node-specific
+// code when this module is bundled for the browser.
+function getModuleDir() {
+    return typeof __dirname !== 'undefined'
+        ? __dirname
+        : path.dirname(fileURLToPath(eval('import.meta.url')));
+}
 
-function findProjectRoot(currentPath: string = __dirname): string | undefined {
-    // This function recursively searches for a directory containing `node_modules`
-    // and returns the path of its parent directory (the project root).
+function findProjectRoot(currentPath: string): string | undefined {
     const parentDir = path.dirname(currentPath);
-
     if (parentDir === currentPath) {
-        // Root directory reached without finding `node_modules`
         return undefined;
     }
 
     const potentialNodeModulesPath = path.join(parentDir, 'node_modules');
     if (fs.existsSync(potentialNodeModulesPath)) {
-        // `node_modules` found, return the parent directory
         return parentDir;
     }
 
-    // Recurse up the directory tree
     return findProjectRoot(parentDir);
 }
 
 
 export function loadConfig(): any {
+    const defaults = {
+        halchemy: {
+            baseUrl: 'http://localhost:2112',
+            parametersListStyle: 'repeat_key',
+            etagField: '_etag'
+        },
+        headers: {
+            'Content-type': 'application/json',
+            Authorization: 'Basic cm9vdDpwYXNzd29yZA==',
+            Accept: 'application/hal+json, application/json;q=0.9, */*;q=0.8'
+        },
+        errorHandling: {
+            raiseForNetworkErrors: true,
+            raiseForStatusCodes: null
+        }
+    };
+
+    if (isBrowser) {
+        // Browsers have no access to the filesystem so return defaults only.
+        return defaults;
+    }
+
     const configFileName = '.halchemy';
+    const moduleDir = getModuleDir();
     const projectRoot = findProjectRoot(moduleDir);
     let config: any = {}
 
