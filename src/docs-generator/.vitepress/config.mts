@@ -41,7 +41,7 @@ export default defineConfig({
     },
     footer: {
       message: 'Released under the <a target="_blank" class="link" href="https://raw.githubusercontent.com/pointw-dev/halchemy/refs/heads/main/LICENSE">MIT License</a>.',
-      copyright: 'Copyright © 2023-2025 Michael Ottoson (pointw.com)'
+      copyright: 'Copyright © 2023-2026 Michael Ottoson (pointw.com)'
     }
   },
 
