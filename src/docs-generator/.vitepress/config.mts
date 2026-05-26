@@ -48,7 +48,7 @@ export default defineConfig({
   appearance: 'dark',
   base: calculatedBasePath,
   head: [
-    ['link', { rel: 'icon', href: `/${calculatedBasePath}/favicon.ico` }],
+    ['link', { rel: 'icon', href: `${calculatedBasePath}favicon.ico` }],
 
     // test with https://www.opengraph.xyz/url/
     ['meta', {property: 'og:image', content: seoLogo}],
